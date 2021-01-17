@@ -8,6 +8,7 @@
 		"@testing-library/user-event": "^12.1.10",
 		"d3": "^6.3.1",
 		"react": "^17.0.1",
+		"react-audio-player": "^0.14.0",
 		"react-dom": "^17.0.1",
 		"react-scripts": "4.0.1",
 		"web-vitals": "^0.2.4"
