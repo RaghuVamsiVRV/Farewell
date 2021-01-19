@@ -27,13 +27,14 @@ export default function Bubbles() {
 			.append('circle')
 			.attr('r', function(d) {
 				return d.size;
-			})
-			.attr('fill', 'red')
-			.attr('stroke', 'yellow');
+			}).attr('text', (d) => d.id)
+			.attr('fill', 'orange')
+			.attr('stroke', 'yellow')
+			.attr('onclick', "window.top.location.href='';")
+			;
 
 		simulation.on('tick', tickActions);
 		function tickActions() {
-			//update circle positions to reflect node updates on each tick of the simulation
 			node
 				.attr('cx', function(d) {
 					return d.x;
@@ -77,12 +78,12 @@ export default function Bubbles() {
 var nodes_data = [
 	{ id: 'Nilendu', size: 3, path_to_img: '../media/nilendu.jpg' },
 	{ id: 'Viswajeeth', size: 5, path_to_img: '../media/viswajeeth.jpg' },
-	{ id: 'Abhinav Yadav', size: 20, path_to_img: '../media/yadav.jpg' },
-	{ id: 'Abhinav Gyan', size: 15, path_to_img: '../media/gyan.jpg' },
-	{ id: 'Anushree Jain', size: 3, path_to_img: '../media/anushree.jpg' },
-	{ id: 'Arundhati Gupta', size: 40, path_to_img: '../media/arundhathi.jpg' },
-	{ id: 'Raghav Heda', size: 5, path_to_img: '../media/raghav.jpg' },
-	{ id: 'Rishabh Yadav', size: 6, path_to_img: '../media/rishabh.jpg' },
-	{ id: 'Teja Reddy', size: 9, path_to_img: '../media/teja.jpg' },
-	{ id: 'Honey Sandhu', size: 10, path_to_img: '../media/honey.jpg' }
+	{ id: 'Abhinav_Yadav', size: 20, path_to_img: '../media/yadav.jpg' },
+	{ id: 'Abhinav_Gyan', size: 15, path_to_img: '../media/gyan.jpg' },
+	{ id: 'Anushree_Jain', size: 3, path_to_img: '../media/anushree.jpg' },
+	{ id: 'Arundhati_Gupta', size: 40, path_to_img: '../media/arundhathi.jpg' },
+	{ id: 'Raghav_Heda', size: 5, path_to_img: '../media/raghav.jpg' },
+	{ id: 'Rishabh_Yadav', size: 6, path_to_img: '../media/rishabh.jpg' },
+	{ id: 'Teja_Reddy', size: 9, path_to_img: '../media/teja.jpg' },
+	{ id: 'Honey_Sandhu', size: 10, path_to_img: '../media/honey.jpg' }
 ];
