@@ -6,11 +6,17 @@
 		"@testing-library/jest-dom": "^5.11.4",
 		"@testing-library/react": "^11.1.0",
 		"@testing-library/user-event": "^12.1.10",
+		"bcrypt": "^5.0.0",
+		"body-parser": "^1.19.0",
+		"cookie-parser": "^1.4.5",
 		"d3": "^6.3.1",
+		"jsonwebtoken": "^8.5.1",
+		"mongoose": "^5.11.12",
 		"react": "^17.0.1",
 		"react-audio-player": "^0.14.0",
 		"react-dom": "^17.0.1",
 		"react-scripts": "4.0.1",
+		"validator": "^13.5.2",
 		"web-vitals": "^0.2.4"
 	},
 	"scripts": {
