@@ -8,7 +8,7 @@ class ProfilePage extends Component {
     return(
     <div className="container">
       <div className="container-banner">
-        <img src={pic} alt="Avatar" height="200" width="170"></img>
+        <img src={pic} alt="Avatar" height="170" width="170"></img>
         <h2> Teja </h2>
       </div>
       <div>

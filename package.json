@@ -29,7 +29,8 @@
 		"build": "react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
-		"develop": "nodemon index.js"
+		"develop": "nodemon index.js",
+		"dev": "lite-server"
 	},
 	"eslintConfig": {
 		"extends": [
@@ -50,6 +51,7 @@
 		]
 	},
 	"devDependencies": {
+		"lite-server": "^2.6.1",
 		"nodemon": "^2.0.7"
 	}
 }
