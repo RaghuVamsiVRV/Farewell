@@ -18,18 +18,18 @@ const requireAuth = (req, res, next) => {
             jwt.verify(token, 'secret code', (err, decodedToken) => {
             if (err) {
                 console.log(err.message);
-                res.status(400).json({"err":"please login"}); 
+                res.status(400).json({"error":"please login"}); 
             } else {
                 console.log(decodedToken);
                 next();
             }
             });
         } else {
-            res.status(400).json({"err":"please login"}); 
+            res.status(400).json({"error":"please login"}); 
         }
     } catch(err) {
         console.log(err)
-        res.status(400).json({"err":"please login"}); 
+        res.status(400).json({"error":"please login"}); 
     }
   };
 
