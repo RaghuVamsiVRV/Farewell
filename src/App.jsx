@@ -2,6 +2,7 @@ import Bubbles from './components/bubbles'
 import song from './media/bgm.mp3'
 import React from 'react';
 import './App.css';
+import ProfilePage from './screens/profilePage';
 
 export default function App() {
 	return (
@@ -11,6 +12,7 @@ export default function App() {
 				<p>If you are reading this, it is because your browser does not support the audio element</p>{' '}
 			</audio>
 			<Bubbles/>
+			<ProfilePage />
 		</div>
 	);
 }
