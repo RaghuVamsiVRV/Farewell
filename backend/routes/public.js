@@ -86,5 +86,33 @@ router.get('/logout', (req, res) => {
 );
 
 
+// get a list of users from the db
+router.get('/users', function(req, res){
+  let batch =req.query.batch;
+  let college =req.query.college;
+
+  User.find({batch, college}).then(function(users){
+     res.send({users});
+  }).catch(err=>res.status(400).json({'error': err.message}));
+});
+
+router.get('/users/:id', function(req, res){
+   let id = req.params.id;
+  // find document with id 
+  User.findById(id, function (err, docs) { 
+      if (err){ 
+          console.log(err.message); 
+          res.status(400).json({'error':'error in fetching'})
+      } 
+      else{ 
+          if (docs==null){ 
+              res.status(400).json({'error':'Id not found'})
+              return;
+          } 
+          console.log("Result:", docs); 
+          res.status(200).json(docs)
+      } 
+  }); 
+});
 
 module.exports = router;

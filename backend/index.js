@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const express = require('express');
 const bodyParser = require('body-parser');
 const apiRoutes = require('./routes/api.js');
-const authRoutes = require('./routes/auth');
+const publicRoutes = require('./routes/public');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 
@@ -40,7 +40,7 @@ mongoose.Promise = global.Promise;
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use('/api',requireAuth,apiRoutes);
-app.use(authRoutes);
+app.use(publicRoutes);
 
 app.listen(process.env.port || 4000,function(){
     console.log("now listening for requests");
