@@ -1,0 +1,23 @@
+.container {
+  justify-content: center;
+}
+
+.container-banner {
+  background-color: #ffffff;
+  text-align: center;
+  border-style: hidden;
+  border-radius: 15px;
+  font-family: "Ruda", sans-serif;
+  padding: 1em;
+}
+
+img {
+  border-radius: 50%;
+}
+
+.row {
+  margin: 1em;
+}
+.navbar-dark {
+  background-color: #eb9d0d;
+}

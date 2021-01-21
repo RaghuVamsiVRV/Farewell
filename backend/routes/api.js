@@ -12,30 +12,11 @@ const getUserFromToken = (req)=>{
     if (token) {
         jwt.verify(token, 'secret code', (err, decodedToken) => {
             id = decodedToken.id;
-            
         });
     } 
     console.log("id",id);
     return id;
 }
-
-// get a list of users from the db
-router.get('/users', function(req, res){
-    let batch =req.query.batch;
-    let college =req.query.college;
-
-    User.find({batch, college}).then(function(users){
-       res.send({users});
-    }).catch(err=>res.status(400).json({'error': err.message}));
-});
-
-// get a list of comments from the db
-router.get('/comments', function(req, res){
-    let to =req.query.to
-    Comments.find({'to': to}).then(function(comments){
-       res.send({comments});
-    }).catch(err=>res.status(400).json({'error': err.message}));
-});
 
 // get a list of comments of user from the db
 router.get('/my_comments', function(req, res){
@@ -62,7 +43,9 @@ router.put('/edit_comment/:id', function(req, res){
     
     let from = getUserFromToken(req);
     let id = req.params.id;
-
+    let obj= req.body;
+    obj.from = from;
+    obj.time = new Date();
     // find document with id 
     Comments.findById(id, function (err, docs) { 
         if (err){ 
