@@ -8,6 +8,7 @@
 		"@testing-library/user-event": "^12.1.10",
 		"bcrypt": "^5.0.0",
 		"body-parser": "^1.19.0",
+		"bootstrap": "^4.6.0",
 		"cookie-parser": "^1.4.5",
 		"d3": "^6.3.1",
 		"jsonwebtoken": "^8.5.1",
@@ -15,7 +16,11 @@
 		"react": "^17.0.1",
 		"react-audio-player": "^0.14.0",
 		"react-dom": "^17.0.1",
+		"react-redux": "^7.2.2",
+		"react-redux-form": "^1.16.14",
+		"react-router-dom": "^5.2.0",
 		"react-scripts": "4.0.1",
+		"reactstrap": "^8.9.0",
 		"validator": "^13.5.2",
 		"web-vitals": "^0.2.4"
 	},
@@ -24,7 +29,8 @@
 		"build": "react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
-		"develop": "nodemon index.js"
+		"develop": "nodemon index.js",
+		"dev": "lite-server"
 	},
 	"eslintConfig": {
 		"extends": [
@@ -45,6 +51,7 @@
 		]
 	},
 	"devDependencies": {
+		"lite-server": "^2.6.1",
 		"nodemon": "^2.0.7"
 	}
 }
