@@ -19,3 +19,6 @@ img {
 .row {
   margin: 1em;
 }
+.navbar-dark {
+  background-color: #eb9d0d;
+}
