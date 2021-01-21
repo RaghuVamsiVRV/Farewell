@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Row, Col, Label, Card, CardTitle, CardText} from 'reactstrap';
+import {Button, Row, Col, Card, CardTitle, CardText} from 'reactstrap';
 import pic from '../media/photos/teja.jpg';
 
 
