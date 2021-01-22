@@ -1,10 +1,26 @@
+import axios from 'axios';
 import photo from '../media/photos/anushree.jpg';
 import { useD3 } from './useD3';
 import React from 'react';
 import { drag } from 'd3';
 const d3 = require('d3');
 
+let seniors = JSON.parse('{}');
+
 export default function Bubbles() {
+	axios.get('/users?batch=2017&college=IIT PATNA').then((response) => {
+		const myData = response;
+		// console.log(myData.data.users);
+		var arrayToString = JSON.stringify(Object.assign({}, myData.data.users)); // convert array to string
+		var stringToJsonObject = JSON.parse(arrayToString); // convert string to json object
+
+		// console.log(stringToJsonObject);
+		nigga(stringToJsonObject);
+	});
+	function nigga(contents) {
+		seniors = contents;
+	}
+	console.log(seniors);
 	const ref = useD3((svg) => {
 		var simulation = d3.forceSimulation().nodes(nodes_data);
 		simulation
@@ -13,7 +29,7 @@ export default function Bubbles() {
 			.force(
 				'collide',
 				d3.forceCollide(function(d) {
-					return d.size + 1;
+					return d.size + 3;
 				})
 			)
 			.force('x', d3.forceX(window.innerWidth / 5).strength(0.5));
@@ -67,26 +83,13 @@ export default function Bubbles() {
 		}
 		drag_handler(node);
 	});
-
 	return (
 		<div>
-			<svg ref={ref} style={{ width: window.innerWidth, height: window.innerHeight, background: 'black' }}>
-				<defs>
-					<pattern style={{ id: 'photo', height: '100%', width: '100%' }}>
-						<img
-							style={{
-								width: 1,
-								height: 1,
-								preserveAspectRatio: 'none'
-							}}
-							src={photo}
-						/>
-					</pattern>
-				</defs>
-			</svg>
+			<svg ref={ref} style={{ width: window.innerWidth, height: window.innerHeight, background: 'black' }} />
 		</div>
 	);
 }
+
 var nodes_data = [
 	{ id: 'Nilendu', size: 3, path_to_img: '../media/nilendu.jpg' },
 	{ id: 'Viswajeeth', size: 5, path_to_img: '../media/viswajeeth.jpg' },
