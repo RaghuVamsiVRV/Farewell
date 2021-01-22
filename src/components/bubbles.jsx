@@ -4,7 +4,7 @@ import React from 'react';
 import { drag } from 'd3';
 const d3 = require('d3');
 
-export default function Bubbles() {
+const Bubbles = (props) => {
 	const ref = useD3((svg) => {
 		var simulation = d3.forceSimulation().nodes(nodes_data);
 		simulation
@@ -99,3 +99,4 @@ var nodes_data = [
 	{ id: 'Teja_Reddy', size: 9, path_to_img: '../media/teja.jpg' },
 	{ id: 'Honey_Sandhu', size: 10, path_to_img: '../media/honey.jpg' }
 ];
+export default Bubbles;
