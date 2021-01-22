@@ -5,8 +5,9 @@ const apiRoutes = require('./routes/api.js');
 const publicRoutes = require('./routes/public');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
-
 const app = express();
+
+var cors = require('cors')
 
 
 const requireAuth = (req, res, next) => {
@@ -39,9 +40,10 @@ mongoose.Promise = global.Promise;
 
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(cors())
 app.use('/api',requireAuth,apiRoutes);
 app.use(publicRoutes);
 
 app.listen(process.env.port || 4000,function(){
-    console.log("now listening for requests");
+    console.log("now listening for requests, port:", process.env.port || 4000);
 });
