@@ -5,9 +5,6 @@ import { useD3 } from './useD3';
 import { drag } from 'd3';
 const d3 = require('d3');
 
-<<<<<<< HEAD
-const Bubbles = (props) => {
-=======
 export default function Bubbles() {
 	const [ seniors, setSeniors ] = useState({});
 	useEffect(
@@ -19,7 +16,6 @@ export default function Bubbles() {
 	);
 	console.log(seniors);
 
->>>>>>> ce7b77fc66ba8729d522097a29e375ffbc3d259b
 	const ref = useD3((svg) => {
 		var simulation = d3.forceSimulation().nodes(nodes_data);
 		simulation
@@ -101,4 +97,3 @@ var nodes_data = [
 	{ id: 'Teja_Reddy', size: 9, path_to_img: '../media/teja.jpg' },
 	{ id: 'Honey_Sandhu', size: 10, path_to_img: '../media/honey.jpg' }
 ];
-export default Bubbles;

@@ -1,11 +1,13 @@
 import React, {Component} from "react";
 import {Button, Label, Col, Row} from "reactstrap";
 import { Control, LocalForm, Errors } from "react-redux-form";
+import { min } from "d3";
 
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length<=len);
 const minLength = (len) => (val) => (val) && (val.length>=len);
+const eqLength = (len) => (val) => (val) && (val.length==len);
 const isNumber = (val) => !isNaN(Number(val));
 const validEmail = (val) => /^[A-Z0-9._%+-]+@iitp\.ac\.in$/i.test(val);
 const passMatch = (Val) => (val) => (val) && (Val) && (val===Val);
@@ -47,7 +49,7 @@ class Signup extends Component{
                                         placeholder="Name"
                                         className="form-control"
                                         validators={{
-                                            required, minLength: minLength(3), maxLength: maxLength(15)
+                                            required, minLength: minLength(3), maxLength: maxLength(30)
                                         }}
                                          />
                                     <Errors
@@ -57,7 +59,7 @@ class Signup extends Component{
                                         messages={{
                                             required: 'This is a required field, ',
                                             minLength: 'Must be greater than 2 characters, ',
-                                            maxLength: 'Must be 15 characters or less'
+                                            maxLength: 'Must be 30 characters or less'
                                         }}
                                      />
                                 </Col>
@@ -78,7 +80,7 @@ class Signup extends Component{
                                         show="touched"
                                         messages={{
                                             required: 'This is a required field, ',
-                                            validEmail: 'Invalid Email Address'
+                                            validEmail: 'Enter college webmail'
                                         }}
                                      />
                                 </Col>
@@ -91,14 +93,15 @@ class Signup extends Component{
                                     placeholder="Password"
                                     onChange={this.handleChange}
                                     validators={{
-                                        required
+                                        required, minLength: minLength(8)
                                     }}/>
                                     <Errors 
                                     className="text-danger"
                                     model=".password"
                                     show="touched"
                                     messages={{
-                                        required: 'This is a required field'
+                                        required: 'This is a required field',
+                                        minLength: 'Enter min 8 characters'
                                     }}
                                     />
                                 </Col>
@@ -130,7 +133,7 @@ class Signup extends Component{
                                     className="form-control"
                                     placeholder="Joining Year"
                                     validators={{
-                                        required, isNumber
+                                        required, isNumber, eqLength: eqLength(4)
                                     }}    
                                     />
                                     <Errors
@@ -139,7 +142,8 @@ class Signup extends Component{
                                     show="touched"
                                     messages={{
                                         required: 'This is a required field, ',
-                                        isNumber: 'Enter a number'
+                                        isNumber: 'Enter a number',
+                                        eqLength: "Enter year, e.g '2021'"                                        
                                     }}
                                     />                
                                 </Col>

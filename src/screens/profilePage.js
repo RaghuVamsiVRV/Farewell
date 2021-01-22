@@ -1,4 +1,5 @@
-import React, {Component} from 'react';
+import React, {Component, useState} from 'react';
+import { Control, LocalForm } from 'react-redux-form';
 import {Button, Row, Col, Card, CardTitle, CardText} from 'reactstrap';
 import pic from '../media/photos/teja.jpg';
 
@@ -13,7 +14,6 @@ function RenderComment({comment}){
 }
 
 const ProfilePage = (props) => {
-
     const dispComment = props.comments.map((comment)=>{
       return(
         <Col md={6}>
@@ -21,6 +21,10 @@ const ProfilePage = (props) => {
         </Col>
       );
     });
+    function handleSubmit(values){
+      console.log('Current State is: ' + JSON.stringify(values));
+        alert('Current State is: ' + JSON.stringify(values));
+    }
     return(
     <div className="container">
       <div className="container-banner">
@@ -29,64 +33,24 @@ const ProfilePage = (props) => {
         <Row>
           {dispComment}
         </Row>
-        
       </div>
       <div className="container-banner">
-        <Row className="form-group">
-          <Col md={12}>
-            <textarea
-              model=".comment"
-              id="comment"
-              name="comment"
-              rows={3}
-              className="form-control"
-            />
-          </Col>
-        </Row>
-        <Button outline>
-          <span className="fa fa-pencil" /> Submit Comment
-        </Button>
+        <LocalForm onSubmit={(values) => handleSubmit(values)}>
+          <Row className="form-group">
+            <Col md={12}>
+              <Control.textarea
+                model=".comment"
+                id="comment"
+                name="comment"
+                rows={3}
+                className="form-control"
+              />
+            </Col>
+          </Row>
+          <Button outline type="submit"><span className="fa fa-pencil" /> Submit Comment</Button>
+        </LocalForm>
       </div>
     </div>
     );
 }
-
 export default ProfilePage;
-{/* <Row className="row">
-          <Col md="6">
-            <Card body>
-              <CardTitle tag="h5">Hello anna</CardTitle>
-              <CardText>Hi babu ela vunnavHi babu ela vunnavHi babu ela vunnavHi babu ela vunnavHi babu ela vunnavHi babu ela vunnavHi babu ela vunnavHi babu ela vunnav</CardText>
-            </Card>
-          </Col>
-          <Col md="6">
-            <Card body>
-              <CardTitle tag="h5">Hello anna</CardTitle>
-              <CardText>Hi babu ela vunnavHi babu ela vunnavHi babu ela vunnavHi babu ela vunnav</CardText>
-            </Card>
-          </Col>
-          <Col md="6">
-            <Card body>
-              <CardTitle tag="h5">Hello anna</CardTitle>
-              <CardText>Hi babu ela vunnavHi babu ela vunnav</CardText>
-            </Card>
-          </Col>
-          <Col md="6">
-            <Card body>
-              <CardTitle tag="h5">Hello anna</CardTitle>
-              <CardText>Hi babu ela vunnav</CardText>
-            </Card>
-          </Col>
-          <Col md="6">
-            <Card body>
-              <CardTitle tag="h5">Hello anna</CardTitle>
-              <CardText>Hi babu ela vunnavHi babu ela vunnavHi babu ela vunnavHi babu ela vunnavHi babu ela vunnav</CardText>
-            </Card>
-          </Col>
-          <Col md="6">
-            <Card body>
-              <CardTitle tag="h5">Hello anna</CardTitle>
-              <CardText>Hi babu ela vunnavHi babu ela vunnavHi babu ela vunnavHi babu ela vunnavHi babu ela vunnav</CardText>
-            </Card>
-          </Col>
-        </Row> */}

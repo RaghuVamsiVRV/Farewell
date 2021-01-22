@@ -10,8 +10,7 @@ class Header extends Component {
         
         this.state={
             isNavOpen: false,
-            isModalOpen: false, 
-
+            isModalOpen: false,  
         };
         this.toggleNav = this.toggleNav.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
@@ -72,7 +71,7 @@ class Header extends Component {
                 <ModalBody>
                     <Form onSubmit={this.handleLogin}>
                             <FormGroup>
-                                <Label htmlFor="username">Username</Label>
+                                <Label htmlFor="username">Webmail</Label>
                                 <Input type="text" id="username" name="username" innerRef={(input)=>this.username=input}/>
                             </FormGroup>
                             <FormGroup>
