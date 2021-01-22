@@ -1,10 +1,25 @@
+import React, { Component, useState, useEffect } from 'react';
+import axios from 'axios';
 import photo from '../media/photos/anushree.jpg';
 import { useD3 } from './useD3';
-import React from 'react';
 import { drag } from 'd3';
 const d3 = require('d3');
 
+<<<<<<< HEAD
 const Bubbles = (props) => {
+=======
+export default function Bubbles() {
+	const [ seniors, setSeniors ] = useState({});
+	useEffect(
+		() =>
+			fetch('http://localhost:4000/users?batch=2017&college=IIT PATNA')
+				.then((res) => res.json())
+				.then(setSeniors),
+		[]
+	);
+	console.log(seniors);
+
+>>>>>>> ce7b77fc66ba8729d522097a29e375ffbc3d259b
 	const ref = useD3((svg) => {
 		var simulation = d3.forceSimulation().nodes(nodes_data);
 		simulation
@@ -13,7 +28,7 @@ const Bubbles = (props) => {
 			.force(
 				'collide',
 				d3.forceCollide(function(d) {
-					return d.size + 1;
+					return d.size + 3;
 				})
 			)
 			.force('x', d3.forceX(window.innerWidth / 5).strength(0.5));
@@ -67,26 +82,13 @@ const Bubbles = (props) => {
 		}
 		drag_handler(node);
 	});
-
 	return (
 		<div>
-			<svg ref={ref} style={{ width: window.innerWidth, height: window.innerHeight, background: 'black' }}>
-				<defs>
-					<pattern style={{ id: 'photo', height: '100%', width: '100%' }}>
-						<img
-							style={{
-								width: 1,
-								height: 1,
-								preserveAspectRatio: 'none'
-							}}
-							src={photo}
-						/>
-					</pattern>
-				</defs>
-			</svg>
+			<svg ref={ref} style={{ width: window.innerWidth, height: window.innerHeight, background: 'black' }} />
 		</div>
 	);
 }
+
 var nodes_data = [
 	{ id: 'Nilendu', size: 3, path_to_img: '../media/nilendu.jpg' },
 	{ id: 'Viswajeeth', size: 5, path_to_img: '../media/viswajeeth.jpg' },
