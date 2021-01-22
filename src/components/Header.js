@@ -10,14 +10,14 @@ class Header extends Component {
         
         this.state={
             isNavOpen: false,
-            isModalOpen: false
+            isModalOpen: false, 
 
         };
         this.toggleNav = this.toggleNav.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
     }
-
+    
     toggleNav(){
         this.setState({
             isNavOpen: !this.state.isNavOpen
@@ -42,22 +42,27 @@ class Header extends Component {
                 <Navbar dark expand="md">
                     <div className="container">
                         <NavbarToggler onClick={this.toggleNav}/>
-                        <Collapse isOpen={this.state.isNavOpen} navbar>
-                            <Nav navbar>
-                                <NavItem>
-                                    <NavLink className="nav-link" to='/bubbles'><span className="fa fa-home fa-lg"> Home</span></NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink className="nav-link" to='/profilePage'>Profile</NavLink>
-                                </NavItem>
-                            </Nav>
-                        </Collapse>
+                            <Collapse isOpen={this.state.isNavOpen} navbar>
+                                <Nav navbar>
+                                    <NavItem>
+                                        <NavLink className="nav-link" to='/bubbles'><span className="fa fa-home fa-lg"> Home</span></NavLink>
+                                    </NavItem>
+                                    <NavItem>
+                                        <NavLink className="nav-link" to='/profilePage'>Profile</NavLink>
+                                    </NavItem>
+                                    <NavItem>
+                                        <NavLink className="nav-link" to='/signup'>
+                                            <span className="fa fa-sign-in fa-lg"> Signup</span>
+                                        </NavLink>
+                                    </NavItem>
+                                </Nav>
+                            </Collapse>
                         <Nav className="ml-auto" navbar>
                         <NavItem>
                             <Button outline onClick={this.toggleModal}>
                                 <span className="fa fa-sign-in fa-lg"> Login</span>
                             </Button>
-                        </NavItem>
+                        </NavItem>                                                
                         </Nav>
                     </div>
                 </Navbar>
