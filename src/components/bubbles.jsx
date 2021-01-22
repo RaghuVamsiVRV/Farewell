@@ -1,26 +1,21 @@
+import React, { Component, useState, useEffect } from 'react';
 import axios from 'axios';
 import photo from '../media/photos/anushree.jpg';
 import { useD3 } from './useD3';
-import React from 'react';
 import { drag } from 'd3';
 const d3 = require('d3');
 
-let seniors = JSON.parse('{}');
-
 export default function Bubbles() {
-	axios.get('/users?batch=2017&college=IIT PATNA').then((response) => {
-		const myData = response;
-		// console.log(myData.data.users);
-		var arrayToString = JSON.stringify(Object.assign({}, myData.data.users)); // convert array to string
-		var stringToJsonObject = JSON.parse(arrayToString); // convert string to json object
-
-		// console.log(stringToJsonObject);
-		nigga(stringToJsonObject);
-	});
-	function nigga(contents) {
-		seniors = contents;
-	}
+	const [ seniors, setSeniors ] = useState({});
+	useEffect(
+		() =>
+			fetch('http://localhost:4000/users?batch=2017&college=IIT PATNA')
+				.then((res) => res.json())
+				.then(setSeniors),
+		[]
+	);
 	console.log(seniors);
+
 	const ref = useD3((svg) => {
 		var simulation = d3.forceSimulation().nodes(nodes_data);
 		simulation

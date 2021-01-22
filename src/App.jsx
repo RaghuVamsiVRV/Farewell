@@ -4,7 +4,6 @@ import './App.css';
 import { BrowserRouter } from 'react-router-dom';
 import Main from './components/main';
 import Header from './components/Header';
-import './web.config';
 
 export default function App() {
 	return (

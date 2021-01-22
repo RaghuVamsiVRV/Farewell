@@ -7,12 +7,8 @@ const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 const app = express();
 
-<<<<<<< HEAD
-=======
-var cors = require('cors')
+var cors = require('cors');
 
-
->>>>>>> 9b7b72d3832849ffbf004a1921b79ae3641abab2
 const requireAuth = (req, res, next) => {
 	try {
 		console.log(req.cookies);
@@ -46,10 +42,10 @@ mongoose.Promise = global.Promise;
 
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(cors())
-app.use('/api',requireAuth,apiRoutes);
+app.use(cors());
+app.use('/api', requireAuth, apiRoutes);
 app.use(publicRoutes);
 
-app.listen(process.env.port || 4000,function(){
-    console.log("now listening for requests, port:", process.env.port || 4000);
+app.listen(process.env.port || 4000, function() {
+	console.log('now listening for requests, port:', process.env.port || 4000);
 });
