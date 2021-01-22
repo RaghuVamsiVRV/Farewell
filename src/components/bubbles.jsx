@@ -1,3 +1,4 @@
+import photo from '../media/photos/anushree.jpg';
 import { useD3 } from './useD3';
 import React from 'react';
 import { drag } from 'd3';
@@ -11,13 +12,11 @@ export default function Bubbles() {
 			.force('center_force', d3.forceCenter(window.innerWidth / 2, window.innerHeight / 2))
 			.force(
 				'collide',
-				d3
-					.forceCollide(function(d) {
-						return d.size;
-					})
-					.strength(4)
+				d3.forceCollide(function(d) {
+					return d.size + 1;
+				})
 			)
-			.force('x', d3.forceX([ window.innerWidth / 5 ]));
+			.force('x', d3.forceX(window.innerWidth / 5).strength(0.5));
 		var node = svg
 			.append('g')
 			.attr('class', 'nodes')
@@ -27,11 +26,11 @@ export default function Bubbles() {
 			.append('circle')
 			.attr('r', function(d) {
 				return d.size;
-			}).attr('text', (d) => d.id)
+			})
+			.attr('text', (d) => d.id)
 			.attr('fill', 'orange')
 			.attr('stroke', 'yellow')
-			.attr('onclick', "window.top.location.href='';")
-			;
+			.attr('onclick', "window.top.location.href='';");
 
 		simulation.on('tick', tickActions);
 		function tickActions() {
@@ -71,7 +70,20 @@ export default function Bubbles() {
 
 	return (
 		<div>
-			<svg ref={ref} style={{ width: window.innerWidth, height: window.innerHeight, background: 'black' }} />
+			<svg ref={ref} style={{ width: window.innerWidth, height: window.innerHeight, background: 'black' }}>
+				<defs>
+					<pattern style={{ id: 'photo', height: '100%', width: '100%' }}>
+						<img
+							style={{
+								width: 1,
+								height: 1,
+								preserveAspectRatio: 'none'
+							}}
+							src={photo}
+						/>
+					</pattern>
+				</defs>
+			</svg>
 		</div>
 	);
 }
