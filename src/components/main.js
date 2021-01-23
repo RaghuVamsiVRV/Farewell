@@ -15,7 +15,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   
-  addComment:(id, from, to, comment) => dispatch(addComment(id, from, to, comment))
+  addComment:(from, to, comment) => dispatch(addComment(from, to, comment))
 
 });
 
@@ -31,7 +31,7 @@ class Main extends Component{
         <Header/>
         <Switch>
         <Route path = "/bubbles" component={Bubbles} />
-        <Route exact path = "/profilePage" component={() => <ProfilePage comments={this.props.comments}/>}/>
+        <Route exact path = "/profilePage" component={() => <ProfilePage comments={this.props.comments} addComment={this.props.addComment}/>}/>
         <Route path = "/signup" component={Signup}/>
         <Redirect to="/bubbles"/>
         </Switch>

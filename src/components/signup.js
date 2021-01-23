@@ -147,27 +147,7 @@ class Signup extends Component{
                                     }}
                                     />                
                                 </Col>
-                            </Row>
-                            {/* <Row className="form-group">
-                            <Label htmlFor="college" md={3}>College</Label>
-                            <Col md={9}>
-                                <Control.text model=".college" id="college" name="college"
-                                className="form-control"
-                                placeholder="College name"
-                                validators={{
-                                    required
-                                }}
-                                />
-                                <Errors
-                                className="text-danger"
-                                model=".college"
-                                show="touched"
-                                messages={{
-                                    required: 'This is a required field'    
-                                }}
-                                />
-                            </Col>
-                            </Row> */}
+                            </Row>                    
                             <Row className="form-group">
                                 <Button className="ml-2" type="submit" value="submit" color="primary">
                                     Submit
@@ -180,5 +160,24 @@ class Signup extends Component{
         );
     }
 }
-
+{/* <Row className="form-group">
+    <Label htmlFor="college" md={3}>College</Label>
+    <Col md={9}>
+        <Control.text model=".college" id="college" name="college"
+        className="form-control"
+        placeholder="College name"
+        validators={{
+            required
+        }}
+        />
+        <Errors
+        className="text-danger"
+        model=".college"
+        show="touched"
+        messages={{
+            required: 'This is a required field'    
+        }}
+        />
+    </Col>
+</Row> */}
 export default Signup;

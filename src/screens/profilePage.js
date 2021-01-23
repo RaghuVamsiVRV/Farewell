@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React from 'react';
 import { Control, LocalForm } from 'react-redux-form';
 import {Button, Row, Col, Card, CardTitle, CardText} from 'reactstrap';
 import pic from '../media/photos/teja.jpg';
@@ -9,6 +9,13 @@ function RenderComment({comment}){
       <Card key={comment.id}> 
         <CardTitle tag="h5">{comment.from}</CardTitle>
         <CardText>{comment.comment}</CardText>
+        <CardText className="ml-auto mr-3">
+          -- {new Intl.DateTimeFormat('en-US',{
+              day:'2-digit',
+              month:'short',
+              year:'numeric'
+          }).format(new Date(comment.date))}
+        </CardText>
       </Card>
   );
 }
@@ -24,6 +31,7 @@ const ProfilePage = (props) => {
     function handleSubmit(values){
       console.log('Current State is: ' + JSON.stringify(values));
         alert('Current State is: ' + JSON.stringify(values));
+        props.addComment('nani', 'teja', values.comment);
     }
     return(
     <div className="container">
