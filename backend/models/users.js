@@ -20,6 +20,9 @@ const UsersSchema = new Schema({
         type: String,
         required: [true, "Please enter a password"],
     },
+    branch:{
+      type: String
+    },
     batch:{
         type: String
     },
