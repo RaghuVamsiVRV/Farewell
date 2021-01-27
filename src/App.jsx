@@ -1,5 +1,5 @@
-import song from './media/bgm.mp3';
-import React, { Component } from 'react';
+import song from "./media/bgm.mp3";
+import React, {Component} from 'react';
 import './App.css';
 import { BrowserRouter } from 'react-router-dom';
 import Main from './components/main';

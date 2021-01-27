@@ -22,19 +22,19 @@ class Main extends Component {
 		super(props);
 	}
 
-	render() {
-		return (
-			<div>
-				<Header />
-				<Switch>
-					<Route path="/bubbles" component={Bubbles} />
-					<Route exact path="/profilePage" component={() => <ProfilePage comments={this.props.comments} />} />
-					<Route path="/signup" component={Signup} />
-					<Redirect to="/bubbles" />
-				</Switch>
-			</div>
-		);
-	}
+  render(){
+    return(
+      <div> 
+        <Header/>
+        <Switch>
+        <Route path = "/bubbles" component={Bubbles} />
+        <Route exact path = "/profilePage" component={() => <ProfilePage comments={this.props.comments} addComment={this.props.addComment}/>}/>
+        <Route path = "/signup" component={Signup}/>
+        <Redirect to="/bubbles"/>
+        </Switch>
+      </div>
+    );
+  }
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));

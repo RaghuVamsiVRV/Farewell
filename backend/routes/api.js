@@ -3,7 +3,6 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 
 const Comments = require('../models/comments.js');
-const User = require("../models/users.js");
 
 // get the user id from JWT token
 const getUserFromToken = (req)=>{
