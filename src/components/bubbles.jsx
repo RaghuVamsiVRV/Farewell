@@ -34,16 +34,17 @@ class BarChart extends Component {
 			.force('collide', d3.forceCollide(20))
 			.force('x', d3.forceX(window.innerWidth / 5).strength(0.5));
 
-		var node = svg.append('g').attr('class', 'nodes').selectAll('circle').data(bigga).enter().append('g');
-		node.attr('onclick', function(d) {
-			var link = "window.top.location.href='" + '/' + d.name + "'";
-			return link;
-		});
-		var circles = node
+		var node = svg
+			.append('g')
+			.attr('class', 'nodes')
+			.selectAll('circle')
+			.data(bigga)
+			.enter()
 			.append('circle')
 			.attr('r', 20)
 			.attr('fill', 'orange')
 			.attr('stroke', 'yellow')
+			.attr('onclick', "window.top.location.href='';")
 			.on('mouseover', function(d, i) {
 				d3.select(this).transition().attr('r', '30');
 
@@ -54,8 +55,16 @@ class BarChart extends Component {
 
 				// div.transition().duration(50).style('opacity', '0');
 			});
+		node.attr('onclick', function(d) {
+			var link = "window.top.location.href='" + '/' + d.name + "'";
+			return link;
+		});
 
-		var text = node
+		var texts = svg
+			.append('g')
+			.selectAll('text')
+			.data(bigga)
+			.enter()
 			.append('text')
 			.text((d) => d.name)
 			.style('fill', 'white')
@@ -65,34 +74,33 @@ class BarChart extends Component {
 				// div.transition().duration(50).style('opacity', '1');
 			})
 			.on('mouseout', function(d, i) {
-				d3.select(this).transition().duration('1500').attr('opacity', '0');
+				d3.select(this).transition().duration('50').attr('opacity', '0');
 				// div.transition().duration(50).style('opacity', '0');
 			});
+
+		texts.attr('onclick', function(d) {
+			var link = "window.top.location.href='" + '/' + d.name + "'";
+			return link;
+		});
 		node.append('title').text((d) => d.name).attr('opacity', '1');
 		simulation.on('tick', tickActions);
 		function tickActions() {
-			node.attr('transform', function(d) {
-				return 'translate(' + d.x + ',' + d.y + ')';
-			});
-			// texts.attr('x', (d) => d.x);
-			// texts.attr('y', (d) => d.y);
-			// node
-			// 	.attr('cx', function(d) {
-			// 		return d.x;
-			// 	})
-			// 	.attr('cy', function(d) {
-			// 		return d.y;
-			// 	});
+			texts.attr('x', (d) => d.x);
+			texts.attr('y', (d) => d.y);
+			node
+				.attr('cx', function(d) {
+					return d.x;
+				})
+				.attr('cy', function(d) {
+					return d.y;
+				});
 		}
 
 		var zoom_handler = d3.zoom().on('zoom', zoom_actions);
 		zoom_handler(svg);
 		function zoom_actions(event) {
 			node.attr('transform', event.transform);
-			node.attr('transform', function(d) {
-				return 'translate(' + d.x + ',' + d.y + ')';
-			});
-			// texts.attr('transform', event.transform);
+			texts.attr('transform', event.transform);
 		}
 
 		var drag_handler = d3.drag().on('start', drag_start).on('drag', drag_drag).on('end', drag_end);
@@ -112,7 +120,7 @@ class BarChart extends Component {
 			event.subject.fy = null;
 		}
 		drag_handler(node);
-		// drag_handler(texts);
+		drag_handler(texts);
 		// const svg = d3.select('body').append('svg').attr('width', 700).attr('height', 300);
 	}
 
