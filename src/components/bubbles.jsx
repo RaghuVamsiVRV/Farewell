@@ -74,7 +74,7 @@ class BarChart extends Component {
 				// div.transition().duration(50).style('opacity', '1');
 			})
 			.on('mouseout', function(d, i) {
-				d3.select(this).transition().duration('50').attr('opacity', '0');
+				d3.select(this).transition().duration('2000').attr('opacity', '0');
 				// div.transition().duration(50).style('opacity', '0');
 			});
 
