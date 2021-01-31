@@ -5,6 +5,7 @@ export const ConfigureStore = () => {
     const store = createStore(
         combineReducers({
             comments: Comments,
+            users: User
         })
     );
     return store;
