@@ -5,16 +5,19 @@ import Bubbles from './bubbles';
 import Header from './Header';
 import Signup from './signup';
 import { addComment } from '../redux/ActionCreators';
-import { connect } from 'react-redux';
+import { batch, connect } from 'react-redux';
+import { packSiblings } from 'd3';
 
 const mapStateToProps = (state) => {
 	return {
-		comments: state.comments
+    comments: state.comments,
+    users: state.users
 	};
 };
 
 const mapDispatchToProps = (dispatch) => ({
-	addComment: (id, from, to, comment) => dispatch(addComment(id, from, to, comment))
+  addComment: (id, from, to, comment) => dispatch(addComment(id, from, to, comment)),
+  addUser: (id, _id, name, email, password, batch, college, __v) => dispatch(id, _id, name, email, password, batch, college, __v)
 });
 
 class Main extends Component {
