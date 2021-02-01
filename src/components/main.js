@@ -25,14 +25,23 @@ class Main extends Component {
 		super(props);
 	}
 
+  
+
   render(){
+    const Profile = ({match}) =>{
+      console.log("HI");
+      return(
+      // <ProfilePage />
+      <ProfilePage comments={this.props.comments} addComment={this.props.addComment} id={match.params.Id}/>
+      );
+    };
     return(
       <div> 
         <Header/>
         <Switch>
         <Route path = "/bubbles" component={Bubbles} />
-        <Route exact path = "/profilePage" component={() => <ProfilePage comments={this.props.comments} addComment={this.props.addComment}/>}/>
         <Route path = "/signup" component={Signup}/>
+        <Route path='/:Id' component={Profile}/>
         <Redirect to="/bubbles"/>
         </Switch>
       </div>

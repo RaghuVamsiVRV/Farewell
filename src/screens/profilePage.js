@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Control, LocalForm } from 'react-redux-form';
 import {Button, Row, Col, Card, CardTitle, CardText} from 'reactstrap';
 import pic from '../media/photos/teja.jpg';
@@ -19,9 +19,29 @@ function RenderComment({comment}){
       </Card>
   );
 }
+class ProfilePage extends Component {
 
-const ProfilePage = (props) => {
-    const dispComment = props.comments.map((comment)=>{
+  constructor(props)
+  {
+    super(props);
+    this.state={
+      comments:[],
+      user:{}
+    }
+  }
+
+  
+  componentDidMount() {
+    console.log(this.props.id);
+		fetch(`http://localhost:4000/users/${this.props.id}`)
+			.then((response) => response.json())
+      .then((data) => this.setState({user:data}))
+      
+    fetch()  
+	}
+
+  render(){
+    const dispComment = this.props.comments.map((comment)=>{
       return(
         <Col md={6}>
           <RenderComment comment={comment}/>
@@ -31,13 +51,13 @@ const ProfilePage = (props) => {
     function handleSubmit(values){
       console.log('Current State is: ' + JSON.stringify(values));
         alert('Current State is: ' + JSON.stringify(values));
-        props.addComment('nani', 'teja', values.comment);
+        this.props.addComment('nani', 'teja', values.comment);
     }
     return(
     <div className="container">
       <div className="container-banner">
         <img src={pic} alt="Avatar" height="170" width="170"></img>
-        <h2> Teja </h2>
+        <h2> {this.state.user.name} </h2>
         <Row>
           {dispComment}
         </Row>
@@ -60,5 +80,6 @@ const ProfilePage = (props) => {
       </div>
     </div>
     );
+  }
 }
 export default ProfilePage;
