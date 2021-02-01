@@ -1,29 +1,26 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import ProfilePage from '../screens/profilePage';
-import {Switch, Route, Redirect, withRouter} from 'react-router-dom';
+import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import Bubbles from './bubbles';
-import Header from "./Header";
-import Signup from "./signup";
+import Header from './Header';
+import Signup from './signup';
 import { addComment } from '../redux/ActionCreators';
 import { connect } from 'react-redux';
 
-const mapStateToProps = state => {
-  return {
-    comments: state.comments  
-  }
-}
+const mapStateToProps = (state) => {
+	return {
+		comments: state.comments
+	};
+};
 
-const mapDispatchToProps = dispatch => ({
-  
-  addComment:(from, to, comment) => dispatch(addComment(from, to, comment))
-
+const mapDispatchToProps = (dispatch) => ({
+	addComment: (id, from, to, comment) => dispatch(addComment(id, from, to, comment))
 });
 
-class Main extends Component{
-
-  constructor(props){
-    super(props);
-  }
+class Main extends Component {
+	constructor(props) {
+		super(props);
+	}
 
   render(){
     return(
@@ -39,6 +36,5 @@ class Main extends Component{
     );
   }
 }
-  
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));

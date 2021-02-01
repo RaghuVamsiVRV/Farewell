@@ -3,22 +3,25 @@ import React, {Component} from 'react';
 import './App.css';
 import { BrowserRouter } from 'react-router-dom';
 import Main from './components/main';
-import { Provider } from "react-redux";
-import { ConfigureStore } from "./redux/configureStore";
+import { Provider } from 'react-redux';
+import { ConfigureStore } from './redux/configureStore';
 
-const store=ConfigureStore();
+
+const store = ConfigureStore();
 
 class App extends Component {
-	render(){
+	render() {
 		return (
 			<Provider store={store}>
 				<BrowserRouter>
-				<audio src={song} autoplay={{}} /*loop={{}}*/>
+					<audio src={song} autoplay={{}} /*loop={{}}*/>
 						{' '}
-						<p>If you are reading this, it is because your browser does not support the audio element</p>{' '}
-				</audio>
+						<p>
+							If you are reading this, it is because your browser does not support the audio element
+						</p>{' '}
+					</audio>
 					<div>
-						<Main/>
+						<Main />
 					</div>
 				</BrowserRouter>
 			</Provider>
@@ -26,4 +29,4 @@ class App extends Component {
 	}
 }
 
-export default App;	
+export default App;
