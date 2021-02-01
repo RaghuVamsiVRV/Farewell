@@ -44,7 +44,7 @@ const createToken = (id) => {
 };
 
 router.post('/signup', async (req, res) => {
-    const { name, email, password,batch,college, imageURL } = req.body;
+    const { name, email, password,branch,batch,college, imageURL } = req.body;
     try{
       const user1 = await User.find({email});
       console.log(user1);
@@ -52,7 +52,7 @@ router.post('/signup', async (req, res) => {
         res.status(400).json({"error": "Email already exists"})
       }
       else{
-        const user = await User.create({name, email, password,batch,college,imageURL}); 
+        const user = await User.create({name, email, password,branch,batch,college,imageURL}); 
         const token = createToken(user._id);
         res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
         res.status(201).json({ user: user._id,'message': 'Signed up and logged in'});
