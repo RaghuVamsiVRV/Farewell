@@ -36,8 +36,7 @@ class ProfilePage extends Component {
 		fetch(`http://localhost:4000/users/${this.props.id}`)
 			.then((response) => response.json())
       .then((data) => this.setState({user:data}))
-      
-    fetch()  
+        
 	}
 
   render(){
