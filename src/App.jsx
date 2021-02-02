@@ -14,12 +14,7 @@ class App extends Component {
 		return (
 			<Provider store={store}>
 				<BrowserRouter>
-					<audio src={song} autoplay={{}} /*loop={{}}*/>
-						{' '}
-						<p>
-							If you are reading this, it is because your browser does not support the audio element
-						</p>{' '}
-					</audio>
+					
 					<div>
 						<Main />
 					</div>

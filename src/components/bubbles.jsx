@@ -1,4 +1,5 @@
 import React, { Component, useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import photo from '../media/photos/anushree.jpg';
 import * as d3 from 'd3';
@@ -55,7 +56,7 @@ class BarChart extends Component {
 				// div.transition().duration(50).style('opacity', '0');
 			});
 		node.attr('onclick', function(d) {
-			var link = "window.top.location.href='" + '/user' + '/' + d._id + "'";
+			var link = "window.top.location.href='" + '/' + d._id + "'";
 			return link;
 		});
 
