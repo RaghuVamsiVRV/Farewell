@@ -1,4 +1,5 @@
 import React, { Component, useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import photo from '../media/photos/anushree.jpg';
 import * as d3 from 'd3';
@@ -10,29 +11,29 @@ class BarChart extends Component {
 	}
 
 	drawChart(bigga) {
-		// const data = axios.get('http://localhost:4000/users?batch=2017&college=IIT PATNA');
-		// console.log(data);
 		console.log(bigga);
-		// var bigga = [
-		// 	{ id: 'Nilendu', size: 3, path_to_img: '../media/nilendu.jpg' },
-		// 	{ id: 'Viswajeeth', size: 5, path_to_img: '../media/viswajeeth.jpg' },
-		// 	{ id: 'Abhinav_Yadav', size: 20, path_to_img: '../media/yadav.jpg' },
-		// 	{ id: 'Abhinav_Gyan', size: 15, path_to_img: '../media/gyan.jpg' },
-		// 	{ id: 'Anushree_Jain', size: 3, path_to_img: '../media/anushree.jpg' },
-		// 	{ id: 'Arundhati_Gupta', size: 40, path_to_img: '../media/arundhathi.jpg' },
-		// 	{ id: 'Raghav_Heda', size: 5, path_to_img: '../media/raghav.jpg' },
-		// 	{ id: 'Rishabh_Yadav', size: 6, path_to_img: '../media/rishabh.jpg' },
-		// 	{ id: 'Teja_Reddy', size: 9, path_to_img: '../media/teja.jpg' },
-		// 	{ id: 'Honey_Sandhu', size: 10, path_to_img: '../media/honey.jpg' }
-		// ];
 
 		const svg = d3.select(this.myRef.current);
 		var simulation = d3.forceSimulation().nodes(bigga);
 		simulation
-			.force('charge_force', d3.forceManyBody().strength(10))
+			.force('charge_force', d3.forceManyBody().strength(1000))
 			.force('center_force', d3.forceCenter(window.innerWidth / 2, window.innerHeight / 2))
-			.force('collide', d3.forceCollide(20))
-			.force('x', d3.forceX(window.innerWidth / 5).strength(0.5));
+			.force('collide', d3.forceCollide(30))
+			.force('x', d3.forceX(window.innerWidth / 3))
+			.force('x', d3.forceX(window.innerWidth / 1.5));
+
+		// var defs = svg.append('defs');
+		// defs
+		// 	.append('pattern')
+		// 	.attr('id', 'photo')
+		// 	.attr('height', '100%')
+		// 	.attr('width', '100%')
+		// 	.attr('patterContentUnits', 'objectBoundingBox')
+		// 	.append('image')
+		// 	.attr('height', 1)
+		// 	.attr('width', 1)
+		// 	.attr('preserveAspectRatio', 'none')
+		// 	.attr('xlink:href', '../media/photos/teja.jpg');
 
 		var node = svg
 			.append('g')
@@ -42,9 +43,8 @@ class BarChart extends Component {
 			.enter()
 			.append('circle')
 			.attr('r', 20)
-			.attr('fill', 'orange')
+			.attr('fill', 'url(#photo)')
 			.attr('stroke', 'yellow')
-			.attr('onclick', "window.top.location.href='';")
 			.on('mouseover', function(d, i) {
 				d3.select(this).transition().attr('r', '30');
 
@@ -56,7 +56,7 @@ class BarChart extends Component {
 				// div.transition().duration(50).style('opacity', '0');
 			});
 		node.attr('onclick', function(d) {
-			var link = "window.top.location.href='" + '/' + d.name + "'";
+			var link = "window.top.location.href='" + '/' + d._id + "'";
 			return link;
 		});
 
@@ -79,14 +79,14 @@ class BarChart extends Component {
 			});
 
 		texts.attr('onclick', function(d) {
-			var link = "window.top.location.href='" + '/' + d.name + "'";
+			var link = "window.top.location.href='" + '/' + d._id + "'";
 			return link;
 		});
 		node.append('title').text((d) => d.name).attr('opacity', '1');
 		simulation.on('tick', tickActions);
 		function tickActions() {
-			texts.attr('x', (d) => d.x);
-			texts.attr('y', (d) => d.y);
+			texts.attr('x', (d) => d.x - d.name.length * 4);
+			texts.attr('y', (d) => d.y + 3);
 			node
 				.attr('cx', function(d) {
 					return d.x;
@@ -123,7 +123,6 @@ class BarChart extends Component {
 		drag_handler(texts);
 		// const svg = d3.select('body').append('svg').attr('width', 700).attr('height', 300);
 	}
-
 	componentDidMount() {
 		fetch('http://localhost:4000/users?batch=2017&college=IIT PATNA')
 			.then((response) => response.json())
@@ -133,6 +132,17 @@ class BarChart extends Component {
 		// console.log(data);
 		// this.drawChart();
 	}
+	// defs
+	// 		.append('pattern')
+	// 		.attr('id', 'photo')
+	// 		.attr('height', '100%')
+	// 		.attr('width', '100%')
+	// 		.attr('patterContentUnits', 'objectBoundingBox')
+	// 		.append('image')
+	// 		.attr('height', 1)
+	// 		.attr('width', 1)
+	// 		.attr('preserveAspectRatio', 'none')
+	// 		.attr('xlink:href', '../media/photos/teja.jpg');
 
 	render() {
 		return (
