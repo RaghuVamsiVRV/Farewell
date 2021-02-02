@@ -26,11 +26,14 @@ class ProfilePage extends Component {
     super(props);
     this.state={
       comments:[],
-      user:{}
+      user:{},
+      url:{}
     }
   }
 
-  
+  componentWillMount() {
+    import('../media/photos/teja.jpg').then(image => {this.setState({url: image})})
+  }
   componentDidMount() {
     console.log(this.props.id);
 		fetch(`http://localhost:4000/users/${this.props.id}`)
@@ -55,7 +58,7 @@ class ProfilePage extends Component {
     return(
     <div className="container">
       <div className="container-banner">
-        <img src={pic} alt="Avatar" height="170" width="170"></img>
+        <img src={'/photos/anushree.jpg'} alt="Avatar" height="170" width="170"></img>
         <h2> {this.state.user.name} </h2>
         <Row>
           {dispComment}
