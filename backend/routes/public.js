@@ -94,7 +94,6 @@ router.get('/logout', (req, res) => {
   }
 );
 
-
 // get a list of users from the db
 router.get('/users', function(req, res){
   let batch =req.query.batch;
