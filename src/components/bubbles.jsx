@@ -145,6 +145,28 @@ class BarChart extends Component {
 		}
 		drag_handler(node);
 		drag_handler(texts);
+
+		d3.select('#branchwise').on('click', function() {
+			simulation
+				.force(
+					'X',
+					d3.forceX(function(d) {
+						return forcedictX[d.branch];
+					})
+				)
+				.force(
+					'Y',
+					d3.forceY(function(d) {
+						return forcedictY[d.branch];
+					})
+				)
+				.alphaTarget(0.3)
+				.restart();
+		});
+
+		d3.select('#normal').on('click', function() {
+			simulation.force('X', d3.forceX(width / 2)).force('Y', d3.forceY(height / 2)).alphaTarget(0.3).restart();
+		});
 		// const svg = d3.select('body').append('svg').attr('width', 700).attr('height', 300);
 	}
 	componentDidMount() {
@@ -160,6 +182,9 @@ class BarChart extends Component {
 	render() {
 		return (
 			<div class={'patterner'}>
+				<button id={'branchwise'}>Branchwise</button>
+				<button id={'normal'}>Normal</button>
+
 				<svg
 					ref={this.myRef}
 					style={{ width: window.innerWidth, height: window.innerHeight, background: 'black' }}
