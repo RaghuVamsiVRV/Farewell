@@ -1,8 +1,8 @@
-import React, { Component, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
-import photo from '../media/photos/anushree.jpg';
+import React, { Component } from 'react';
+import { Button, ButtonGroup } from "reactstrap";
 import * as d3 from 'd3';
+
+
 
 class BarChart extends Component {
 	constructor(props) {
@@ -182,8 +182,11 @@ class BarChart extends Component {
 	render() {
 		return (
 			<div class={'patterner'}>
-				<button id={'branchwise'}>Branchwise</button>
-				<button id={'normal'}>Normal</button>
+				<div className="buttons">
+					<Button id={'branchwise'} className="button">Branchwise</Button>
+					<Button id={'normal'} className="button">Normal</Button>
+				</div>
+				
 
 				<svg
 					ref={this.myRef}

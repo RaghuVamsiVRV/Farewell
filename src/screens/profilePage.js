@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Control, LocalForm } from 'react-redux-form';
 import {Button, Row, Col, Card, CardTitle, CardText} from 'reactstrap';
-import pic from '../media/photos/teja.jpg';
+
 
 
 function RenderComment({comment}){
   return(
-      <Card key={comment.id}> 
+      <Card key={comment._id}> 
         <CardTitle tag="h5">{comment.from}</CardTitle>
         <CardText>{comment.comment}</CardText>
         <CardText className="ml-auto mr-3">
@@ -14,7 +14,7 @@ function RenderComment({comment}){
               day:'2-digit',
               month:'short',
               year:'numeric'
-          }).format(new Date(comment.date))}
+          }).format(new Date(comment.time))}
         </CardText>
       </Card>
   );
@@ -31,19 +31,22 @@ class ProfilePage extends Component {
     }
   }
 
-  componentWillMount() {
-    import('../media/photos/teja.jpg').then(image => {this.setState({url: image})})
-  }
+
   componentDidMount() {
     console.log(this.props.id);
 		fetch(`http://localhost:4000/users/${this.props.id}`)
 			.then((response) => response.json())
       .then((data) => this.setState({user:data}))
+
+    fetch(`http://localhost:4000/get_comments?to=${this.props.id}`)
+			.then((response) => response.json())
+      .then((data) => this.setState({comments:data.comments}))
+      
         
 	}
-
   render(){
-    const dispComment = this.props.comments.map((comment)=>{
+    console.log(this.state.comments)
+    const dispComment = this.state.comments.map((comment)=>{
       return(
         <Col md={6}>
           <RenderComment comment={comment}/>
@@ -53,7 +56,7 @@ class ProfilePage extends Component {
     function handleSubmit(values){
       console.log('Current State is: ' + JSON.stringify(values));
         alert('Current State is: ' + JSON.stringify(values));
-        this.props.addComment('nani', 'teja', values.comment);
+        this.setState('nani', 'teja', values.comment);
     }
     return(
     <div className="container">
