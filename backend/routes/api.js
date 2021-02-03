@@ -32,13 +32,6 @@ router.get('/my_comments/:id', function(req, res){
     }).catch(err=>res.status(400).json({'error': err.message}));
 });
 
-// get a list of comments of user from the db
-router.get('/get_comments', function(req, res){
-    let to = req.query.to;
-    Comments.find({'to': to}).then(function(comments){
-       res.send({comments});
-    }).catch(err=>res.status(400).json({'error': err.message}));
-});
 
 
 // add a new comments to the db

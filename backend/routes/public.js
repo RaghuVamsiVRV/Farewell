@@ -3,6 +3,7 @@ const router = Router();
 
 const User = require("../models/users.js");
 const jwt = require('jsonwebtoken');
+const Comments = require('../models/comments.js');
 
 // handle errors
 const handleErrors = (err) => {
@@ -63,6 +64,14 @@ router.post('/signup', async (req, res) => {
     }
   }
 );
+
+// get a list of comments of user from the db
+router.get('/get_comments', function(req, res){
+  let to = req.query.to;
+  Comments.find({'to': to}).then(function(comments){
+     res.send({comments});
+  }).catch(err=>res.status(400).json({'error': err.message}));
+});
 
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
