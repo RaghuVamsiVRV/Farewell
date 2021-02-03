@@ -11,21 +11,40 @@ class BarChart extends Component {
 	}
 
 	drawChart(bigga) {
-		console.log(bigga);
+		const height = window.innerHeight;
+		const width = window.innerWidth;
+		var forcedictX = { CE: width / 2, CS: width / 2, ME: width / 4, CB: width / 1.33, EE: width / 4.5 };
+		var forcedictY = { CE: height / 4, CS: height / 1.33, ME: height / 2, CB: height / 2, EE: height / 2.5 };
+		var colordict = { CE: '#c5aa84', CS: '#3adcc6', ME: '#914529', CB: '#f26d7d', EE: '#d0343a' };
+
+		console.log(forcedictX);
 
 		const svg = d3.select(this.myRef.current);
 		var simulation = d3.forceSimulation().nodes(bigga);
 		simulation
-			.force('charge_force', d3.forceManyBody().strength(1000))
-			.force('center_force', d3.forceCenter(window.innerWidth / 2, window.innerHeight / 2))
-			.force('collide', d3.forceCollide(30))
-			.force('x', d3.forceX(window.innerWidth / 3))
-			.force('x', d3.forceX(window.innerWidth / 1.5));
-
+			.force('charge_force', d3.forceManyBody().strength(600))
+			.force(
+				'X',
+				d3.forceX(function(d) {
+					return forcedictX[d.branch];
+				})
+			)
+			.force(
+				'Y',
+				d3.forceY(function(d) {
+					return forcedictY[d.branch];
+				})
+			)
+			.force(
+				'collide',
+				d3.forceCollide(function(d) {
+					return d.size + 7;
+				})
+			);
 		// var defs = svg.append('defs');
 		// defs
 		// 	.append('pattern')
-		// 	.attr('id', 'photo')
+		// 	.attr('id', 'picture')
 		// 	.attr('height', '100%')
 		// 	.attr('width', '100%')
 		// 	.attr('patterContentUnits', 'objectBoundingBox')
@@ -33,7 +52,14 @@ class BarChart extends Component {
 		// 	.attr('height', 1)
 		// 	.attr('width', 1)
 		// 	.attr('preserveAspectRatio', 'none')
-		// 	.attr('xlink:href', '../media/photos/teja.jpg');
+		// 	.attr('xmlns', 'http://www.w3.org/2000/svg')
+		// 	.attr('src', photo);
+		var zoom_handler = d3.zoom().on('zoom', zoom_actions);
+		zoom_handler(svg);
+		function zoom_actions(event) {
+			node.attr('transform', event.transform);
+			texts.attr('transform', event.transform);
+		}
 
 		var node = svg
 			.append('g')
@@ -42,16 +68,16 @@ class BarChart extends Component {
 			.data(bigga)
 			.enter()
 			.append('circle')
-			.attr('r', 20)
-			.attr('fill', 'url(#photo)')
-			.attr('stroke', 'yellow')
+			.attr('r', (d) => d.size)
+			.attr('fill', (d) => colordict[d.branch])
+			.attr('stroke', 'white')
 			.on('mouseover', function(d, i) {
-				d3.select(this).transition().attr('r', '30');
+				d3.select(this).transition().attr('r', (d) => d.size + 5);
 
 				// div.transition().duration(50).style('opacity', '1');
 			})
 			.on('mouseout', function(d, i) {
-				d3.select(this).transition().attr('r', '20');
+				d3.select(this).transition().attr('r', (d) => d.size);
 
 				// div.transition().duration(50).style('opacity', '0');
 			});
@@ -59,7 +85,12 @@ class BarChart extends Component {
 			var link = "window.top.location.href='" + '/' + d._id + "'";
 			return link;
 		});
-
+		// var i;
+		// for (i = 0; i < bigga.length; i++) {
+		// 	if (bigga[i].brach == 'CE') {
+		// 		node.data(bigga[i]);
+		// 	}
+		// }
 		var texts = svg
 			.append('g')
 			.selectAll('text')
@@ -96,13 +127,6 @@ class BarChart extends Component {
 				});
 		}
 
-		var zoom_handler = d3.zoom().on('zoom', zoom_actions);
-		zoom_handler(svg);
-		function zoom_actions(event) {
-			node.attr('transform', event.transform);
-			texts.attr('transform', event.transform);
-		}
-
 		var drag_handler = d3.drag().on('start', drag_start).on('drag', drag_drag).on('end', drag_end);
 		function drag_start(event) {
 			if (!event.active) simulation.alphaTarget(0.3).restart();
@@ -132,21 +156,10 @@ class BarChart extends Component {
 		// console.log(data);
 		// this.drawChart();
 	}
-	// defs
-	// 		.append('pattern')
-	// 		.attr('id', 'photo')
-	// 		.attr('height', '100%')
-	// 		.attr('width', '100%')
-	// 		.attr('patterContentUnits', 'objectBoundingBox')
-	// 		.append('image')
-	// 		.attr('height', 1)
-	// 		.attr('width', 1)
-	// 		.attr('preserveAspectRatio', 'none')
-	// 		.attr('xlink:href', '../media/photos/teja.jpg');
 
 	render() {
 		return (
-			<div>
+			<div class={'patterner'}>
 				<svg
 					ref={this.myRef}
 					style={{ width: window.innerWidth, height: window.innerHeight, background: 'black' }}
