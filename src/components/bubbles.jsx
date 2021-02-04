@@ -1,16 +1,38 @@
+import isMobile from 'ismobilejs';
+import { Button, ButtonGroup } from 'reactstrap';
 import React, { Component, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-import photo from '../media/photos/anushree.jpg';
 import * as d3 from 'd3';
+import axios from 'axios';
+import photo from '../media/photos/teja.jpg';
 
 class BarChart extends Component {
 	constructor(props) {
 		super(props);
 		this.myRef = React.createRef();
 	}
-
+	// definer() {
+	// 	const svg = d3.select(this.myRef.current);
+	// 	var defs = svg.append('defs');
+	// 	defs
+	// 		// .selectAll('pattern')
+	// 		// .data(bigga)
+	// 		// .enter()
+	// 		.append('pattern')
+	// 		.attr('id', 'picture')
+	// 		.attr('height', '100%')
+	// 		.attr('width', '100%')
+	// 		.attr('patterContentUnits', 'objectBoundingBox')
+	// 		.append('image')
+	// 		.attr('height', 1)
+	// 		.attr('width', 1)
+	// 		.attr('preserveAspectRatio', 'none')
+	// 		.attr('xmlns', 'http://www.w3.org/2000/svg')
+	// 		.attr('xmlns:href', require('../media/photos/anushree.jpg'));
+	// }
 	drawChart(bigga) {
+		console.log(process.env.REACT_APP_GA);
+
 		const height = window.innerHeight;
 		const width = window.innerWidth;
 		var forcedictX = { CE: width / 2, CS: width / 2, ME: width / 4, CB: width / 1.33, EE: width / 4.5 };
@@ -23,37 +45,15 @@ class BarChart extends Component {
 		var simulation = d3.forceSimulation().nodes(bigga);
 		simulation
 			.force('charge_force', d3.forceManyBody().strength(600))
-			.force(
-				'X',
-				d3.forceX(function(d) {
-					return forcedictX[d.branch];
-				})
-			)
-			.force(
-				'Y',
-				d3.forceY(function(d) {
-					return forcedictY[d.branch];
-				})
-			)
+			.force('X', d3.forceX(width / 2))
+			.force('Y', d3.forceY(height / 2))
 			.force(
 				'collide',
 				d3.forceCollide(function(d) {
 					return d.size + 7;
 				})
 			);
-		// var defs = svg.append('defs');
-		// defs
-		// 	.append('pattern')
-		// 	.attr('id', 'picture')
-		// 	.attr('height', '100%')
-		// 	.attr('width', '100%')
-		// 	.attr('patterContentUnits', 'objectBoundingBox')
-		// 	.append('image')
-		// 	.attr('height', 1)
-		// 	.attr('width', 1)
-		// 	.attr('preserveAspectRatio', 'none')
-		// 	.attr('xmlns', 'http://www.w3.org/2000/svg')
-		// 	.attr('src', photo);
+
 		var zoom_handler = d3.zoom().on('zoom', zoom_actions);
 		zoom_handler(svg);
 		function zoom_actions(event) {
@@ -99,9 +99,15 @@ class BarChart extends Component {
 			.append('text')
 			.text((d) => d.name)
 			.style('fill', 'white')
-			.attr('opacity', '0')
+			.attr('opacity', function() {
+				if (isMobile(window.navigator).phone || isMobile(window.navigator).tablet) {
+					return 1;
+				} else {
+					return 0;
+				}
+			})
 			.on('mouseover', function(d, i) {
-				d3.select(this).transition().duration('50').attr('opacity', '1');
+				d3.select(this).transition().duration('10').attr('opacity', '1');
 				// div.transition().duration(50).style('opacity', '1');
 			})
 			.on('mouseout', function(d, i) {
@@ -160,16 +166,18 @@ class BarChart extends Component {
 						return forcedictY[d.branch];
 					})
 				)
-				.alphaTarget(0.3)
+				.alphaTarget(0.1)
 				.restart();
 		});
-
-		d3.select('#normal').on('click', function() {
-			simulation.force('X', d3.forceX(width / 2)).force('Y', d3.forceY(height / 2)).alphaTarget(0.3).restart();
+		d3.select('#normal').on('click', function(d) {
+			simulation.force('X', d3.forceX(width / 2)).force('Y', d3.forceY(height / 2)).alphaTarget(0.1).restart();
 		});
+
 		// const svg = d3.select('body').append('svg').attr('width', 700).attr('height', 300);
 	}
 	componentDidMount() {
+		// this.definer();
+
 		fetch('http://localhost:4000/users?batch=2017&college=IIT PATNA')
 			.then((response) => response.json())
 			.then((seniors) => this.drawChart(seniors.users));
@@ -182,8 +190,14 @@ class BarChart extends Component {
 	render() {
 		return (
 			<div class={'patterner'}>
-				<button id={'branchwise'}>Branchwise</button>
-				<button id={'normal'}>Normal</button>
+				<div style={{ background: 'black', 'text-align': 'center' }}>
+					<Button id={'branchwise'} style={{ margin: '8px' }}>
+						Branchwise
+					</Button>
+					<Button id={'normal'} style={{ margin: '8px' }}>
+						Normal
+					</Button>
+				</div>
 
 				<svg
 					ref={this.myRef}
