@@ -15,6 +15,9 @@ const comSchema = new Schema({
         type: String,
         requied: true
     },
+    senderName:{
+        type: String,
+    },
     time:{
         type: Date
     }

@@ -6,6 +6,8 @@ import * as d3 from 'd3';
 import axios from 'axios';
 import photo from '../media/photos/teja.jpg';
 
+
+
 class BarChart extends Component {
 	constructor(props) {
 		super(props);

@@ -15,7 +15,13 @@
 img {
   border-radius: 50%;
 }
-
+.buttons{
+  background-color: black;
+  text-align: center;
+}
+.button{
+  padding-right: 1cm;
+}
 .row {
   margin: 1em;
 }
