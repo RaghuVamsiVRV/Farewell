@@ -39,7 +39,7 @@ class Signup extends Component{
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({name:values.name, email:values.email, password:values.password, branch:values.branch, batch:values.batch, college:"IIT PATNA", imageURL:values.imageURL})
+            body: JSON.stringify({name:values.name, email:values.email, password:values.password, branch:values.branch, batch:values.batch, college:"IIT PATNA", imageURL:values.imageURL, size:30})
         };
         fetch('http://localhost:4000/signup', requestOptions)
             .then(response => response.json())

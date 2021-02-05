@@ -42,7 +42,7 @@ class ProfilePage extends Component {
 
     fetch(`http://localhost:4000/get_comments?to=${this.props.id}`)
 			.then((response) => response.json())
-      .then((data) => this.setState({comments:data.comments}))
+      .then((data) => {console.log(data);this.setState({comments:data.comments})})
       
         
   }
@@ -52,12 +52,13 @@ class ProfilePage extends Component {
 
       const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ to: this.state.user.id, senderName:"rachu", comment:values.comment })
+        headers: { 'Content-Type': 'application/json'},
+        credentials:"include",
+        body: JSON.stringify({ to: this.state.user._id, senderName:"rachu", comment:values.comment })
         };
       fetch('http://localhost:4000/api/add_comment', requestOptions)
         .then(response => response.json())
-        .then(data => this.setState({comments: [...this.state.comments, data]}));
+        .then(data => {console.log(data);this.setState({comments: [...this.state.comments, data]})});
   }
   
 
