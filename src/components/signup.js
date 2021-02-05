@@ -35,7 +35,7 @@ class Signup extends Component{
     handleSubmit(values) {
         console.log('Current State is: ' + JSON.stringify(values));
         alert('Current State is: ' + JSON.stringify(values));
-        if(values.password===values.re_password){
+        
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -45,10 +45,8 @@ class Signup extends Component{
             .then(response => response.json())
             .then(data => this.setState({user: data}));
             alert(this.state.user.message)    
-        }
-        else{
-            alert('The passwords doesnt match');
-        }
+
+      
     }
 
     render(){
