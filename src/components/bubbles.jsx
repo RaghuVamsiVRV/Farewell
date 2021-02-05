@@ -6,8 +6,6 @@ import * as d3 from 'd3';
 import axios from 'axios';
 import photo from '../media/photos/teja.jpg';
 
-
-
 class BarChart extends Component {
 	constructor(props) {
 		super(props);
@@ -37,16 +35,16 @@ class BarChart extends Component {
 
 		const height = window.innerHeight;
 		const width = window.innerWidth;
-		var forcedictX = { CE: width / 2, CS: width / 2, ME: width / 4, CB: width / 1.33, EE: width / 4.5 };
-		var forcedictY = { CE: height / 4, CS: height / 1.33, ME: height / 2, CB: height / 2, EE: height / 2.5 };
-		var colordict = { CE: '#c5aa84', CS: '#3adcc6', ME: '#914529', CB: '#f26d7d', EE: '#d0343a' };
+		var forcedictX = { CE: width / 2, CS: width / 2, ME: width / 6, CB: width / 1.3, EE: width / 4.5 };
+		var forcedictY = { CE: height / 6, CS: height / 1.7, ME: height / 1.5, CB: height / 2, EE: height / 2.5 };
+		var colordict = { CE: '#c5aa84', CS: '#194b4f', ME: '#914529', CB: '#f26d7d', EE: '#d0343a' };
 
-		console.log(forcedictX);
+		console.log(height);
 
 		const svg = d3.select(this.myRef.current);
 		var simulation = d3.forceSimulation().nodes(bigga);
 		simulation
-			.force('charge_force', d3.forceManyBody().strength(600))
+			.force('charge_force', d3.forceManyBody().strength(200))
 			.force('X', d3.forceX(width / 2))
 			.force('Y', d3.forceY(height / 2))
 			.force(
@@ -158,21 +156,25 @@ class BarChart extends Component {
 			simulation
 				.force(
 					'X',
-					d3.forceX(function(d) {
-						return forcedictX[d.branch];
-					})
+					d3
+						.forceX(function(d) {
+							return forcedictX[d.branch];
+						})
+						.strength(0.5)
 				)
 				.force(
 					'Y',
-					d3.forceY(function(d) {
-						return forcedictY[d.branch];
-					})
+					d3
+						.forceY(function(d) {
+							return forcedictY[d.branch];
+						})
+						.strength(0.5)
 				)
-				.alphaTarget(0.1)
+				.alphaTarget(0.5)
 				.restart();
 		});
 		d3.select('#normal').on('click', function(d) {
-			simulation.force('X', d3.forceX(width / 2)).force('Y', d3.forceY(height / 2)).alphaTarget(0.1).restart();
+			simulation.force('X', d3.forceX(width / 2)).force('Y', d3.forceY(height / 2)).alphaTarget(0.3).restart();
 		});
 
 		// const svg = d3.select('body').append('svg').attr('width', 700).attr('height', 300);
@@ -188,7 +190,7 @@ class BarChart extends Component {
 		// console.log(data);
 		// this.drawChart();
 	}
-
+	svgHeight = window.innerHeight - 100;
 	render() {
 		return (
 			<div class={'patterner'}>
@@ -203,7 +205,7 @@ class BarChart extends Component {
 
 				<svg
 					ref={this.myRef}
-					style={{ width: window.innerWidth, height: window.innerHeight, background: 'black' }}
+					style={{ width: window.innerWidth, height: this.svgHeight, background: 'black' }}
 				/>
 			</div>
 		);
