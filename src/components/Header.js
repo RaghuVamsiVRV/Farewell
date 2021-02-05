@@ -37,7 +37,8 @@ class Header extends Component {
 
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'Accept':'application/json'},
+            credentials:'include',
             body: JSON.stringify({email:this.username.value, password:this.password.value})
         };
         fetch('http://localhost:4000/login', requestOptions)
