@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Cookies from 'js-cookie'
 import { Nav, Navbar, NavbarToggler, Collapse, NavItem, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input, Button} from 'reactstrap';
 import { NavLink } from 'react-router-dom';
 
@@ -10,7 +11,8 @@ class Header extends Component {
         
         this.state={
             isNavOpen: false,
-            isModalOpen: false,  
+            isModalOpen: false,
+            user:{}  
         };
         this.toggleNav = this.toggleNav.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
@@ -31,9 +33,22 @@ class Header extends Component {
     }
     handleLogin(event){
         this.toggleModal();
+        var jwt;
         alert("Username: " + this.username.value + " Password: " + this.password.value
                 + " Remember: " + this.remember.checked);
+
+        const requestOptions = {
+            method: 'POST',
+            headers: { "Content-Type": "application/json", "Accept":"application/json"},
+            credentials:'include',
+            body: JSON.stringify({email:this.username.value, password:this.password.value})
+        };
+        fetch('http://localhost:4000/login', requestOptions)
+            .then(response => response.json())
+            .then(data => this.setState({user: data}));
+        console.log(Cookies.get('access_token'));
         event.preventDefault();
+
     }
     render(){
         return(
@@ -47,7 +62,8 @@ class Header extends Component {
                                         <NavLink className="nav-link" to='/'><span className="fa fa-home fa-lg"> Home</span></NavLink>
                                     </NavItem>
                                     <NavItem>
-                                        <NavLink className="nav-link" to='/profilePage'>Profile</NavLink>
+                                        <NavLink className="nav-link" to={`/${this.state.user.user}`}>Profile</NavLink>
+                                        
                                     </NavItem>
                                     <NavItem>
                                         <NavLink className="nav-link" to='/signup'>

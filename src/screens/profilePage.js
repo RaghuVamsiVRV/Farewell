@@ -1,71 +1,84 @@
 import React, { Component } from 'react';
 import { Control, LocalForm } from 'react-redux-form';
-import { Button, Row, Col, Card, CardTitle, CardText } from 'reactstrap';
-import pic from '../media/photos/teja.jpg';
-import REACTGA from 'react-ga';
+import {Button, Row, Col, Card, CardTitle, CardText, CardBody} from 'reactstrap';
 
-function RenderComment({ comment }) {
-	return (
-		<Card key={comment.id}>
-			<CardTitle tag="h5">{comment.from}</CardTitle>
-			<CardText>{comment.comment}</CardText>
-			<CardText className="ml-auto mr-3">
-				--{' '}
-				{new Intl.DateTimeFormat('en-US', {
-					day: '2-digit',
-					month: 'short',
-					year: 'numeric'
-				}).format(new Date(comment.date))}
-			</CardText>
-		</Card>
-	);
+
+
+function RenderComment({comment}){
+  return(
+      <Card key={comment._id}> 
+        <CardTitle tag="h5">{comment.senderName}</CardTitle>
+        <CardBody>
+          <CardText>{comment.comment}</CardText>
+          <CardText className="ml-auto mr-3">
+            -- {new Intl.DateTimeFormat('en-US',{
+                day:'2-digit',
+                month:'short',
+                year:'numeric'
+            }).format(new Date(comment.time))}
+          </CardText>
+        </CardBody>
+      </Card>
+  );
 }
-class ProfilePage extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			comments: [],
-			user: {},
-			url: {}
-		};
-	}
 
-	componentWillMount() {
-		import('../media/photos/teja.jpg').then((image) => {
-			this.setState({ url: image });
-		});
-	}
+class ProfilePage extends Component {
+
+  constructor(props)
+  {
+    super(props);
+    this.state={
+      comments:[],
+      user:{},
+      url:{}
+    }
+    this.handleSubmit=this.handleSubmit.bind(this);
+  }
 	componentDidMount() {
 		console.log(this.props.id);
 		fetch(`http://localhost:4000/users/${this.props.id}`)
 			.then((response) => response.json())
-			.then((data) => this.setState({ user: data }));
+			.then((data) => this.setState({user: data}));
 
-		REACTGA.pageview('/' + JSON.stringify(this.state.user));
-	}
+    fetch(`http://localhost:4000/get_comments?to=${this.props.id}`)
+			.then((response) => response.json())
+      .then((data) => {console.log(data);this.setState({comments:data.comments})})
+      
+        
+  }
+  handleSubmit(values){
+    console.log('Current State is: ' + JSON.stringify(values));
+      alert('Current State is: ' + JSON.stringify(values));
+
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json'},
+        credentials:"include",
+        body: JSON.stringify({ to: this.state.user._id, senderName:"rachu", comment:values.comment })
+        };
+      fetch('http://localhost:4000/api/add_comment', requestOptions)
+        .then(response => response.json())
+        .then(data => {console.log(data);this.setState({comments: [...this.state.comments, data]})});
+  }
+  
 
 	render() {
-		const dispComment = this.props.comments.map((comment) => {
+		const dispComment = this.state.comments.map((comment) => {
 			return (
 				<Col md={6}>
 					<RenderComment comment={comment} />
 				</Col>
 			);
 		});
-		function handleSubmit(values) {
-			console.log('Current State is: ' + JSON.stringify(values));
-			alert('Current State is: ' + JSON.stringify(values));
-			this.props.addComment('nani', 'teja', values.comment);
-		}
 		return (
 			<div className="container">
 				<div className="container-banner">
-					<img src={'/photos/anushree.jpg'} alt="Avatar" height="170" width="170" />
+					<img src={this.state.user.imageURL} alt="Avatar" height="170" width="170" />
 					<h2> {this.state.user.name} </h2>
 					<Row>{dispComment}</Row>
 				</div>
 				<div className="container-banner">
-					<LocalForm onSubmit={(values) => handleSubmit(values)}>
+					<LocalForm onSubmit={this.handleSubmit}>
 						<Row className="form-group">
 							<Col md={12}>
 								<Control.textarea
@@ -83,7 +96,8 @@ class ProfilePage extends Component {
 					</LocalForm>
 				</div>
 			</div>
-		);
+    );
+    // REACTGA.pageview('/' + JSON.stringify(this.state.user));
 	}
 }
 export default ProfilePage;
