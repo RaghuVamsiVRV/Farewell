@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Cookies from 'js-cookie'
 import { Nav, Navbar, NavbarToggler, Collapse, NavItem, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input, Button} from 'reactstrap';
 import { NavLink } from 'react-router-dom';
+var store=require('store');
 
 class Header extends Component {
 
@@ -12,7 +12,8 @@ class Header extends Component {
         this.state={
             isNavOpen: false,
             isModalOpen: false,
-            user:{}  
+            user:{},
+            loginStatus:{}
         };
         this.toggleNav = this.toggleNav.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
@@ -33,9 +34,8 @@ class Header extends Component {
     }
     handleLogin(event){
         this.toggleModal();
-        var jwt;
-        alert("Username: " + this.username.value + " Password: " + this.password.value
-                + " Remember: " + this.remember.checked);
+    
+        alert("Username: " + this.username.value + " Password: " + this.password.value);
 
         const requestOptions = {
             method: 'POST',
@@ -45,10 +45,16 @@ class Header extends Component {
         };
         fetch('http://localhost:4000/login', requestOptions)
             .then(response => response.json())
-            .then(data => this.setState({user: data}));
-        console.log(Cookies.get('access_token'));
-        event.preventDefault();
+            .then(data => {this.setState({loginStatus: data}); console.log(this.state.loginStatus);
+            fetch(`http://localhost:4000/users/${this.state.loginStatus.user}`)
+            .then(response => response.json())
+            .then(data=>{this.setState({user: data});console.log(this.state.user);store.set('userName',{userName:this.state.user.name})})
+        });
+        
+        // console.log(this.state.loginStatus);
 
+        event.preventDefault();
+        
     }
     render(){
         return(
@@ -94,13 +100,13 @@ class Header extends Component {
                                 <Label htmlFor="password">Password</Label>
                                 <Input type="password" id="password" name="password" innerRef={(input)=>this.password=input}/>
                             </FormGroup>
-                            <FormGroup check>
+                            {/* <FormGroup check>
                                 <Label check>
                                 <Input type="checkbox" name="remember"
                                         innerRef={(input) => this.remember = input}  />
                                         Remember me
                                 </Label>
-                            </FormGroup>
+                            </FormGroup> */}
                         <Button type="submit" value="submit" color="primary">Login</Button>
                     </Form>
                 </ModalBody>
