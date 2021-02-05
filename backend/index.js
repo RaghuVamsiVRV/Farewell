@@ -11,7 +11,7 @@ var cors = require('cors');
 
 const requireAuth = (req, res, next) => {
 	try {
-		console.log(req.cookies);
+		console.log("hello",JSON.stringify(req.cookies));
 		const token = req.cookies.jwt;
 		// check json web token exists & is verified
 		if (token) {
@@ -42,7 +42,18 @@ mongoose.Promise = global.Promise;
 
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({
+	origin : 'http://localhost:3000' ,
+	credentials: true,
+  })
+);  
+
+// app.use(function(req, res, next) {  
+// 	res.header('Access-Control-Allow-Origin', req.headers.origin);
+// 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+// 	next();
+// });  
+
 app.use('/api', requireAuth, apiRoutes);
 app.use(publicRoutes);
 

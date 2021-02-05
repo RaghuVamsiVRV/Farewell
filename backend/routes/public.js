@@ -45,7 +45,7 @@ const createToken = (id) => {
 };
 
 router.post('/signup', async (req, res) => {
-    const { name, email, password,branch,batch,college, imageURL } = req.body;
+    const { name, email, password,branch,batch,college, imageURL,size } = req.body;
     try{
       const user1 = await User.find({email});
       console.log(user1);
@@ -53,9 +53,9 @@ router.post('/signup', async (req, res) => {
         res.status(400).json({"error": "Email already exists"})
       }
       else{
-        const user = await User.create({name, email, password,branch,batch,college,imageURL}); 
+        const user = await User.create({name, email, password,branch,batch,college,imageURL,size}); 
         const token = createToken(user._id);
-        res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
+        res.cookie('jwt', token, { httpOnly: false, maxAge: maxAge * 1000 });
         res.status(201).json({ user: user._id,'message': 'Signed up and logged in'});
       }
     } catch(err) {
@@ -78,7 +78,7 @@ router.post('/login', async (req, res) => {
     try {
       const user = await User.login(email, password);
       const token = createToken(user._id);
-      res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
+      res.cookie('jwt', token, { httpOnly: false, maxAge: maxAge * 1000 });
       res.status(200).json({ user: user._id, 'message': 'logged in' });
     } 
     catch (err) {

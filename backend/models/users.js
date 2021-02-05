@@ -32,6 +32,10 @@ const UsersSchema = new Schema({
     imageURL:
     {
         type:String
+    },
+    size:
+    {
+      type: Number
     }
 });
 
