@@ -16,9 +16,7 @@ class Main extends Component {
 
 	render() {
 		const Profile = ({ match }) => {
-			console.log('HI');
 			return (
-				// <ProfilePage />
 				<ProfilePage id={match.params.Id} />
 			);
 		};

@@ -1,25 +1,29 @@
 import React, { Component } from 'react';
 import { Nav, Navbar, NavbarToggler, Collapse, NavItem, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input, Button} from 'reactstrap';
 import { NavLink } from 'react-router-dom';
+import Cookies from 'js-cookie';
 var store=require('store');
+
 
 class Header extends Component {
 
     constructor(props)    
     {
         super(props);
-        
+        var isLoggedIn=store.get('loginStatus');
         this.state={
             isNavOpen: false,
             isModalOpen: false,
             user:{},
-            loginStatus:{}
+            loginStatus:isLoggedIn?isLoggedIn.loginStatus:{user:"", message:"logged out"}
         };
         this.toggleNav = this.toggleNav.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
+        this.handleLogout = this.handleLogout.bind(this);
     }
     
+
     toggleNav(){
         this.setState({
             isNavOpen: !this.state.isNavOpen
@@ -45,18 +49,57 @@ class Header extends Component {
         };
         fetch('http://localhost:4000/login', requestOptions)
             .then(response => response.json())
-            .then(data => {this.setState({loginStatus: data}); console.log(this.state.loginStatus);
+            .then(data => {this.setState({loginStatus: data}); console.log(this.state.loginStatus);store.set('loginStatus', {loginStatus:data});
             fetch(`http://localhost:4000/users/${this.state.loginStatus.user}`)
             .then(response => response.json())
-            .then(data=>{this.setState({user: data});console.log(this.state.user);store.set('userName',{userName:this.state.user.name})})
+            .then(data=>{this.setState({user: data});console.log(this.state.user);store.set('userName',{userName:this.state.user.name});store.set('userID', {userID:this.state.loginStatus.user})})
         });
-        
-        // console.log(this.state.loginStatus);
 
         event.preventDefault();
         
     }
+    handleLogout(){
+        fetch('http://localhost:4000/logout')
+            .then(response => response.json())
+            .then(data => {alert(data.message);Cookies.remove('jwt'); this.setState({loginStatus:{}}); store.clearAll();})
+            
+    }
+
+
     render(){
+        function Profile({loginStatus}){
+            if(loginStatus.message==="logged in"){
+                var userID=store.get('userID');
+                return(
+                <NavLink className="nav-link" to={`/${userID?userID.userID:''}`}>Profile</NavLink>
+                )
+            }
+            else {
+                return(
+                    <div/>
+                )
+            }
+        }
+        function Auth({toggleModal, handleLogout, loginStatus}){
+        if(loginStatus.message==="logged in"){
+            return(
+                <div>
+                    <Button outline onClick={handleLogout}>
+                          <span className="fa fa-sign-in fa-lg"> Logout</span>
+                      </Button>
+                </div>  
+            );
+        }
+        else{
+            return(
+                  <div>
+                      <Button outline onClick={toggleModal}>
+                            <span className="fa fa-sign-in fa-lg"> Login</span>
+                        </Button>
+                  </div>  
+            );
+        }
+        }
         return(
             <React.Fragment>
                 <Navbar dark expand="md">
@@ -68,8 +111,7 @@ class Header extends Component {
                                         <NavLink className="nav-link" to='/'><span className="fa fa-home fa-lg"> Home</span></NavLink>
                                     </NavItem>
                                     <NavItem>
-                                        <NavLink className="nav-link" to={`/${this.state.user.user}`}>Profile</NavLink>
-                                        
+                                        <Profile loginStatus={this.state.loginStatus}/>
                                     </NavItem>
                                     <NavItem>
                                         <NavLink className="nav-link" to='/signup'>
@@ -80,9 +122,7 @@ class Header extends Component {
                             </Collapse>
                         <Nav className="ml-auto" navbar>
                         <NavItem>
-                            <Button outline onClick={this.toggleModal}>
-                                <span className="fa fa-sign-in fa-lg"> Login</span>
-                            </Button>
+                            <Auth toggleModal={this.toggleModal} handleLogout={this.handleLogout} loginStatus={this.state.loginStatus}/>
                         </NavItem>                                                
                         </Nav>
                     </div>
@@ -100,13 +140,6 @@ class Header extends Component {
                                 <Label htmlFor="password">Password</Label>
                                 <Input type="password" id="password" name="password" innerRef={(input)=>this.password=input}/>
                             </FormGroup>
-                            {/* <FormGroup check>
-                                <Label check>
-                                <Input type="checkbox" name="remember"
-                                        innerRef={(input) => this.remember = input}  />
-                                        Remember me
-                                </Label>
-                            </FormGroup> */}
                         <Button type="submit" value="submit" color="primary">Login</Button>
                     </Form>
                 </ModalBody>
