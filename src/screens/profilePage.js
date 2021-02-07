@@ -3,7 +3,7 @@ import { Control, LocalForm } from 'react-redux-form';
 import {Button, Row, Col, Card, CardTitle, CardText, CardBody} from 'reactstrap';
 
 
-
+var store=require('store');
 function RenderComment({comment}){
   return(
       <Card key={comment._id}> 
@@ -49,16 +49,23 @@ class ProfilePage extends Component {
   handleSubmit(values){
     console.log('Current State is: ' + JSON.stringify(values));
       alert('Current State is: ' + JSON.stringify(values));
-
-      const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json'},
-        credentials:"include",
-        body: JSON.stringify({ to: this.state.user._id, senderName:"rachu", comment:values.comment })
-        };
-      fetch('http://localhost:4000/api/add_comment', requestOptions)
-        .then(response => response.json())
-        .then(data => {console.log(data);this.setState({comments: [...this.state.comments, data]})});
+        var senderName=store.get('userName');  
+        console.log(senderName);
+      if(senderName!=null){
+        const requestOptions = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json'},
+          credentials:"include",
+          body: JSON.stringify({ to: this.state.user._id, senderName:senderName.userName, comment:values.comment })
+          };
+        fetch('http://localhost:4000/api/add_comment', requestOptions)
+          .then(response => response.json())
+          .then(data => {console.log(data);this.setState({comments: [...this.state.comments, data]})});
+      }
+      else{
+        alert('Please Login');
+      }
+        
   }
   
 
@@ -73,7 +80,7 @@ class ProfilePage extends Component {
 		return (
 			<div className="container">
 				<div className="container-banner">
-					<img src={this.state.user.imageURL} alt="Avatar" height="170" width="170" />
+					<img src={this.state.user.imageURL||'/photos/anushree.jpg'} alt="Avatar" height="170" width="170" />
 					<h2> {this.state.user.name} </h2>
 					<Row>{dispComment}</Row>
 				</div>
