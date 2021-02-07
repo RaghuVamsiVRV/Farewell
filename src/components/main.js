@@ -42,8 +42,8 @@ class Main extends Component {
 				<Switch>
 					<Route path="/bubbles" component={Bubbles} />
 					<Route path="/signup" component={Signup} />
-					<Route path="/:Id" component={Profile} />
 					<Route path="/about" component={About} />
+					<Route path="/:Id" component={Profile} />
 					<Redirect to="/bubbles" />
 				</Switch>
 				<Footer />
