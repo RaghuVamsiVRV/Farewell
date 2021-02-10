@@ -3,6 +3,7 @@ import {Button, Label, Col, Row} from "reactstrap";
 import { Control, LocalForm, Errors } from "react-redux-form";
 import { min } from "d3";
 
+var store=require('store')
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length<=len);
@@ -42,11 +43,16 @@ class Signup extends Component{
             body: JSON.stringify({name:values.name, email:values.email, password:values.password, branch:values.branch, batch:values.batch, college:"IIT PATNA", imageURL:values.imageURL, size:30})
         };
         fetch('http://localhost:4000/signup', requestOptions)
-            .then(response => response.json())
-            .then(data => this.setState({user: data}));
-            alert(this.state.user.message)    
+            .then(response => {if(!response.ok){throw response} response.json()})
+            .then(data => {this.setState({user: data});alert("Login to view your account")})
+            .catch(err =>{
+                err.text().then(errMsg=>
+                    {
+                        var error=JSON.parse(errMsg);
+                        alert(error.error)
+                    })
+            })
 
-      
     }
 
     render(){
@@ -142,44 +148,45 @@ class Signup extends Component{
                             <Row className="form-group">
                                 <Label htmlFor="branch" md={3}>Branch</Label>
                                 <Col md={9}>
-                                    <Control.text model=".branch" id="branch" name="branch"
-                                    className="form-control"
-                                    placeholder="Branch Code"
+                                    <Control.select model=".branchSelect" name ="branchSelect" id="branchSelect" className="form-control"
                                     validators={{
-                                        required, eqLength: eqLength(2)
-                                    }}    
-                                    />
+                                        required
+                                    }}>
+                                        <option/>
+                                        <option value="CS">CS</option>
+                                        <option value="EE">EE</option>
+                                        <option value="ME">ME</option>
+                                        <option value="CE">CE</option>
+                                        <option value="CB">CB</option>
+                                    </Control.select>
                                     <Errors
-                                    className="text-danger"
-                                    model=".branch"
-                                    show="touched"
-                                    messages={{
-                                        required: 'This is a required field, ',
-                                        eqLength: "Enter branch code, e.g 'CS, EE'"                                        
-                                    }}
-                                    />                
+                                        className="text-danger"
+                                        model=".branchSelect"
+                                        show="touched"
+                                        messages={{
+                                            required: 'This is a required field'
+                                        }}
+                                    />
                                 </Col>
                             </Row>
                             <Row className="form-group">
                                 <Label htmlFor="batch" md={3}>Batch</Label>
                                 <Col md={9}>
-                                    <Control.text model=".batch" id="batch" name="batch"
-                                    className="form-control"
-                                    placeholder="Joining Year"
-                                    validators={{
-                                        required, isNumber, eqLength: eqLength(4)
-                                    }}    
-                                    />
-                                    <Errors
+                                <Control.select model=".batchSelect" name ="batchSelect" id="batchSelect" className="form-control"
+                                validators={{required}}>
+                                    <option/>
+                                    <option value='2016'>2016</option>
+                                    <option value='2017'>2017</option>
+                                    <option value="2018">2018</option>
+                                </Control.select> 
+                                <Errors
                                     className="text-danger"
-                                    model=".batch"
+                                    model=".batchSelect"
                                     show="touched"
                                     messages={{
-                                        required: 'This is a required field, ',
-                                        isNumber: 'Enter a number',
-                                        eqLength: "Enter year, e.g '2021'"                                        
+                                        required: 'This is a required field'
                                     }}
-                                    />                
+                                />      
                                 </Col>
                             </Row>
                             <Row className="form-group">

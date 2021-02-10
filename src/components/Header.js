@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Nav, Navbar, NavbarToggler, Collapse, NavItem, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input, Button} from 'reactstrap';
 import { NavLink } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import { Errors } from 'react-redux-form';
 var store=require('store');
 
 
@@ -48,12 +49,14 @@ class Header extends Component {
             body: JSON.stringify({email:this.username.value, password:this.password.value})
         };
         fetch('http://localhost:4000/login', requestOptions)
-            .then(response => response.json())
-            .then(data => {this.setState({loginStatus: data}); console.log(this.state.loginStatus);store.set('loginStatus', {loginStatus:data});
+            .then(response =>{ if(!response.ok){throw "Either email or password is incorrect"} return response.json()})
+            .then(data => {this.setState({loginStatus: data});store.set('loginStatus', {loginStatus:data});
             fetch(`http://localhost:4000/users/${this.state.loginStatus.user}`)
             .then(response => response.json())
-            .then(data=>{this.setState({user: data});console.log(this.state.user);store.set('userName',{userName:this.state.user.name});store.set('userID', {userID:this.state.loginStatus.user})})
-        });
+            .then(data=>{this.setState({user: data});console.log(this.state.user);store.set('userName',{userName:this.state.user.name});store.set('userID', {userID:this.state.loginStatus.user})})})
+            .catch( err => {
+                alert(err)
+            })    
 
         event.preventDefault();
         

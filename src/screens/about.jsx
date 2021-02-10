@@ -31,7 +31,7 @@ class About extends Component {
 						</a>
 					</li>
 					<li>
-						<a className="creator" href={'https://www.facebook.com/bhavani.susmitha'}>
+						<a className="creator" href={'https://github.com/ryaswant5'}>
 							Yashwanth Rachamallu
 						</a>
 					</li>
