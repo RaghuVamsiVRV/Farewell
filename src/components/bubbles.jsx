@@ -39,7 +39,7 @@ class BarChart extends Component {
 		var forcedictY = { CE: height / 6, CS: height / 1.7, ME: height / 1.5, CB: height / 2, EE: height / 2.5 };
 		var colordict = { CE: '#c5aa84', CS: '#194b4f', ME: '#914529', CB: '#f26d7d', EE: '#d0343a' };
 
-		console.log(height);
+		// console.log(height);
 
 		const svg = d3.select(this.myRef.current);
 		var simulation = d3.forceSimulation().nodes(bigga);

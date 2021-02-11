@@ -36,9 +36,6 @@ class Signup extends Component{
     }
 
     handleSubmit(values) {
-        console.log('Current State is: ' + JSON.stringify(values));
-        alert('Current State is: ' + JSON.stringify(values));
-        
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
