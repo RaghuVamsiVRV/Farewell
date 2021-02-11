@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {Button, Label, Col, Row} from "reactstrap";
 import { Control, LocalForm, Errors } from "react-redux-form";
+import ImageUploader from 'react-images-upload';
 import { min } from "d3";
 
 var store=require('store')
@@ -20,7 +21,8 @@ class Signup extends Component{
             input:"",
             user:{}
         };
-
+        this.state = { pictures: [] };
+        this.onDrop = this.onDrop.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);  
         this.handleChange = this.handleChange.bind(this);      
     }
@@ -40,7 +42,7 @@ class Signup extends Component{
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({name:values.name, email:values.email, password:values.password, branch:values.branch, batch:values.batch, college:"IIT PATNA", imageURL:values.imageURL, size:30})
+            body: JSON.stringify({name:values.name, email:values.email, password:values.password, branch:values.branch, batch:values.batch, college:"IIT PATNA", size:Math.floor(Math.random() * (50 - 30 + 1) + 30)})
         };
         fetch('http://localhost:4000/signup', requestOptions)
             .then(response => {if(!response.ok){throw response} response.json()})
@@ -53,6 +55,12 @@ class Signup extends Component{
                     })
             })
 
+    }
+
+    onDrop(picture) {
+        this.setState({
+            pictures: this.state.pictures.concat(picture),
+        });
     }
 
     render(){
@@ -190,23 +198,16 @@ class Signup extends Component{
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Label htmlFor="imageURL" md={3}>imageURL</Label>
+                                <Label htmlFor="image" md={3}>Profile Photo</Label>
                                 <Col md={9}>
-                                    <Control.text model=".imageURL" id="imageURL" name="imageURL"
-                                    className="form-control"
-                                    placeholder="URL"
-                                    validators={{
-                                        required
-                                    }}    
-                                    />
-                                    <Errors
-                                    className="text-danger"
-                                    model=".batch"
-                                    show="touched"
-                                    messages={{
-                                        required: 'This is a required field, '                                       
-                                    }}
-                                    />                
+                                    <ImageUploader
+                                        withIcon={false}
+                                        buttonText='Choose image'
+                                        onChange={this.onDrop}
+                                        label="Max file size: 0.5mb, accepted: jpg"
+                                        imgExtension={['.jpg']}
+                                        maxFileSize={524280}
+                                    />               
                                 </Col>
                             </Row>                    
                             <Row className="form-group">
