@@ -39,9 +39,6 @@ class Header extends Component {
     }
     handleLogin(event){
         this.toggleModal();
-    
-        alert("Username: " + this.username.value + " Password: " + this.password.value);
-
         const requestOptions = {
             method: 'POST',
             headers: { "Content-Type": "application/json", "Accept":"application/json"},
@@ -53,7 +50,7 @@ class Header extends Component {
             .then(data => {this.setState({loginStatus: data});store.set('loginStatus', {loginStatus:data});
             fetch(`http://localhost:4000/users/${this.state.loginStatus.user}`)
             .then(response => response.json())
-            .then(data=>{this.setState({user: data});console.log(this.state.user);store.set('userName',{userName:this.state.user.name});store.set('userID', {userID:this.state.loginStatus.user})})})
+            .then(data=>{this.setState({user: data});store.set('userName',{userName:this.state.user.name});store.set('userID', {userID:this.state.loginStatus.user})})})
             .catch( err => {
                 alert(err)
             })    
@@ -70,9 +67,21 @@ class Header extends Component {
 
 
     render(){
-        function Profile({loginStatus}){
+        function Signup({loginStatus}){
             if(loginStatus.message==="logged in"){
-                var userID=store.get('userID');
+                return(<div/>)
+            }
+            else{
+                return(
+                    <NavLink className="nav-link" to='/signup'>
+                        <span className="fa fa-sign-in fa-lg"> Signup</span>
+                    </NavLink>
+                )                
+            }
+        }
+        function Profile({loginStatus}){
+            var userID=store.get('userID');
+            if(loginStatus.message==="logged in"){                
                 return(
                 <NavLink className="nav-link" to={`/${userID?userID.userID:''}`}>Profile</NavLink>
                 )
@@ -117,9 +126,7 @@ class Header extends Component {
                                         <Profile loginStatus={this.state.loginStatus}/>
                                     </NavItem>
                                     <NavItem>
-                                        <NavLink className="nav-link" to='/signup'>
-                                            <span className="fa fa-sign-in fa-lg"> Signup</span>
-                                        </NavLink>
+                                        <Signup loginStatus={this.state.loginStatus}/>
                                     </NavItem>
                                 </Nav>
                             </Collapse>

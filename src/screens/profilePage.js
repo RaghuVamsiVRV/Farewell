@@ -35,22 +35,19 @@ class ProfilePage extends Component {
     this.handleSubmit=this.handleSubmit.bind(this);
   }
 	componentDidMount() {
-		console.log(this.props.id);
 		fetch(`http://localhost:4000/users/${this.props.id}`)
 			.then((response) => response.json())
 			.then((data) => this.setState({user: data}));
 
     fetch(`http://localhost:4000/get_comments?to=${this.props.id}`)
 			.then((response) => response.json())
-      .then((data) => {console.log(data);this.setState({comments:data.comments})})
+      .then((data) => this.setState({comments:data.comments}))
       
         
   }
   handleSubmit(values){
-    console.log('Current State is: ' + JSON.stringify(values));
-      alert('Current State is: ' + JSON.stringify(values));
+
         var senderName=store.get('userName');  
-        console.log(senderName);
       if(senderName!=null){
         const requestOptions = {
           method: 'POST',
@@ -60,7 +57,7 @@ class ProfilePage extends Component {
           };
         fetch('http://localhost:4000/api/add_comment', requestOptions)
           .then(response => response.json())
-          .then(data => {console.log(data);this.setState({comments: [...this.state.comments, data]})});
+          .then(data => this.setState({comments: [...this.state.comments, data]}));
       }
       else{
         alert('Please Login');
