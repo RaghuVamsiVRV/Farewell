@@ -77,9 +77,9 @@ router.post('/signup', async (req, res) => {
               res.status(400).json({"error": "Email already exists"})
             }
             else{
-              var filename = req.file.filename;
-              console.log(filename)
-              const user = await User.create({name, email, password,branch,batch,college,size,filename}); 
+              var imageUrl = req.file.filename;
+              console.log(imageUrl)
+              const user = await User.create({name, email, password,branch,batch,college,size,imageUrl}); 
               const token = createToken(user._id);
               res.cookie('jwt', token, { httpOnly: false, maxAge: maxAge * 1000 });
               res.status(201).json({ user: user._id,'message': 'Signed up and logged in'});
