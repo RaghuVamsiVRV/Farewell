@@ -3,6 +3,7 @@ import {Button, Label, Col, Row} from "reactstrap";
 import { Control, LocalForm, Errors } from "react-redux-form";
 import ImageUploader from 'react-images-upload';
 import { min } from "d3";
+// import { get } from "../../backend/routes/public";
 
 var store=require('store')
 
@@ -19,9 +20,9 @@ class Signup extends Component{
         super(props);
         this.state={
             input:"",
-            user:{}
+            user:{},
+            pictures:null
         };
-        this.state = { pictures: [] };
         this.onDrop = this.onDrop.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);  
         this.handleChange = this.handleChange.bind(this);      
@@ -36,10 +37,20 @@ class Signup extends Component{
     }
 
     handleSubmit(values) {
+        console.log(this.state.pictures[0])
+        var data = new FormData() ;
+        for(var value of Object.entries(values)){
+            data.append(value[0], value[1])
+        }
+        data.append('file', this.state.pictures[0])
+        for(var pair of data.entries()) {
+            console.log(pair[0]+ ', '+ pair[1]);
+         }
+
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({name:values.name, email:values.email, password:values.password, branch:values.branch, batch:values.batch, college:"IIT PATNA", size:Math.floor(Math.random() * (50 - 30 + 1) + 30)})
+            // headers: { 'Content-Type': 'application/json' },
+            body: data 
         };
         fetch('http://localhost:4000/signup', requestOptions)
             .then(response => {if(!response.ok){throw response} response.json()})
@@ -56,7 +67,7 @@ class Signup extends Component{
 
     onDrop(picture) {
         this.setState({
-            pictures: this.state.pictures.concat(picture),
+            pictures: picture
         });
     }
 
