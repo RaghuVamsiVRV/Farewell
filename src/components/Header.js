@@ -81,9 +81,10 @@ class Header extends Component {
         }
         function Profile({loginStatus}){
             var userID=store.get('userID');
+            console.log(loginStatus)
             if(loginStatus.message==="logged in"){                
                 return(
-                <NavLink className="nav-link" to={`/${userID?userID.userID:''}`}>Profile</NavLink>
+                <NavLink className="nav-link" to={`/${userID?userID.userID:loginStatus.user}`}>Profile</NavLink>
                 )
             }
             else {
