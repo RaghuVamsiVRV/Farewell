@@ -5,35 +5,42 @@ const User = require("../models/users.js");
 const jwt = require('jsonwebtoken');
 const Comments = require('../models/comments.js');
 
+var multer = require('multer')
+
 // handle errors
 const handleErrors = (err) => {
-    console.log(err.message, err.code);
-    let errors = { email: '', password: '' };
-  
-    // incorrect email
-    if (err.message === 'incorrect email') {
-      errors.email = 'That email is not registered';
-    }
+  console.log(err.message, err.code);
+  let errors = { email: '', password: '' };
 
-    // incorrect password
-    if (err.message === 'incorrect password') {
-      errors.password = 'That password is incorrect';
-    }
-
-    // duplicate email error
-    if (err.code === 11000) {
-      errors.email = 'that email is already registered';
-      return errors;
-    }
-
-    // validation errors
-    if (err.message.includes('users validation failed')) {
-      Object.values(err.errors).forEach(({ properties }) => {
-      errors[properties.path] = properties.message;
-    });
+  // incorrect email
+  if (err.message === 'incorrect email') {
+    errors.email = 'That email is not registered';
   }
-  return errors;
+
+  // incorrect password
+  if (err.message === 'incorrect password') {
+    errors.password = 'That password is incorrect';
+  }
+
+  // duplicate email error
+  if (err.code === 11000) {
+    errors.email = 'that email is already registered';
+    return errors;
+  }
+
+  // validation errors
+  if (err.message.includes('users validation failed')) {
+    Object.values(err.errors).forEach(({ properties }) => {
+    errors[properties.path] = properties.message;
+  });
 }
+return errors;
+}
+
+
+router.post('/upload',async (req, res)=>{
+    console.log(req)
+});
 
 
 // create json web token
@@ -45,25 +52,44 @@ const createToken = (id) => {
 };
 
 router.post('/signup', async (req, res) => {
-    const { name, email, password,branch,batch,college, imageURL,size } = req.body;
-    try{
-      const user1 = await User.find({email});
-      console.log(user1);
-      if(user1.length!==0){
-        res.status(400).json({"error": "Email already exists"})
+  
+
+    var storage = multer.diskStorage({
+      destination: function (req, file, cb) {
+           cb(null, '../public/photos')
+      },
+      filename: function (req, file, cb) {
+           cb(null, Date.now() + '-' +file.originalname )
       }
-      else{
-        const user = await User.create({name, email, password,branch,batch,college,imageURL,size}); 
-        const token = createToken(user._id);
-        res.cookie('jwt', token, { httpOnly: false, maxAge: maxAge * 1000 });
-        res.status(201).json({ user: user._id,'message': 'Signed up and logged in'});
-      }
-    } catch(err) {
-        const errors = handleErrors(err);   
-        res.status(400).json({errors}); 
-    }
-  }
-);
+    })
+    var upload = multer({ storage: storage }).single('file')
+    upload(req, res, async (err)=>{
+          if (err instanceof multer.MulterError) {
+              return res.status(500).json(err)
+          } else if (err) {
+              return res.status(500).json(err)
+          }
+          const { name, email, password,branch,batch,college,size } = req.body; 
+          try{
+            const user1 = await User.find({email});
+            console.log(user1);
+            if(user1.length!==0){
+              res.status(400).json({"error": "Email already exists"})
+            }
+            else{
+              var filename = req.file.filename;
+              console.log(filename)
+              const user = await User.create({name, email, password,branch,batch,college,size,filename}); 
+              const token = createToken(user._id);
+              res.cookie('jwt', token, { httpOnly: false, maxAge: maxAge * 1000 });
+              res.status(201).json({ user: user._id,'message': 'Signed up and logged in'});
+            }
+          } catch(err) {
+              const errors = handleErrors(err);   
+              res.status(400).json({errors}); 
+          }
+    })  
+});
 
 // get a list of comments of user from the db
 router.get('/get_comments', function(req, res){

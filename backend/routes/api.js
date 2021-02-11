@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 
 const Comments = require('../models/comments.js');
 
+
 // get the user id from JWT token
 const getUserFromToken = (req)=>{
     const token = req.cookies.jwt;
