@@ -77,7 +77,7 @@ class ProfilePage extends Component {
 		return (
 			<div className="container">
 				<div className="container-banner">
-					<img src={this.state.user.imageURL||'/photos/anushree.jpg'} alt="Avatar" height="170" width="170" />
+					<img src={'/photos/'+this.state.user.imageURL||'/photos/anushree.jpg'} alt="Avatar" height="170" width="170" />
 					<h2> {this.state.user.name} </h2>
 					<Row>{dispComment}</Row>
 				</div>
