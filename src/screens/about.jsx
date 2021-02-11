@@ -26,15 +26,16 @@ class About extends Component {
 						</a>
 					</li>
 					<li>
-						<a className="creator" href={'https://github.com/RaghuVamsiVRV'}>
-							Raghu Vamsi Veerapaneni VRVKCKVL
-						</a>
-					</li>
-					<li>
 						<a className="creator" href={'https://github.com/ryaswant5'}>
 							Yashwanth Rachamallu
 						</a>
 					</li>
+					<li>
+						<a className="creator" href={'https://github.com/RaghuVamsiVRV'}>
+							Raghu Vamsi
+						</a>
+					</li>
+					
 				</ul>
 			</div>
 		);

@@ -33,6 +33,9 @@ const requireAuth = (req, res, next) => {
 	}
 };
 
+
+
+
 mongoose.connect('mongodb+srv://sujeeth:vsaisujeeth@cluster0.84bzl.mongodb.net/mydb', {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
@@ -41,7 +44,12 @@ mongoose.connect('mongodb+srv://sujeeth:vsaisujeeth@cluster0.84bzl.mongodb.net/m
 mongoose.Promise = global.Promise;
 
 app.use(bodyParser.json());
+app.use(express.urlencoded({
+	extended: true
+  }))
+
 app.use(cookieParser());
+
 app.use(cors({
 	origin : 'http://localhost:3000' ,
 	credentials: true,
