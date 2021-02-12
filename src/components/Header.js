@@ -39,9 +39,12 @@ class Header extends Component {
         this.toggleModal = this.toggleModal.bind(this);
         this.handleLogin = this.handleLogin.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
     
-
+    handleChange(){
+        this.setState({errors:""})
+    }
     toggleNav(){
         this.setState({
             isNavOpen: !this.state.isNavOpen
@@ -160,11 +163,11 @@ class Header extends Component {
                     <Form onSubmit={this.handleLogin}>
                             <FormGroup>
                                 <Label htmlFor="username">Webmail</Label>
-                                <Input type="text" id="username" name="username" innerRef={(input)=>this.username=input}/>
+                                <Input onChange={this.handleChange} type="text" id="username" name="username" innerRef={(input)=>this.username=input}/>
                             </FormGroup>
                             <FormGroup>
                                 <Label htmlFor="password">Password</Label>
-                                <Input type="password" id="password" name="password" innerRef={(input)=>this.password=input}/>
+                                <Input onChange={this.handleChange} type="password" id="password" name="password" innerRef={(input)=>this.password=input}/>
                             </FormGroup>
                             <FormGroup>
                                 <AlertCustom text={this.state.errors}/>

@@ -4,11 +4,7 @@ import { Control, LocalForm, Errors } from "react-redux-form";
 import ImageUploader from 'react-images-upload';
 import { Alert } from "reactstrap";
 
-export const AlertCustom = (props) => {
-
-    const [visible, setVisible] = useState(true);
-    // const onDismiss = () => setVisible(false);
-    
+export const AlertCustom = (props) => {    
     if(props.text!==""){
         return (
         <div>
