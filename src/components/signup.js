@@ -37,16 +37,18 @@ class Signup extends Component{
     }
 
     handleSubmit(values) {
-        console.log(this.state.pictures[0])
+        // console.log(this.state.pictures[0])
         var data = new FormData() ;
         for(var value of Object.entries(values)){
             data.append(value[0], value[1])
         }
         data.append('file', this.state.pictures[0])
+        data.append('college', "IIT PATNA")
+        data.append('size',Math.floor(Math.random() * (50 - 30 + 1) + 30))
         for(var pair of data.entries()) {
             console.log(pair[0]+ ', '+ pair[1]);
          }
-
+         
         const requestOptions = {
             method: 'POST',
             // headers: { 'Content-Type': 'application/json' },
@@ -164,7 +166,7 @@ class Signup extends Component{
                             <Row className="form-group">
                                 <Label htmlFor="branch" md={3}>Branch</Label>
                                 <Col md={9}>
-                                    <Control.select model=".branchSelect" name ="branchSelect" id="branchSelect" className="form-control"
+                                    <Control.select model=".branch" name ="branch" id="branch" className="form-control"
                                     validators={{
                                         required
                                     }}>
@@ -177,7 +179,7 @@ class Signup extends Component{
                                     </Control.select>
                                     <Errors
                                         className="text-danger"
-                                        model=".branchSelect"
+                                        model=".branch"
                                         show="touched"
                                         messages={{
                                             required: 'This is a required field'
@@ -188,7 +190,7 @@ class Signup extends Component{
                             <Row className="form-group">
                                 <Label htmlFor="batch" md={3}>Batch</Label>
                                 <Col md={9}>
-                                <Control.select model=".batchSelect" name ="batchSelect" id="batchSelect" className="form-control"
+                                <Control.select model=".batch" name ="batch" id="batch" className="form-control"
                                 validators={{required}}>
                                     <option/>
                                     <option value='2016'>2016</option>
@@ -197,7 +199,7 @@ class Signup extends Component{
                                 </Control.select> 
                                 <Errors
                                     className="text-danger"
-                                    model=".batchSelect"
+                                    model=".batch"
                                     show="touched"
                                     messages={{
                                         required: 'This is a required field'
