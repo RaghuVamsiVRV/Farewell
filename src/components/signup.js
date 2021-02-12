@@ -26,7 +26,6 @@ var store=require('store')
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length<=len);
 const minLength = (len) => (val) => (val) && (val.length>=len);
-const alreadyExist = (err) => (val) => (val) && (err==="")
 const validEmail = (val) => /^[A-Z0-9._%+-]+@iitp\.ac\.in$/i.test(val);
 const passMatch = (Val) => (val) => (val) && (Val) && (val===Val);
 
@@ -78,7 +77,7 @@ class Signup extends Component{
                 err.text().then(errMsg=>
                     {
                         var error=JSON.parse(errMsg);
-                        this.setState({errors: error.error})
+                        this.setState({errors: error.errors.email})
                     })
             })
 
