@@ -1,17 +1,36 @@
-import React, {Component} from "react";
+import React, {Component, useState} from "react";
 import {Button, Label, Col, Row} from "reactstrap";
 import { Control, LocalForm, Errors } from "react-redux-form";
 import ImageUploader from 'react-images-upload';
-import { min } from "d3";
-// import { get } from "../../backend/routes/public";
+import { Alert } from "reactstrap";
+
+export const AlertCustom = (props) => {
+
+    const [visible, setVisible] = useState(true);
+    // const onDismiss = () => setVisible(false);
+    
+    if(props.text!==""){
+        return (
+        <div>
+            <Alert color="danger">
+                *{props.text}
+            </Alert>
+            </div>
+        );
+    }
+    else{
+        return(
+            <div/>
+        )
+    }
+  }
 
 var store=require('store')
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length<=len);
 const minLength = (len) => (val) => (val) && (val.length>=len);
-const eqLength = (len) => (val) => (val) && (val.length==len);
-const isNumber = (val) => !isNaN(Number(val));
+const alreadyExist = (err) => (val) => (val) && (err==="")
 const validEmail = (val) => /^[A-Z0-9._%+-]+@iitp\.ac\.in$/i.test(val);
 const passMatch = (Val) => (val) => (val) && (Val) && (val===Val);
 
@@ -21,6 +40,7 @@ class Signup extends Component{
         this.state={
             input:"",
             user:{},
+            errors:"",
             pictures:null
         };
         this.onDrop = this.onDrop.bind(this);
@@ -32,13 +52,15 @@ class Signup extends Component{
         let input=this.state.input;
         input=event.target.value;
         this.setState({
-            input:input
+            input:input,
+            errors:""
         });
     }
 
     handleSubmit(values) {
         // console.log(this.state.pictures[0])
-        var data = new FormData() ;
+        this.setState({errors:""})
+        var data = new FormData();
         for(var value of Object.entries(values)){
             data.append(value[0], value[1])
         }
@@ -51,17 +73,16 @@ class Signup extends Component{
          
         const requestOptions = {
             method: 'POST',
-            // headers: { 'Content-Type': 'application/json' },
             body: data 
         };
         fetch('http://localhost:4000/signup', requestOptions)
             .then(response => {if(!response.ok){throw response} response.json()})
-            .then(data => {this.setState({user: data});alert("Login to view your account")})
+            .then(data => {this.setState({user: data});alert("Verify your account via registered email")})
             .catch(err =>{
                 err.text().then(errMsg=>
                     {
                         var error=JSON.parse(errMsg);
-                        alert(error.error)
+                        this.setState({errors: error.error})
                     })
             })
 
@@ -107,6 +128,7 @@ class Signup extends Component{
                                     <Control.text model=".email" id="email" name="email"
                                         placeholder="Webmail"
                                         className="form-control"
+                                        onChange={this.handleChange}
                                         validators={{
                                             required, validEmail
                                         }}
@@ -117,9 +139,14 @@ class Signup extends Component{
                                         show="touched"
                                         messages={{
                                             required: 'This is a required field, ',
-                                            validEmail: 'Enter college webmail'
+                                            validEmail: 'Enter college webmail',
                                         }}
                                      />
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col className="ml-auto" md={9}>
+                                    <AlertCustom text={this.state.errors}/>
                                 </Col>
                             </Row>
                             <Row className="form-group">

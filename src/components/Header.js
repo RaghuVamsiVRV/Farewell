@@ -1,11 +1,27 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { Nav, Navbar, NavbarToggler, Collapse, NavItem, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input, Button} from 'reactstrap';
 import { NavLink } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import { Errors } from 'react-redux-form';
+import {Alert} from 'reactstrap';
 var store=require('store');
 
+export const AlertCustom = (props) => {
 
+    if(props.text!==""){
+        return (
+        <div>
+            <Alert color="danger">
+            {props.text}
+            </Alert>
+            </div>
+        );
+    }
+    else{
+        return(
+            <div/>
+        )
+    }
+  }
 class Header extends Component {
 
     constructor(props)    
@@ -16,6 +32,7 @@ class Header extends Component {
             isNavOpen: false,
             isModalOpen: false,
             user:{},
+            errors:"",
             loginStatus:isLoggedIn?isLoggedIn.loginStatus:{user:"", message:"logged out"}
         };
         this.toggleNav = this.toggleNav.bind(this);
@@ -38,7 +55,6 @@ class Header extends Component {
         });
     }
     handleLogin(event){
-        this.toggleModal();
         const requestOptions = {
             method: 'POST',
             headers: { "Content-Type": "application/json", "Accept":"application/json"},
@@ -50,11 +66,10 @@ class Header extends Component {
             .then(data => {this.setState({loginStatus: data});store.set('loginStatus', {loginStatus:data});
             fetch(`http://localhost:4000/users/${this.state.loginStatus.user}`)
             .then(response => response.json())
-            .then(data=>{this.setState({user: data});store.set('userName',{userName:this.state.user.name});store.set('userID', {userID:this.state.loginStatus.user})})})
+            .then(data=>{this.setState({user: data});store.set('userName',{userName:this.state.user.name});store.set('userID', {userID:this.state.loginStatus.user})});this.toggleModal();this.setState({errors:""})})
             .catch( err => {
-                alert(err)
-            })    
-
+                this.setState({errors:err})
+            })
         event.preventDefault();
         
     }
@@ -150,6 +165,9 @@ class Header extends Component {
                             <FormGroup>
                                 <Label htmlFor="password">Password</Label>
                                 <Input type="password" id="password" name="password" innerRef={(input)=>this.password=input}/>
+                            </FormGroup>
+                            <FormGroup>
+                                <AlertCustom text={this.state.errors}/>
                             </FormGroup>
                         <Button type="submit" value="submit" color="primary">Login</Button>
                     </Form>
