@@ -36,6 +36,10 @@ const UsersSchema = new Schema({
     size:
     {
       type: Number
+    },
+    verified:
+    {
+      type:Number
     }
 });
 

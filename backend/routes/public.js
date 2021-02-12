@@ -6,6 +6,19 @@ const jwt = require('jsonwebtoken');
 const Comments = require('../models/comments.js');
 
 var multer = require('multer')
+var nodemailer = require('nodemailer');
+
+
+var ncrypt = require('ncrypt-js');
+var { encrypt, decrypt } = new ncrypt('farewell');
+
+var transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: '',
+    pass: ''
+  }
+});
 
 // handle errors
 const handleErrors = (err) => {
@@ -38,11 +51,6 @@ return errors;
 }
 
 
-router.post('/upload',async (req, res)=>{
-    console.log(req)
-});
-
-
 // create json web token
 const maxAge = 3 * 24 * 60 * 60;
 const createToken = (id) => {
@@ -51,6 +59,18 @@ const createToken = (id) => {
   })
 };
 
+router.get('/verify', async (req,res)=> {
+  try {
+    var email = req.query.tok
+    email = decrypt(email);
+    var myquery = { 'email': email };
+    var newvalues = { $set: {verified: 1} };
+    await User.updateOne(myquery, newvalues);
+    res.status(200).send("Email verified")
+  } catch{
+     res.send("ERROR. Try again later or contact administrator")
+  }
+});
 router.post('/signup', async (req, res) => {
   
 
@@ -69,20 +89,37 @@ router.post('/signup', async (req, res) => {
           } else if (err) {
               return res.status(500).json(err)
           }
-          const { name, email, password,branch,batch,college,size } = req.body; 
+          var { name, email, password,branch,batch,college,size } = req.body; 
           try{
-            const user1 = await User.find({email});
+            const user1 = {"length" :0}//await User.find({email});
             console.log(user1);
             if(user1.length!==0){
               res.status(400).json({"error": "Email already exists"})
             }
             else{
               var imageURL = req.file.filename;
+              var verified =  0;
               console.log(imageURL)
-              const user = await User.create({name, email, password,branch,batch,college,size,imageURL}); 
-              const token = createToken(user._id);
-              res.cookie('jwt', token, { httpOnly: false, maxAge: maxAge * 1000 });
-              res.status(201).json({ user: user._id,'message': 'Signed up and logged in'});
+              const user = await User.create({name, email, password,branch,batch,college,size,imageURL,verified}); 
+
+              var tok =   encrypt(email)
+              var link = "http://localhost:4000/verify?tok="+tok
+              console.log(link)
+              
+              var mailOptions = {
+                from: 'farewell_iitp@gmail.com',
+                to: email,
+                subject: 'Verification for farewell',
+                html : "Hello,<br> Please Click on the link to verify your email.<br><a href="+link+">Click here to verify</a>"
+              };
+
+              transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                  res.status(400).json({"error":"Mail can't be sent"})
+                }
+              }); 
+              res.status(201).json({ user: user._id,'message': 'Verification email Sent. Please verify your email.'});
+
             }
           } catch(err) {
               const errors = handleErrors(err);   
@@ -103,6 +140,8 @@ router.post('/login', async (req, res) => {
     const { email, password } = req.body;
     try {
       const user = await User.login(email, password);
+      console.log(user)
+      if(user.verified == 0) res.status(200).json({"error":"Verify your email"})
       const token = createToken(user._id);
       res.cookie('jwt', token, { httpOnly: false, maxAge: maxAge * 1000 });
       res.status(200).json({ user: user._id, 'message': 'logged in' });
