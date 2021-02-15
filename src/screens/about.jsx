@@ -1,19 +1,18 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import generalStyles from '../App.css';
 
 class About extends Component {
 	render() {
 		return (
 			<div align="center">
-				<h3>
-					It's all been such a terrible waste really! <br />All of us in our Freshman and Sophomore years
-					financed the previous farewell ceremonies in the hopes that in our junior year, we would get the
-					chance to attend a fancy ceremony at a discounted price
+				<h3 class={generalStyles.generic}>
+					We <br /> would have made <br /> this site <br /> prettier, but <br /> none of us have any <br />{' '}
+					asthetic sense <br /> but <br /> all we really wanted <br /> to say is <br /> goodbye!!! <br /> and
+					also that <br /> we love you!! <br /> and <br /> we most certainly hope <br /> that we'll get the
+					chance to <br /> host a real farewell for y'all<br /> this year!
 				</h3>
-				<h3>
-					But all that apart <br /> we do really miss you <br /> the parting was abrupt <br /> and <br />we
-					never got the chance to say <br />goodbye
-				</h3>
+
 				<ul className="list">
 					<li>
 						<a className="creator" href={'https://www.naths.in'}>
@@ -35,7 +34,6 @@ class About extends Component {
 							Raghu Vamsi
 						</a>
 					</li>
-					
 				</ul>
 			</div>
 		);

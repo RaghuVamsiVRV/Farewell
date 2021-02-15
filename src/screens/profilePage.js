@@ -1,70 +1,88 @@
 import React, { Component } from 'react';
 import { Control, LocalForm } from 'react-redux-form';
-import {Button, Row, Col, Card, CardTitle, CardText, CardBody} from 'reactstrap';
+import { Button, Row, Col, Card, CardTitle, CardText, CardBody } from 'reactstrap';
 
-
-var store=require('store');
-function RenderComment({comment}){
-  return(
-      <Card key={comment._id}> 
-        <CardTitle tag="h5">{comment.senderName}</CardTitle>
-        <CardBody>
-          <CardText>{comment.comment}</CardText>
-          <CardText className="ml-auto mr-3">
-            -- {new Intl.DateTimeFormat('en-US',{
-                day:'2-digit',
-                month:'short',
-                year:'numeric'
-            }).format(new Date(comment.time))}
-          </CardText>
-        </CardBody>
-      </Card>
-  );
+var store = require('store');
+function RenderComment({ comment }) {
+	const colorDict = {
+		1: '#696969',
+		2: '#420420',
+		3: '#ffa500',
+		4: '#800000',
+		5: '#333333',
+		6: '#101010',
+		7: '#ff4040',
+		8: '#8b0000',
+		9: '#0e2f44',
+		0: '#990000'
+	};
+	console.log(colorDict[Math.floor(Math.random() * 10)]);
+	return (
+		<Card
+			key={comment._id}
+			body
+			inverse
+			style={{
+				backgroundColor: colorDict[Math.floor(Math.random() * 10)],
+				borderColor: '#000',
+				padding: '10px'
+			}}
+		>
+			<CardTitle tag="h5">{comment.senderName}</CardTitle>
+			<CardBody>
+				<CardText>{comment.comment}</CardText>
+				<CardText className="ml-auto mr-3">
+					--{' '}
+					{new Intl.DateTimeFormat('en-US', {
+						day: '2-digit',
+						month: 'short',
+						year: 'numeric'
+					}).format(new Date(comment.time))}
+				</CardText>
+			</CardBody>
+		</Card>
+	);
 }
 
 class ProfilePage extends Component {
-
-  constructor(props)
-  {
-    super(props);
-    this.state={
-      comments:[],
-      user:{},
-      url:{}
-    }
-    this.handleSubmit=this.handleSubmit.bind(this);
-  }
+	constructor(props) {
+		super(props);
+		this.state = {
+			comments: [],
+			user: {},
+			url: {}
+		};
+		this.handleSubmit = this.handleSubmit.bind(this);
+	}
 	componentDidMount() {
 		fetch(`http://localhost:4000/users/${this.props.id}`)
 			.then((response) => response.json())
-			.then((data) => this.setState({user: data}));
+			.then((data) => this.setState({ user: data }));
 
-    fetch(`http://localhost:4000/get_comments?to=${this.props.id}`)
+		fetch(`http://localhost:4000/get_comments?to=${this.props.id}`)
 			.then((response) => response.json())
-      .then((data) => this.setState({comments:data.comments}))
-      
-        
-  }
-  handleSubmit(values){
-
-        var senderName=store.get('userName');  
-      if(senderName!=null){
-        const requestOptions = {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json'},
-          credentials:"include",
-          body: JSON.stringify({ to: this.state.user._id, senderName:senderName.userName, comment:values.comment })
-          };
-        fetch('http://localhost:4000/api/add_comment', requestOptions)
-          .then(response => response.json())
-          .then(data => this.setState({comments: [...this.state.comments, data]}));
-      }
-      else{
-        alert('Please Login');
-      }
-        
-  }
-  
+			.then((data) => this.setState({ comments: data.comments }));
+	}
+	handleSubmit(values) {
+		var senderName = store.get('userName');
+		if (senderName != null) {
+			const requestOptions = {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				credentials: 'include',
+				body: JSON.stringify({
+					to: this.state.user._id,
+					senderName: senderName.userName,
+					comment: values.comment
+				})
+			};
+			fetch('http://localhost:4000/api/add_comment', requestOptions)
+				.then((response) => response.json())
+				.then((data) => this.setState({ comments: [ ...this.state.comments, data ] }));
+		} else {
+			alert('Please Login');
+		}
+	}
 
 	render() {
 		const dispComment = this.state.comments.map((comment) => {
@@ -77,7 +95,12 @@ class ProfilePage extends Component {
 		return (
 			<div className="container">
 				<div className="container-banner">
-					<img src={('/photos/'+this.state.user.imageURL)||'/photos/anushree.jpg'} alt="Avatar" height="170" width="170" />
+					<img
+						src={'/photos/' + this.state.user.imageURL || '/photos/anushree.jpg'}
+						alt="Avatar"
+						height="170"
+						width="170"
+					/>
 					<h2> {this.state.user.name} </h2>
 					<Row>{dispComment}</Row>
 				</div>
@@ -100,8 +123,8 @@ class ProfilePage extends Component {
 					</LocalForm>
 				</div>
 			</div>
-    );
-    // REACTGA.pageview('/' + JSON.stringify(this.state.user));
+		);
+		// REACTGA.pageview('/' + JSON.stringify(this.state.user));
 	}
 }
 export default ProfilePage;
