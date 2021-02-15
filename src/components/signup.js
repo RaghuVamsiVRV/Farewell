@@ -21,7 +21,6 @@ export const AlertCustom = (props) => {
     }
   }
 
-var store=require('store')
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length<=len);
@@ -53,7 +52,6 @@ class Signup extends Component{
     }
 
     handleSubmit(values) {
-        // console.log(this.state.pictures[0])
         this.setState({errors:""})
         var data = new FormData();
         for(var value of Object.entries(values)){
@@ -62,9 +60,6 @@ class Signup extends Component{
         data.append('file', this.state.pictures[0])
         data.append('college', "IIT PATNA")
         data.append('size',Math.floor(Math.random() * (50 - 30 + 1) + 30))
-        for(var pair of data.entries()) {
-            console.log(pair[0]+ ', '+ pair[1]);
-         }
          
         const requestOptions = {
             method: 'POST',

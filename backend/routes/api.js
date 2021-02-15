@@ -3,7 +3,21 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 
 const Comments = require('../models/comments.js');
+const Users = require('../models/users.js');
 
+var multer = require('multer')
+var nodemailer = require('nodemailer');
+
+
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'iitpfarewell@gmail.com',
+      pass: 'farewell2021'
+    }
+  });
+
+  
 // get the user id from JWT token
 const getUserFromToken = (req)=>{
     const token = req.cookies.jwt;
@@ -25,6 +39,48 @@ router.get('/my_comments', function(req, res){
     }).catch(err=>res.status(400).json({'error': err.message}));
 });
 
+router.post('/edit',function(req,res){
+    let userID = getUserFromToken(req);
+    
+    var storage = multer.diskStorage({
+        destination: function (req, file, cb) {
+             cb(null, '../public/photos')
+        },
+        filename: function (req, file, cb) {
+             cb(null, Date.now() + '-' +file.originalname )
+        }
+      })
+      var upload = multer({ storage: storage }).single('file')
+      upload(req, res, async (err)=>{
+            if (err instanceof multer.MulterError) {
+                return res.status(500).json(err)
+            } else if (err) {
+                return res.status(500).json(err)
+            }
+            var {email} = req.body; 
+            const user1 = await Users.find({email});
+            console.log(user1);
+            if(user1.length!==0 && user1[0]._id!=userID){
+              res.status(400).json({"error": "Email already exists in other profile"})
+            }
+            try{
+                if(req.file) {
+                    req.body.imageURL = req.file.filename;
+                }
+                Users.findByIdAndUpdate(userID, req.body, function (err, docs) { 
+                        if (err){ 
+                            throw err
+                        } 
+                        else{ 
+                            res.status(201).json({'message': 'updated'});
+                        } 
+                }); 
+              
+            } catch(err) {
+                res.status(400).json({"err":err.message}); 
+            }
+      })  
+});
 // add a new comments to the db
 router.post('/add_comment', function(req, res){
     let from = getUserFromToken(req);

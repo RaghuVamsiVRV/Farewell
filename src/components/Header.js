@@ -48,14 +48,76 @@ class Header extends Component {
 		this.handleChange = this.handleChange.bind(this);
 	}
 
-	handleChange() {
-		this.setState({ errors: '' });
-	}
-	toggleNav() {
-		this.setState({
-			isNavOpen: !this.state.isNavOpen
-		});
-	}
+    constructor(props)    
+    {
+        super(props);
+        var isLoggedIn=store.get('loginStatus');
+        this.state={
+            isNavOpen: false,
+            isModalOpen: false,
+            user:{},
+            passErr:"",
+            emailErr:"",
+            loginStatus:isLoggedIn?isLoggedIn.loginStatus:{user:"", message:"logged out"}
+        };
+        this.toggleNav = this.toggleNav.bind(this);
+        this.toggleModal = this.toggleModal.bind(this);
+        this.handleLogin = this.handleLogin.bind(this);
+        this.handleLogout = this.handleLogout.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+    }
+    
+    handleChange(event){
+        var field = event.target.id
+        if(field==="password")
+            this.setState({passErr:""})
+        else if(field==="email")
+            this.setState({emailErr:""})
+    }
+    toggleNav(){
+        this.setState({
+            isNavOpen: !this.state.isNavOpen
+        });
+    }
+
+    toggleModal()
+    {
+        this.setState({
+            isModalOpen: !this.state.isModalOpen,
+            passErr:"",
+            emailErr:""
+            
+        });
+    }
+    handleLogin(event){
+        const requestOptions = {
+            method: 'POST',
+            headers: { "Content-Type": "application/json", "Accept":"application/json"},
+            credentials:'include',
+            body: JSON.stringify({email:this.username.value, password:this.password.value})
+        };
+        fetch('http://localhost:4000/login', requestOptions)
+            .then(response =>{ if(!response.ok){throw response} return response.json()})
+            .then(data => {this.setState({loginStatus: data});store.set('loginStatus', {loginStatus:data});
+            fetch(`http://localhost:4000/users/${this.state.loginStatus.user}`)
+            .then(response => response.json())
+            .then(data=>{this.setState({user: data});store.set('userName',{userName:this.state.user.name});store.set('userID', {userID:this.state.loginStatus.user})});this.toggleModal();this.setState({errors:""})})
+            .catch(err =>{
+                err.text().then(errMsg=>
+                    {
+                        var error=JSON.parse(errMsg);
+                        this.setState({emailErr: error.errors.email, passErr: error.errors.password})
+                    })
+            })
+        event.preventDefault();
+        
+    }
+    handleLogout(){
+        fetch('http://localhost:4000/logout')
+            .then(response => response.json())
+            .then(data => {alert(data.message);Cookies.remove('jwt'); this.setState({loginStatus:{}}); store.clearAll();})
+            
+    }
 
 	toggleModal() {
 		this.setState({
@@ -182,41 +244,30 @@ class Header extends Component {
 					</div>
 				</Navbar>
 
-				<Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
-					<ModalHeader toggle={this.toggleModal}>Login</ModalHeader>
-					<ModalBody>
-						<Form onSubmit={this.handleLogin}>
-							<FormGroup>
-								<Label htmlFor="username">Webmail</Label>
-								<Input
-									onChange={this.handleChange}
-									type="text"
-									id="username"
-									name="username"
-									innerRef={(input) => (this.username = input)}
-								/>
-							</FormGroup>
-							<FormGroup>
-								<Label htmlFor="password">Password</Label>
-								<Input
-									onChange={this.handleChange}
-									type="password"
-									id="password"
-									name="password"
-									innerRef={(input) => (this.password = input)}
-								/>
-							</FormGroup>
-							<FormGroup>
-								<AlertCustom text={this.state.errors} />
-							</FormGroup>
-							<Button type="submit" value="submit" color="primary">
-								Login
-							</Button>
-						</Form>
-					</ModalBody>
-				</Modal>
-			</React.Fragment>
-		);
-	}
+            <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal} >
+                <ModalHeader toggle={this.toggleModal}>Login</ModalHeader>
+                <ModalBody>
+                    <Form onSubmit={this.handleLogin}>
+                            <FormGroup>
+                                <Label htmlFor="username">Webmail</Label>
+                                <Input onChange={this.handleChange} type="text" id="username" name="username" innerRef={(input)=>this.username=input}/>
+                            </FormGroup>
+                            <FormGroup>
+                                <AlertCustom text={this.state.emailErr}/>
+                            </FormGroup>
+                            <FormGroup>
+                                <Label htmlFor="password">Password</Label>
+                                <Input onChange={this.handleChange} type="password" id="password" name="password" innerRef={(input)=>this.password=input}/>
+                            </FormGroup>
+                            <FormGroup>
+                                <AlertCustom text={this.state.passErr}/>
+                            </FormGroup>
+                        <Button type="submit" value="submit" color="primary">Login</Button>
+                    </Form>
+                </ModalBody>
+            </Modal>
+            </React.Fragment>
+        );
+    }
 }
 export default Header;

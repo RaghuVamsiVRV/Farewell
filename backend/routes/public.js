@@ -15,8 +15,8 @@ var { encrypt, decrypt } = new ncrypt('farewell');
 var transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: '',
-    pass: ''
+    user: 'iitpfarewell@gmail.com',
+    pass: 'farewell2021'
   }
 });
 
@@ -91,13 +91,16 @@ router.post('/signup', async (req, res) => {
           }
           var { name, email, password,branch,batch,college,size } = req.body; 
           try{
-            const user1 = {"length" :0}//await User.find({email});
+            const user1 = await User.find({email});
             console.log(user1);
             if(user1.length!==0){
               res.status(400).json({"error": "Email already exists"})
             }
             else{
-              var imageURL = req.file.filename;
+              var imageURL = 'default.jpg'
+              if(req.file) {
+                imageURL = req.file.filename;
+              }
               var verified =  0;
               console.log(imageURL)
               const user = await User.create({name, email, password,branch,batch,college,size,imageURL,verified}); 
@@ -107,7 +110,7 @@ router.post('/signup', async (req, res) => {
               console.log(link)
               
               var mailOptions = {
-                from: 'farewell_iitp@gmail.com',
+                from: 'iitpfarewell@gmail.com',
                 to: email,
                 subject: 'Verification for farewell',
                 html : "Hello,<br> Please Click on the link to verify your email.<br><a href="+link+">Click here to verify</a>"
