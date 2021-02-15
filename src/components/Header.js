@@ -31,22 +31,7 @@ export const AlertCustom = (props) => {
 	}
 };
 class Header extends Component {
-	constructor(props) {
-		super(props);
-		var isLoggedIn = store.get('loginStatus');
-		this.state = {
-			isNavOpen: false,
-			isModalOpen: false,
-			user: {},
-			errors: '',
-			loginStatus: isLoggedIn ? isLoggedIn.loginStatus : { user: '', message: 'logged out' }
-		};
-		this.toggleNav = this.toggleNav.bind(this);
-		this.toggleModal = this.toggleModal.bind(this);
-		this.handleLogin = this.handleLogin.bind(this);
-		this.handleLogout = this.handleLogout.bind(this);
-		this.handleChange = this.handleChange.bind(this);
-	}
+
 
     constructor(props)    
     {
