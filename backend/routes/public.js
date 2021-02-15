@@ -91,13 +91,16 @@ router.post('/signup', async (req, res) => {
           }
           var { name, email, password,branch,batch,college,size } = req.body; 
           try{
-            const user1 = {"length" :0}//await User.find({email});
+            const user1 = await User.find({email});
             console.log(user1);
             if(user1.length!==0){
               res.status(400).json({"error": "Email already exists"})
             }
             else{
-              var imageURL = req.file.filename;
+              var imageURL = 'default.jpg'
+              if(req.file) {
+                imageURL = req.file.filename;
+              }
               var verified =  0;
               console.log(imageURL)
               const user = await User.create({name, email, password,branch,batch,college,size,imageURL,verified}); 
