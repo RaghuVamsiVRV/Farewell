@@ -110,7 +110,7 @@ router.post('/signup', async (req, res) => {
               console.log(link)
               
               var mailOptions = {
-                from: 'farewell_iitp@gmail.com',
+                from: 'iitpfarewell@gmail.com',
                 to: email,
                 subject: 'Verification for farewell',
                 html : "Hello,<br> Please Click on the link to verify your email.<br><a href="+link+">Click here to verify</a>"

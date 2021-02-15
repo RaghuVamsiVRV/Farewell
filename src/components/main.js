@@ -5,10 +5,11 @@ import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import Bubbles from './bubbles';
 import Header from './Header';
 import Signup from './signup';
-
 import { packSiblings } from 'd3';
 import Footer from './Footer';
 
+
+  
 class Main extends Component {
 	constructor(props) {
 		super(props);
