@@ -32,7 +32,8 @@ class Header extends Component {
             isNavOpen: false,
             isModalOpen: false,
             user:{},
-            errors:"",
+            passErr:"",
+            emailErr:"",
             loginStatus:isLoggedIn?isLoggedIn.loginStatus:{user:"", message:"logged out"}
         };
         this.toggleNav = this.toggleNav.bind(this);
@@ -42,8 +43,12 @@ class Header extends Component {
         this.handleChange = this.handleChange.bind(this);
     }
     
-    handleChange(){
-        this.setState({errors:""})
+    handleChange(event){
+        var field = event.target.id
+        if(field==="password")
+            this.setState({passErr:""})
+        else if(field==="email")
+            this.setState({emailErr:""})
     }
     toggleNav(){
         this.setState({
@@ -54,7 +59,10 @@ class Header extends Component {
     toggleModal()
     {
         this.setState({
-            isModalOpen: !this.state.isModalOpen
+            isModalOpen: !this.state.isModalOpen,
+            passErr:"",
+            emailErr:""
+            
         });
     }
     handleLogin(event){
@@ -65,13 +73,17 @@ class Header extends Component {
             body: JSON.stringify({email:this.username.value, password:this.password.value})
         };
         fetch('http://localhost:4000/login', requestOptions)
-            .then(response =>{ if(!response.ok){throw "Either email or password is incorrect"} return response.json()})
+            .then(response =>{ if(!response.ok){throw response} return response.json()})
             .then(data => {this.setState({loginStatus: data});store.set('loginStatus', {loginStatus:data});
             fetch(`http://localhost:4000/users/${this.state.loginStatus.user}`)
             .then(response => response.json())
             .then(data=>{this.setState({user: data});store.set('userName',{userName:this.state.user.name});store.set('userID', {userID:this.state.loginStatus.user})});this.toggleModal();this.setState({errors:""})})
-            .catch( err => {
-                this.setState({errors:err})
+            .catch(err =>{
+                err.text().then(errMsg=>
+                    {
+                        var error=JSON.parse(errMsg);
+                        this.setState({emailErr: error.errors.email, passErr: error.errors.password})
+                    })
             })
         event.preventDefault();
         
@@ -166,11 +178,14 @@ class Header extends Component {
                                 <Input onChange={this.handleChange} type="text" id="username" name="username" innerRef={(input)=>this.username=input}/>
                             </FormGroup>
                             <FormGroup>
+                                <AlertCustom text={this.state.emailErr}/>
+                            </FormGroup>
+                            <FormGroup>
                                 <Label htmlFor="password">Password</Label>
                                 <Input onChange={this.handleChange} type="password" id="password" name="password" innerRef={(input)=>this.password=input}/>
                             </FormGroup>
                             <FormGroup>
-                                <AlertCustom text={this.state.errors}/>
+                                <AlertCustom text={this.state.passErr}/>
                             </FormGroup>
                         <Button type="submit" value="submit" color="primary">Login</Button>
                     </Form>
