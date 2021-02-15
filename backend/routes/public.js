@@ -15,8 +15,8 @@ var { encrypt, decrypt } = new ncrypt('farewell');
 var transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: '',
-    pass: ''
+    user: 'iitpfarewell@gmail.com',
+    pass: 'farewell2021'
   }
 });
 
