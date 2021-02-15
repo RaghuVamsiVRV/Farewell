@@ -8,8 +8,6 @@ import Signup from './signup';
 import { packSiblings } from 'd3';
 import Footer from './Footer';
 
-
-  
 class Main extends Component {
 	constructor(props) {
 		super(props);
@@ -17,9 +15,7 @@ class Main extends Component {
 
 	render() {
 		const Profile = ({ match }) => {
-			return (
-				<ProfilePage id={match.params.Id} />
-			);
+			return <ProfilePage id={match.params.Id} />;
 		};
 		return (
 			<div>
