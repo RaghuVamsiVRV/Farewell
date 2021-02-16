@@ -3,10 +3,12 @@ import { Link } from 'react-router-dom';
 
 export default function() {
 	return (
-		<footer className="footer">
-			<Link className="small" to="/about">
-				made with love <img height="15px" width="15px" src="/photos/info_icon.png" />
-			</Link>
-		</footer>
+		<div className="footer">
+			<footer >
+				<Link className="small" to="/about">
+					<img height="20px" width="20px" margin="16px" src="/photos/info_icon.png" />
+				</Link>
+			</footer>
+		</div>
 	);
 }

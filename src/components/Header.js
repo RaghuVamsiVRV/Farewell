@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component} from 'react';
 import {
 	Nav,
 	Navbar,
@@ -31,22 +31,7 @@ export const AlertCustom = (props) => {
 	}
 };
 class Header extends Component {
-	constructor(props) {
-		super(props);
-		var isLoggedIn = store.get('loginStatus');
-		this.state = {
-			isNavOpen: false,
-			isModalOpen: false,
-			user: {},
-			errors: '',
-			loginStatus: isLoggedIn ? isLoggedIn.loginStatus : { user: '', message: 'logged out' }
-		};
-		this.toggleNav = this.toggleNav.bind(this);
-		this.toggleModal = this.toggleModal.bind(this);
-		this.handleLogin = this.handleLogin.bind(this);
-		this.handleLogout = this.handleLogout.bind(this);
-		this.handleChange = this.handleChange.bind(this);
-	}
+
 
     constructor(props)    
     {
@@ -71,9 +56,10 @@ class Header extends Component {
         var field = event.target.id
         if(field==="password")
             this.setState({passErr:""})
-        else if(field==="email")
+        else if(field==="username")
             this.setState({emailErr:""})
     }
+
     toggleNav(){
         this.setState({
             isNavOpen: !this.state.isNavOpen
@@ -89,6 +75,7 @@ class Header extends Component {
             
         });
     }
+
     handleLogin(event){
         const requestOptions = {
             method: 'POST',
@@ -119,52 +106,7 @@ class Header extends Component {
             
     }
 
-	toggleModal() {
-		this.setState({
-			isModalOpen: !this.state.isModalOpen
-		});
-	}
-	handleLogin(event) {
-		const requestOptions = {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-			credentials: 'include',
-			body: JSON.stringify({ email: this.username.value, password: this.password.value })
-		};
-		fetch('http://localhost:4000/login', requestOptions)
-			.then((response) => {
-				if (!response.ok) {
-					throw 'Either email or password is incorrect';
-				}
-				return response.json();
-			})
-			.then((data) => {
-				this.setState({ loginStatus: data });
-				store.set('loginStatus', { loginStatus: data });
-				fetch(`http://localhost:4000/users/${this.state.loginStatus.user}`)
-					.then((response) => response.json())
-					.then((data) => {
-						this.setState({ user: data });
-						store.set('userName', { userName: this.state.user.name });
-						store.set('userID', { userID: this.state.loginStatus.user });
-					});
-				this.toggleModal();
-				this.setState({ errors: '' });
-			})
-			.catch((err) => {
-				this.setState({ errors: err });
-			});
-		event.preventDefault();
-	}
-	handleLogout() {
-		fetch('http://localhost:4000/logout').then((response) => response.json()).then((data) => {
-			alert(data.message);
-			Cookies.remove('jwt');
-			this.setState({ loginStatus: {} });
-			store.clearAll();
-		});
-	}
-
+	
 	render() {
 		function Signup({ loginStatus }) {
 			if (loginStatus.message === 'logged in') {
@@ -179,7 +121,6 @@ class Header extends Component {
 		}
 		function Profile({ loginStatus }) {
 			var userID = store.get('userID');
-			console.log(loginStatus);
 			if (loginStatus.message === 'logged in') {
 				return (
 					<NavLink className="nav-link" to={`/${userID ? userID.userID : loginStatus.user}`}>

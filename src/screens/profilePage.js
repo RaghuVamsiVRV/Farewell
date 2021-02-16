@@ -1,37 +1,30 @@
 import React, { Component } from 'react';
 import { Control, LocalForm } from 'react-redux-form';
-import { Button, Row, Col, Card, CardTitle, CardText, CardBody } from 'reactstrap';
+import { Button, Row, Col, Card, CardTitle, CardSubtitle, CardText, CardBody } from 'reactstrap';
 
 var store = require('store');
-function RenderComment({ comment }) {
-	const colorDict = {
-		1: '#696969',
-		2: '#420420',
-		3: '#ffa500',
-		4: '#800000',
-		5: '#333333',
-		6: '#101010',
-		7: '#ff4040',
-		8: '#8b0000',
-		9: '#0e2f44',
-		0: '#990000'
-	};
-	console.log(colorDict[Math.floor(Math.random() * 10)]);
+function RenderComment({ userB, userB1, comment }) {
 	return (
 		<Card
 			key={comment._id}
 			body
 			inverse
+			className="p-3"
 			style={{
-				backgroundColor: colorDict[Math.floor(Math.random() * 10)],
-				borderColor: '#000',
-				padding: '10px'
+				backgroundColor: "white",
+				borderBottomColor: '#000',
+				borderBottomWidth: "4px",
+				borderRightColor: '#000',
+				borderRightWidth: "2px",
+				padding: '10px',
+				margin: 10
 			}}
 		>
-			<CardTitle tag="h5">{comment.senderName}</CardTitle>
+			<CardTitle style={{fontFamily: 'Biryani',color: "#000"}} tag="h5">{comment.senderName}</CardTitle>
+			<CardSubtitle style={{color: "#000"}} tag="h5">{userB}{','}{userB1}</CardSubtitle>
 			<CardBody>
-				<CardText>{comment.comment}</CardText>
-				<CardText className="ml-auto mr-3">
+				<CardText style={{fontFamily: 'Coming Soon' , color: "#000", fontWeight:'bold'}}>{comment.comment}</CardText>
+				<CardText style={{color: "#000" , fontSize:"12px", position: ''}} className="ml-auto mr-3">
 					--{' '}
 					{new Intl.DateTimeFormat('en-US', {
 						day: '2-digit',
@@ -87,8 +80,8 @@ class ProfilePage extends Component {
 	render() {
 		const dispComment = this.state.comments.map((comment) => {
 			return (
-				<Col md={6}>
-					<RenderComment comment={comment} />
+				<Col md={4}>
+					<RenderComment userB={this.state.user.batch} userB1={this.state.user.branch} comment={comment} />
 				</Col>
 			);
 		});
