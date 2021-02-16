@@ -8,31 +8,7 @@ import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 
 var store = require('store');
 
-function AddComment({show}){
-	if(show===true){
-		return(
-			<Row className="form-group">
-				<Col md={12}>
-					<Control.textarea
-						model=".comment"
-						id="comment"
-						name="comment"
-						rows={3}
-						className="form-control"
-					/>
-				</Col>
-				<Col>
-				<Button outline type="submit">
-					<span className="fa fa-pencil"/> Submit Comment
-				</Button>	
-				</Col>
-			</Row>
-		)
-	}
-	else{
-		return(<div/>)
-	}
-}
+
 
 
 function RenderComment({ userB, userB1, comment, onDelete}) {
@@ -92,7 +68,8 @@ class ProfilePage extends Component {
 			user: {},
 			url: {}, 
 			isOpen:false, 
-			showComment:userID?userID.userID!==this.props.id:true
+			showComment:userID?userID.userID!==this.props.id:true, 
+			text:""
 		};
 		this.handleDelete = this.handleDelete.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
@@ -117,8 +94,9 @@ class ProfilePage extends Component {
 	handleChange(){
 		this.setState({isOpen:false})
 	}
-	handleSubmit(values) {
-		
+	handleSubmit(values, event) {
+		event.preventDefault();
+		this.setState({text:""})
 		var senderName = store.get('userName');
 		if(senderName != null){
 			if (values.comment) {
@@ -152,7 +130,34 @@ class ProfilePage extends Component {
 
 
 	render() {
-		
+		function AddComment({show}){
+			if(show===true){
+				return(
+					<Row className="form-group">
+						<Col md={12}>
+							<Control.textarea
+								model=".comment"
+								id="comment"
+								name="comment"
+								rows={3}
+								className="form-control"
+							/>
+						</Col>
+						<Col>
+						
+						<Button outline type="submit">
+							<span className="fa fa-pencil"/> Submit Comment
+						</Button>	
+						
+						
+						</Col>
+					</Row>
+				)
+			}
+			else{
+				return(<div/>)
+			}
+		}
 		const dispComment = this.state.comments.map((comment) => {
 			return (
 				<Col md={4}>
