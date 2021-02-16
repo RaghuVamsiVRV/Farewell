@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Control, LocalForm } from 'react-redux-form';
 import { Button, Row, Col, Card, CardTitle, CardSubtitle, CardText, CardBody,Alert } from 'reactstrap';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
+import LongMenu from '../components/longMenu';
 import 'react-toastify/dist/ReactToastify.css';
 
 var store = require('store');
@@ -50,7 +51,8 @@ function RenderComment({ userB, userB1, comment }) {
 				margin: 10
 			}}
 		>
-			<CardTitle style={{fontFamily: 'Biryani',color: "#000"}} tag="h5">{comment.senderName}</CardTitle>
+			<CardTitle md={10} style={{fontFamily: 'Biryani',color: "#000"}} tag="h5">{comment.senderName}</CardTitle>
+			<LongMenu id={comment._id}/>
 			<CardSubtitle style={{color: "#000"}} tag="h5">{userB}{','}{userB1}</CardSubtitle>
 			<CardBody>
 				<CardText style={{fontFamily: 'Coming Soon' , color: "#000", fontWeight:'bold'}}>{comment.comment}</CardText>
@@ -69,14 +71,14 @@ function RenderComment({ userB, userB1, comment }) {
 
 class ProfilePage extends Component {
 	constructor(props) {
-		
+		let userID=store.get('userID');
 		super(props);
 		this.state = {
 			comments: [],
 			user: {},
 			url: {}, 
 			isOpen:false, 
-			
+			showComment:userID?userID.userID!==this.props.id:true
 		};
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.toggleAlert = this.toggleAlert.bind(this);
@@ -95,9 +97,10 @@ class ProfilePage extends Component {
 		this.setState({isOpen:false})
 	}
 	handleSubmit(values) {
-		if(values.comment!=null){
-			var senderName = store.get('userName');
-			if (senderName != null) {
+		
+		var senderName = store.get('userName');
+		if(senderName != null){
+			if (values.comment) {
 				const requestOptions = {
 					method: 'POST',
 					headers: { 'Content-Type': 'application/json' },
@@ -113,11 +116,11 @@ class ProfilePage extends Component {
 					.then((data) => this.setState({ comments: [ ...this.state.comments, data ] }));
 			}
 			else {
-				toast.dark("Please Login")
+				toast.dark("Enter Comment")
 			}
 		}
 		else{
-			toast.dark("Enter Comment")
+			toast.dark("Please Login")
 		}
 		
 	}
@@ -149,15 +152,8 @@ class ProfilePage extends Component {
 					<Row>{dispComment}</Row>
 				</div>
 				<div className="container-banner">
-					<LocalForm onSubmit={this.handleSubmit}>
-						<Row className="form-group">
-							<Col md={12}>
-								<Alert color="danger" isOpen={this.state.isOpen} toggle={this.toggleAlert}>
-									Please login
-								</Alert>
-							</Col>								
-						</Row>		
-						<AddComment show={true}/>			
+					<LocalForm onSubmit={this.handleSubmit}>	
+						<AddComment show={this.state.showComment}/>			
 					</LocalForm>
 				</div>
 			</div>
