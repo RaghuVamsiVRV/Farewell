@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import {
 	Nav,
 	Navbar,
@@ -103,52 +103,6 @@ class Header extends Component {
             .then(data => {alert(data.message);Cookies.remove('jwt'); this.setState({loginStatus:{}}); store.clearAll();})
             
     }
-
-	toggleModal() {
-		this.setState({
-			isModalOpen: !this.state.isModalOpen
-		});
-	}
-	handleLogin(event) {
-		const requestOptions = {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-			credentials: 'include',
-			body: JSON.stringify({ email: this.username.value, password: this.password.value })
-		};
-		fetch('http://localhost:4000/login', requestOptions)
-			.then((response) => {
-				if (!response.ok) {
-					throw 'Either email or password is incorrect';
-				}
-				return response.json();
-			})
-			.then((data) => {
-				this.setState({ loginStatus: data });
-				store.set('loginStatus', { loginStatus: data });
-				fetch(`http://localhost:4000/users/${this.state.loginStatus.user}`)
-					.then((response) => response.json())
-					.then((data) => {
-						this.setState({ user: data });
-						store.set('userName', { userName: this.state.user.name });
-						store.set('userID', { userID: this.state.loginStatus.user });
-					});
-				this.toggleModal();
-				this.setState({ errors: '' });
-			})
-			.catch((err) => {
-				this.setState({ errors: err });
-			});
-		event.preventDefault();
-	}
-	handleLogout() {
-		fetch('http://localhost:4000/logout').then((response) => response.json()).then((data) => {
-			alert(data.message);
-			Cookies.remove('jwt');
-			this.setState({ loginStatus: {} });
-			store.clearAll();
-		});
-	}
 
 	render() {
 		function Signup({ loginStatus }) {

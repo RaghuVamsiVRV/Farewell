@@ -1,4 +1,4 @@
-import React, {Component, useState} from "react";
+import React, {Component} from "react";
 import {Button, Label, Col, Row} from "reactstrap";
 import { Control, LocalForm, Errors } from "react-redux-form";
 import ImageUploader from 'react-images-upload';
@@ -57,7 +57,8 @@ class Signup extends Component{
         for(var value of Object.entries(values)){
             data.append(value[0], value[1])
         }
-        data.append('file', this.state.pictures[0])
+        if(this.state.pictures!=null) data.append('file', this.state.pictures[0])
+        else data.append('file', null)
         data.append('college', "IIT PATNA")
         data.append('size',Math.floor(Math.random() * (50 - 30 + 1) + 30))
          
