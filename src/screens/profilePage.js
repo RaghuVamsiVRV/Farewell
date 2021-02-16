@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Control, LocalForm } from 'react-redux-form';
 import { Button, Row, Col, Card, CardTitle, CardSubtitle, CardText, CardBody,Alert } from 'reactstrap';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 var store = require('store');
 
@@ -67,14 +69,14 @@ function RenderComment({ userB, userB1, comment }) {
 
 class ProfilePage extends Component {
 	constructor(props) {
-		let userID = store.get('userID');
+		
 		super(props);
 		this.state = {
 			comments: [],
 			user: {},
 			url: {}, 
 			isOpen:false, 
-			submitComment:userID?userID.userID!==this.props.id:false
+			
 		};
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.toggleAlert = this.toggleAlert.bind(this);
@@ -93,24 +95,31 @@ class ProfilePage extends Component {
 		this.setState({isOpen:false})
 	}
 	handleSubmit(values) {
-		var senderName = store.get('userName');
-		if (senderName != null) {
-			const requestOptions = {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				credentials: 'include',
-				body: JSON.stringify({
-					to: this.state.user._id,
-					senderName: senderName.userName,
-					comment: values.comment
-				})
-			};
-			fetch('http://localhost:4000/api/add_comment', requestOptions)
-				.then((response) => response.json())
-				.then((data) => this.setState({ comments: [ ...this.state.comments, data ] }));
-		} else {
-			this.setState({isOpen:true})
+		if(values.comment!=null){
+			var senderName = store.get('userName');
+			if (senderName != null) {
+				const requestOptions = {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					credentials: 'include',
+					body: JSON.stringify({
+						to: this.state.user._id,
+						senderName: senderName.userName,
+						comment: values.comment
+					})
+				};
+				fetch('http://localhost:4000/api/add_comment', requestOptions)
+					.then((response) => response.json())
+					.then((data) => this.setState({ comments: [ ...this.state.comments, data ] }));
+			}
+			else {
+				toast.dark("Please Login")
+			}
 		}
+		else{
+			toast.dark("Enter Comment")
+		}
+		
 	}
 
 	toggleAlert(){
@@ -148,7 +157,7 @@ class ProfilePage extends Component {
 								</Alert>
 							</Col>								
 						</Row>		
-						<AddComment show={this.state.submitComment}/>			
+						<AddComment show={true}/>			
 					</LocalForm>
 				</div>
 			</div>

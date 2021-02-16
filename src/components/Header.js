@@ -94,7 +94,7 @@ class Header extends Component {
         };
         fetch('http://localhost:4000/login', requestOptions)
             .then(response =>{ if(!response.ok){throw response} return response.json()})
-            .then(data => {this.setState({loginStatus: data});store.set('loginStatus', {loginStatus:data});toast(({}) => <Msg text={this.state.loginStatus.message}/>);
+            .then(data => {this.setState({loginStatus: data});store.set('loginStatus', {loginStatus:data});toast.dark(({}) => <Msg text={this.state.loginStatus.message}/>);
             fetch(`http://localhost:4000/users/${this.state.loginStatus.user}`)
             .then(response => response.json())
             .then(data=>{this.setState({user: data});store.set('userName',{userName:this.state.user.name});store.set('userID', {userID:this.state.loginStatus.user})});this.toggleModal();this.setState({errors:""})})
@@ -111,7 +111,7 @@ class Header extends Component {
     handleLogout(){
         fetch('http://localhost:4000/logout')
             .then(response => response.json())
-            .then(data => {toast(({}) => <Msg text={data.message}/>);;Cookies.remove('jwt'); this.setState({loginStatus:{}}); store.clearAll();})
+            .then(data => {toast.dark(({}) => <Msg text={data.message}/>);Cookies.remove('jwt'); this.setState({loginStatus:{}}); store.clearAll();})
             
     }
 
@@ -159,7 +159,6 @@ class Header extends Component {
 				);
 			}
 		}
-		const displayMsg = () => {toast(<Msg text={this.state.loginStatus.message}/>)  }
 		return (
 			<React.Fragment>
 				<Navbar dark expand="md">
@@ -187,30 +186,30 @@ class Header extends Component {
 						</Nav>
 					</div>
 				</Navbar>
-
-            <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal} >
-				<ModalHeader style={{background: ""}} toggle={this.toggleModal}>Login</ModalHeader>
-                <ModalBody>
-                    <Form onSubmit={this.handleLogin}>
-                            <FormGroup>
-                                <Label htmlFor="username">Webmail</Label>
-                                <Input onChange={this.handleChange} type="text" id="username" name="username" innerRef={(input)=>this.username=input}/>
-                            </FormGroup>
-                            <FormGroup>
-                                <AlertCustom text={this.state.emailErr}/>
-                            </FormGroup>
-                            <FormGroup>
-                                <Label htmlFor="password">Password</Label>
-                                <Input onChange={this.handleChange} type="password" id="password" name="password" innerRef={(input)=>this.password=input}/>
-                            </FormGroup>
-                            <FormGroup>
-                                <AlertCustom text={this.state.passErr}/>
-                            </FormGroup>
-                        <Button type="submit" value="submit" color="primary">Login</Button>
-                    </Form>
-                </ModalBody>
-            </Modal>
-			<ToastContainer autoClose={2500}/>
+				
+				<Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
+					<ModalHeader  toggle={this.toggleModal}>Login</ModalHeader>
+					<ModalBody>
+						<Form onSubmit={this.handleLogin}>
+								<FormGroup>
+									<Label htmlFor="username">Webmail</Label>
+									<Input onChange={this.handleChange} type="text" id="username" name="username" innerRef={(input)=>this.username=input}/>
+								</FormGroup>
+								<FormGroup>
+									<AlertCustom text={this.state.emailErr}/>
+								</FormGroup>
+								<FormGroup>
+									<Label htmlFor="password">Password</Label>
+									<Input onChange={this.handleChange} type="password" id="password" name="password" innerRef={(input)=>this.password=input}/>
+								</FormGroup>
+								<FormGroup>
+									<AlertCustom text={this.state.passErr}/>
+								</FormGroup>
+							<Button type="submit" value="submit" color="primary">Login</Button>
+						</Form>
+					</ModalBody>
+				</Modal>            
+			<ToastContainer autoClose={2500} position="bottom-right"/>
             </React.Fragment>
         );
     }
