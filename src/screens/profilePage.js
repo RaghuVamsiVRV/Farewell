@@ -1,8 +1,36 @@
 import React, { Component } from 'react';
 import { Control, LocalForm } from 'react-redux-form';
-import { Button, Row, Col, Card, CardTitle, CardSubtitle, CardText, CardBody } from 'reactstrap';
+import { Button, Row, Col, Card, CardTitle, CardSubtitle, CardText, CardBody,Alert } from 'reactstrap';
 
 var store = require('store');
+
+function AddComment({show}){
+	if(show===true){
+		return(
+			<Row className="form-group">
+				<Col md={12}>
+					<Control.textarea
+						model=".comment"
+						id="comment"
+						name="comment"
+						rows={3}
+						className="form-control"
+					/>
+				</Col>
+				<Col>
+				<Button outline type="submit">
+					<span className="fa fa-pencil"/> Submit Comment
+				</Button>	
+				</Col>
+			</Row>
+		)
+	}
+	else{
+		return(<div/>)
+	}
+}
+
+
 function RenderComment({ userB, userB1, comment }) {
 	return (
 		<Card
@@ -39,13 +67,18 @@ function RenderComment({ userB, userB1, comment }) {
 
 class ProfilePage extends Component {
 	constructor(props) {
+		let userID = store.get('userID');
 		super(props);
 		this.state = {
 			comments: [],
 			user: {},
-			url: {}
+			url: {}, 
+			isOpen:false, 
+			submitComment:userID?userID.userID!==this.props.id:false
 		};
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.toggleAlert = this.toggleAlert.bind(this);
+		this.handleChange = this.handleChange.bind(this);
 	}
 	componentDidMount() {
 		fetch(`http://localhost:4000/users/${this.props.id}`)
@@ -55,6 +88,9 @@ class ProfilePage extends Component {
 		fetch(`http://localhost:4000/get_comments?to=${this.props.id}`)
 			.then((response) => response.json())
 			.then((data) => this.setState({ comments: data.comments }));
+	}
+	handleChange(){
+		this.setState({isOpen:false})
 	}
 	handleSubmit(values) {
 		var senderName = store.get('userName');
@@ -73,11 +109,17 @@ class ProfilePage extends Component {
 				.then((response) => response.json())
 				.then((data) => this.setState({ comments: [ ...this.state.comments, data ] }));
 		} else {
-			alert('Please Login');
+			this.setState({isOpen:true})
 		}
 	}
 
+	toggleAlert(){
+		this.setState({isOpen:false})
+	}
+
+
 	render() {
+		
 		const dispComment = this.state.comments.map((comment) => {
 			return (
 				<Col md={4}>
@@ -101,23 +143,16 @@ class ProfilePage extends Component {
 					<LocalForm onSubmit={this.handleSubmit}>
 						<Row className="form-group">
 							<Col md={12}>
-								<Control.textarea
-									model=".comment"
-									id="comment"
-									name="comment"
-									rows={3}
-									className="form-control"
-								/>
-							</Col>
-						</Row>
-						<Button outline type="submit">
-							<span className="fa fa-pencil" /> Submit Comment
-						</Button>
+								<Alert color="danger" isOpen={this.state.isOpen} toggle={this.toggleAlert}>
+									Please login
+								</Alert>
+							</Col>								
+						</Row>		
+						<AddComment show={this.state.submitComment}/>			
 					</LocalForm>
 				</div>
 			</div>
 		);
-		// REACTGA.pageview('/' + JSON.stringify(this.state.user));
 	}
 }
 export default ProfilePage;

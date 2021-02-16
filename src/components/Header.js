@@ -12,13 +12,22 @@ import {
 	FormGroup,
 	Label,
 	Input,
-	Button
+	Button,
+	NavbarBrand
 } from 'reactstrap';
 import { NavLink } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { Alert } from 'reactstrap';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 var store = require('store');
 
+const Msg = ({ text }) => (
+	<div>
+	  {text} 
+	</div>
+  )
 export const AlertCustom = (props) => {
 	if (props.text !== '') {
 		return (
@@ -85,7 +94,7 @@ class Header extends Component {
         };
         fetch('http://localhost:4000/login', requestOptions)
             .then(response =>{ if(!response.ok){throw response} return response.json()})
-            .then(data => {this.setState({loginStatus: data});store.set('loginStatus', {loginStatus:data});
+            .then(data => {this.setState({loginStatus: data});store.set('loginStatus', {loginStatus:data});toast(({}) => <Msg text={this.state.loginStatus.message}/>);
             fetch(`http://localhost:4000/users/${this.state.loginStatus.user}`)
             .then(response => response.json())
             .then(data=>{this.setState({user: data});store.set('userName',{userName:this.state.user.name});store.set('userID', {userID:this.state.loginStatus.user})});this.toggleModal();this.setState({errors:""})})
@@ -102,7 +111,7 @@ class Header extends Component {
     handleLogout(){
         fetch('http://localhost:4000/logout')
             .then(response => response.json())
-            .then(data => {alert(data.message);Cookies.remove('jwt'); this.setState({loginStatus:{}}); store.clearAll();})
+            .then(data => {toast(({}) => <Msg text={data.message}/>);;Cookies.remove('jwt'); this.setState({loginStatus:{}}); store.clearAll();})
             
     }
 
@@ -135,7 +144,7 @@ class Header extends Component {
 			if (loginStatus.message === 'logged in') {
 				return (
 					<div>
-						<Button outline onClick={handleLogout}>
+						<Button outline onClick={handleLogout} size="sm">
 							<span className="fa fa-sign-in fa-lg"> Logout</span>
 						</Button>
 					</div>
@@ -143,28 +152,22 @@ class Header extends Component {
 			} else {
 				return (
 					<div>
-						<Button outline onClick={toggleModal}>
+						<Button outline onClick={toggleModal} size="sm">
 							<span className="fa fa-sign-in fa-lg"> Login</span>
 						</Button>
 					</div>
 				);
 			}
 		}
+		const displayMsg = () => {toast(<Msg text={this.state.loginStatus.message}/>)  }
 		return (
 			<React.Fragment>
 				<Navbar dark expand="md">
 					<div className="container">
 						<NavbarToggler onClick={this.toggleNav} />
+						<NavbarBrand className="mr-auto" href="/"><div className="title">Al-Vida</div></NavbarBrand>
 						<Collapse isOpen={this.state.isNavOpen} navbar>
-							<Nav navbar>
-								<a className="title" href="/">
-									Al-Vida
-								</a>
-								<NavItem>
-									{/* <NavLink className="nav-link" to="/">
-										<span className="fa fa-home fa-lg"> Home</span>
-									</NavLink> */}
-								</NavItem>
+							<Nav navbar>								
 								<NavItem>
 									<Profile loginStatus={this.state.loginStatus} />
 								</NavItem>
@@ -186,7 +189,7 @@ class Header extends Component {
 				</Navbar>
 
             <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal} >
-                <ModalHeader toggle={this.toggleModal}>Login</ModalHeader>
+				<ModalHeader style={{background: ""}} toggle={this.toggleModal}>Login</ModalHeader>
                 <ModalBody>
                     <Form onSubmit={this.handleLogin}>
                             <FormGroup>
@@ -207,6 +210,7 @@ class Header extends Component {
                     </Form>
                 </ModalBody>
             </Modal>
+			<ToastContainer />
             </React.Fragment>
         );
     }
