@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { Control, LocalForm } from 'react-redux-form';
 import { Button, Row, Col, Card, CardTitle, CardSubtitle, CardText, CardBody,Alert } from 'reactstrap';
 import { toast } from 'react-toastify';
-import LongMenu from '../components/longMenu';
+import { Link } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 
 var store = require('store');
 
@@ -34,7 +35,20 @@ function AddComment({show}){
 }
 
 
-function RenderComment({ userB, userB1, comment }) {
+function RenderComment({ userB, userB1, comment, onDelete}) {
+
+	const handleDelete = () => {
+		fetch(`http://localhost:4000/api/delete_comment/${comment._id}`, {method:"DELETE", credentials:'include', headers: { "Content-Type": "application/json", "Accept":"application/json"}})
+		.then((response)=>{if(!response.ok){throw response} return response.json()})
+		.then((data)=> {console.log(data);onDelete()})
+		.catch(err =>{
+			err.text().then(errMsg=>
+				{
+					var error=JSON.parse(errMsg);
+					toast.error(error.error, {toastId:"error"})
+				})
+		})
+	  }
 	return (
 		<Card
 			key={comment._id}
@@ -51,8 +65,8 @@ function RenderComment({ userB, userB1, comment }) {
 				margin: 10
 			}}
 		>
-			<CardTitle md={10} style={{fontFamily: 'Biryani',color: "#000"}} tag="h5">{comment.senderName}</CardTitle>
-			<LongMenu id={comment._id}/>
+			<CardTitle md={10} style={{fontFamily: 'Biryani',color: "#000"}} tag="h5"><Link className="text-secondary" to={`/${comment.from}`}>{comment.senderName}</Link> <Button color="link" className="text-danger" size="sm" onClick={()=>handleDelete(comment._id)}><DeleteOutlinedIcon fontSize="small" /> </Button></CardTitle>
+			
 			<CardSubtitle style={{color: "#000"}} tag="h5">{userB}{','}{userB1}</CardSubtitle>
 			<CardBody>
 				<CardText style={{fontFamily: 'Coming Soon' , color: "#000", fontWeight:'bold'}}>{comment.comment}</CardText>
@@ -80,9 +94,15 @@ class ProfilePage extends Component {
 			isOpen:false, 
 			showComment:userID?userID.userID!==this.props.id:true
 		};
+		this.handleDelete = this.handleDelete.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.toggleAlert = this.toggleAlert.bind(this);
 		this.handleChange = this.handleChange.bind(this);
+	}
+	handleDelete(){
+		fetch(`http://localhost:4000/get_comments?to=${this.props.id}`)
+			.then((response) => response.json())
+			.then((data) => this.setState({ comments: data.comments }));
 	}
 	componentDidMount() {
 		fetch(`http://localhost:4000/users/${this.props.id}`)
@@ -93,6 +113,7 @@ class ProfilePage extends Component {
 			.then((response) => response.json())
 			.then((data) => this.setState({ comments: data.comments }));
 	}
+
 	handleChange(){
 		this.setState({isOpen:false})
 	}
@@ -135,7 +156,7 @@ class ProfilePage extends Component {
 		const dispComment = this.state.comments.map((comment) => {
 			return (
 				<Col md={4}>
-					<RenderComment userB={this.state.user.batch} userB1={this.state.user.branch} comment={comment} />
+					<RenderComment userB={this.state.user.batch} userB1={this.state.user.branch} comment={comment} onDelete={this.handleDelete}/>
 				</Col>
 			);
 		});

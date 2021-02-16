@@ -188,7 +188,7 @@ class Header extends Component {
 				</Navbar>
 				
 				<Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
-					<ModalHeader  toggle={this.toggleModal}>Login</ModalHeader>
+					<ModalHeader className="bg-primary text-white"  toggle={this.toggleModal}>Login</ModalHeader>
 					<ModalBody>
 						<Form onSubmit={this.handleLogin}>
 								<FormGroup>
@@ -209,7 +209,7 @@ class Header extends Component {
 						</Form>
 					</ModalBody>
 				</Modal>            
-			<ToastContainer autoClose={2500} position="bottom-right"/>
+			<ToastContainer position="bottom-right"/>
             </React.Fragment>
         );
     }
