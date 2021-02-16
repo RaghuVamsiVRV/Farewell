@@ -6,17 +6,8 @@ const Comments = require('../models/comments.js');
 const Users = require('../models/users.js');
 
 var multer = require('multer')
-var nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
 
-
-var transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'iitpfarewell@gmail.com',
-      pass: 'farewell2021'
-    }
-  });
 
   
 // get the user id from JWT token
