@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component} from 'react';
 import {
 	Nav,
 	Navbar,
@@ -56,9 +56,10 @@ class Header extends Component {
         var field = event.target.id
         if(field==="password")
             this.setState({passErr:""})
-        else if(field==="email")
+        else if(field==="username")
             this.setState({emailErr:""})
     }
+
     toggleNav(){
         this.setState({
             isNavOpen: !this.state.isNavOpen
@@ -74,6 +75,7 @@ class Header extends Component {
             
         });
     }
+
     handleLogin(event){
         const requestOptions = {
             method: 'POST',
@@ -104,6 +106,7 @@ class Header extends Component {
             
     }
 
+	
 	render() {
 		function Signup({ loginStatus }) {
 			if (loginStatus.message === 'logged in') {
@@ -118,7 +121,6 @@ class Header extends Component {
 		}
 		function Profile({ loginStatus }) {
 			var userID = store.get('userID');
-			console.log(loginStatus);
 			if (loginStatus.message === 'logged in') {
 				return (
 					<NavLink className="nav-link" to={`/${userID ? userID.userID : loginStatus.user}`}>
