@@ -210,7 +210,7 @@ class Header extends Component {
                     </Form>
                 </ModalBody>
             </Modal>
-			<ToastContainer />
+			<ToastContainer autoClose={2500}/>
             </React.Fragment>
         );
     }
