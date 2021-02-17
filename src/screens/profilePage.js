@@ -83,10 +83,10 @@ function RenderComment({ userB, userB1, comment, onDelete}) {
 			inverse
 			className="p-3"
 			style={{
-				backgroundColor: "white",
-				borderBottomColor: '#000',
+				backgroundColor: "#fff",
+				borderBottomColor: '#fff',
 				borderBottomWidth: "4px",
-				borderRightColor: '#000',
+				borderRightColor: '#fff',
 				borderRightWidth: "2px",
 				padding: '10px',
 				margin: 10
@@ -94,7 +94,7 @@ function RenderComment({ userB, userB1, comment, onDelete}) {
 		>
 			<CardTitle md={10} style={{fontFamily: 'Varela Round',color: "#000", fontSize: "16px", textAlign:'left'}} tag="h5"><Link className="text-secondary" to={`/${comment.from}`}>{comment.senderName}</Link> <Button  style={{position:"absolute", top:"10px", right:"5px"}} color="link" className="text-danger" size="sm" onClick={()=>handleDelete(comment._id)}><DeleteOutlinedIcon fontSize="small" /> </Button></CardTitle>
 			
-			<CardSubtitle style={{color: "#000"}} tag="h5">{userB1}{','}{userB}</CardSubtitle>
+			<CardSubtitle style={{color: "#000",fontSize: "12px", textAlign:'left'}} tag="h5">{userB1}{','}{userB}</CardSubtitle>
 			<CardBody>
 				<CardText style={{fontFamily: 'Architects Daughter' , color: "#000"}}>{comment.comment}</CardText>
 				<CardText style={{color: "#000" , fontSize:"12px", position: 'absolute', bottom:'0', right:'0', margin: '8px'}} className="ml-auto mr-3">

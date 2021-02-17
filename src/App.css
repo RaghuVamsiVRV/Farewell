@@ -9,10 +9,9 @@
 }
 
 .lcontainer {
-  background-image: url("https://cdn.pixabay.com/photo/2017/06/17/15/28/gray-2412504_1280.png");
-  background-size: cover;
-  height: 100%;
-  widows: 100%;
+  background-image: url("./media/photos/back.jpg");
+  background-size: contain;
+  min-height: 720px;
   overflow: hidden;
   background-repeat: repeat;
 }
@@ -94,13 +93,15 @@ img {
 
 .Tname {
   font-family: "Kaushan Script", cursive;
-  color: #000;
+  /* text-shadow: -2px -2px 0 bisque, 1px -1px 0 bisque, -2px 2px 0 bisque,
+    1px 1px 0 bisque; */
+  color: bisque;
   font-size: 40px;
   margin: 12px;
 }
 
 .Tname1 {
-  color: #000;
+  color: bisque;
   margin-bottom: 42px;
 }
 
