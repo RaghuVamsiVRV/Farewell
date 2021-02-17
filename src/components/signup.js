@@ -73,7 +73,7 @@ class Signup extends Component{
                 err.text().then(errMsg=>
                     {
                         var error=JSON.parse(errMsg);
-                        this.setState({errors: error.errors.email})
+                        this.setState({errors: error.error})
                     })
             })
 

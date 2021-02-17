@@ -1,7 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Rubik:wght@500&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Coming+Soon&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Biryani:wght@800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Varela+Round&display=swap");
 
 .generic {
   font-style: Rubik;
@@ -9,22 +9,16 @@
 }
 
 .lcontainer {
-  background-image: url("https://media.cntraveler.com/photos/5de82878d606100008e7414f/master/pass/The-Milky-Way_GettyImages-147851475.jpg");
-  height: 100%;
-  position: absolute;
-  width: 100%;
-  overflow: hidden;
-  background-position: center;
-  background-repeat: no-repeat;
+  background-image: url("https://cdn.pixabay.com/photo/2017/06/17/15/28/gray-2412504_1280.png");
   background-size: cover;
+  height: 100%;
+  widows: 100%;
+  overflow: hidden;
+  background-repeat: repeat;
 }
 
 .container-banner {
-  background-image: url("https://www.wallpapertip.com/wmimgs/5-53828_thumb-image-simple-top-background-design.png");
   text-align: center;
-  background-repeat: repeat-x;
-  background-size: cover;
-  border-style: hidden;
   font-family: "Ruda", sans-serif;
   padding: 1em;
 }
@@ -100,17 +94,18 @@ img {
 
 .Tname {
   font-family: "Kaushan Script", cursive;
-  color: "#000";
+  color: #000;
   font-size: 40px;
   margin: 12px;
 }
 
 .Tname1 {
+  color: #000;
   margin-bottom: 42px;
 }
 
 .fill-window {
-  background-image: url("https://media.cntraveler.com/photos/5de82878d606100008e7414f/master/pass/The-Milky-Way_GettyImages-147851475.jpg");
+  background-image: url("./media/background.jpg");
   height: 100%;
   position: absolute;
   left: 0;

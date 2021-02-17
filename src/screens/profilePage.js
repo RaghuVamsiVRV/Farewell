@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
 import { Control, LocalForm } from 'react-redux-form';
-import { Button, Row, Col, Card, CardTitle, CardSubtitle, CardText, CardBody,Alert } from 'reactstrap';
+import { Button, Row, Col, Card, CardTitle, CardSubtitle, CardText, CardBody } from 'reactstrap';
 import { toast } from 'react-toastify';
 import { Link } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 
 var store = require('store');
-
-
-
 
 function RenderComment({ userB, userB1, comment, onDelete}) {
 
@@ -41,11 +38,9 @@ function RenderComment({ userB, userB1, comment, onDelete}) {
 				margin: 10
 			}}
 		>
-			<CardTitle md={10} style={{fontFamily: 'Biryani',color: "#000"}} tag="h5"><Link className="text-secondary" to={`/${comment.from}`}>{comment.senderName}</Link> <Button color="link" className="text-danger" size="sm" onClick={()=>handleDelete(comment._id)}><DeleteOutlinedIcon fontSize="small" /> </Button></CardTitle>
-			
-			<CardSubtitle style={{color: "#000"}} tag="h5">{userB1}{','}{userB}</CardSubtitle>
+			<CardTitle md={10} style={{fontFamily: 'Varela Round',color: "#000", fontSize: "16px", textAlign:'left'}} tag="h5"><Link className="text-secondary" to={`/${comment.from}`}>{comment.senderName}</Link> <Button color="link" className="text-danger" size="sm" onClick={()=>handleDelete(comment._id)}><DeleteOutlinedIcon fontSize="small" /> </Button></CardTitle>
 			<CardBody>
-				<CardText style={{fontFamily: 'Coming Soon' , color: "#000", fontWeight:'bold'}}>{comment.comment}</CardText>
+				<CardText style={{fontFamily: 'Architects Daughter' , color: "#000"}}>{comment.comment}</CardText>
 				<CardText style={{color: "#000" , fontSize:"12px", position: 'absolute', bottom:'0', right:'0', margin: '8px'}} className="ml-auto mr-3">
 					--{' '}
 					{new Intl.DateTimeFormat('en-US', {
@@ -160,13 +155,13 @@ class ProfilePage extends Component {
 		}
 		const dispComment = this.state.comments.map((comment) => {
 			return (
-				<Col md={4}>
+				<Col md={6}>
 					<RenderComment userB={this.state.user.batch} userB1={this.state.user.branch} comment={comment} onDelete={this.handleDelete}/>
 				</Col>
 			);
 		});
 		return (
-			<div>
+			<div className="lcontainer">
 				<div className="container-banner">
 					<img
 						src={'/photos/' + this.state.user.imageURL || '/photos/anushree.jpg'}
@@ -177,8 +172,8 @@ class ProfilePage extends Component {
 					<h2 className="Tname"> {this.state.user.name} </h2>
 					<h5 className="Tname1"> {this.state.user.branch}{', '}{this.state.user.batch} </h5>
 					<Row>{dispComment}</Row>
-				</div>
-				<div className="container-banner">
+				{/* </div>
+				<div className="container-banner"> */}
 					<LocalForm onSubmit={this.handleSubmit}>	
 						<AddComment show={this.state.showComment}/>			
 					</LocalForm>
