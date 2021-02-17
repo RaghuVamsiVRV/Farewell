@@ -9,6 +9,7 @@ import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 var store = require('store');
 
 const Undo = ({text, data, onDelete}) => {
+	const dismiss = () =>  toast.dismiss("Undo");
 	const handleUndo = () => {
 		const requestOptions = {
 			method: 'POST',
@@ -22,7 +23,8 @@ const Undo = ({text, data, onDelete}) => {
 		};
 		fetch('http://localhost:4000/api/add_comment', requestOptions)
 			.then((response) => response.json())
-			.then((data) => onDelete());
+			.then(() => {onDelete(); dismiss()});
+
 	}
 	return(
 		<div>
@@ -65,7 +67,7 @@ function RenderComment({ userB, userB1, comment, onDelete}) {
 	const handleDelete = () => {
 		fetch(`http://localhost:4000/api/delete_comment/${comment._id}`, {method:"DELETE", credentials:'include', headers: { "Content-Type": "application/json", "Accept":"application/json"}})
 		.then((response)=>{if(!response.ok){throw response} return response.json()})
-		.then((data)=> {toast.dark(({})=><Undo text="Comment deleted" data={data} onDelete={onDelete}/>);onDelete()})
+		.then((data)=> {toast.dark(({})=><Undo text="Comment deleted" data={data} onDelete={onDelete}/>, {toastId:"Undo"});onDelete()})
 		.catch(err =>{
 			err.text().then(errMsg=>
 				{
