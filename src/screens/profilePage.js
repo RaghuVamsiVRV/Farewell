@@ -146,7 +146,7 @@ function RenderComment2({ userB, userB1, comment, onDelete, id, show}) {
 			Flip(id!=comment.from)
 		}, 250);
 	}
-	else{
+	else if(show==="0"){ 
 		setTimeout(function(){
 			Flip(false)
 		}, 250);
@@ -232,7 +232,7 @@ class ProfilePage extends Component {
 			isOpen:false, 
 			showComment:userID?userID.userID!==this.props.id:true, 
 			text:"",
-			commentsType:"1",
+			commentsType:"0",
 			myComments:[]
 		};
 		this.handleDelete = this.handleDelete.bind(this);
@@ -315,13 +315,13 @@ class ProfilePage extends Component {
 				</Col>
 			);
 		});
-		const dispComment2 = this.state.myComments.map((comment) => {
+		const dispComment2 = this.state.myComments?this.state.myComments.map((comment) => {
 			return (
 				<Col md={6}>
 					<RenderComment2 userB={this.state.user.batch} userB1={this.state.user.branch} comment={comment} onDelete={this.handleDelete} id={userID?userID.userID:""}  show={this.state.commentsType} />
 				</Col>
 			);
-		});
+		}): ()=>{return(<div/>)}
 		const DispComment = ({id}) =>{
 			if(id==="3"){
 				return(
