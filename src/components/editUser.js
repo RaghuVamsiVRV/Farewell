@@ -75,7 +75,7 @@ class Signup extends Component{
                 err.text().then(errMsg=>
                     {
                         var error=JSON.parse(errMsg);
-                        toast.warn(error.error)
+                        toast.error(error.error)
                     })
             })
 

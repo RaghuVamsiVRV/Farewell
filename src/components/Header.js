@@ -98,7 +98,7 @@ class Header extends Component {
             .then(data => {this.setState({loginStatus: data});store.set('loginStatus', {loginStatus:data});toast.dark(({}) => <Msg text={this.state.loginStatus.message}/>);
             fetch(`http://localhost:4000/users/${this.state.loginStatus.user}`)
             .then(response => response.json())
-            .then(data=>{this.setState({user: data});store.set('userName',{userName:this.state.user.name});store.set('branch',{userName:this.state.user.branch});store.set('batch',{userName:this.state.user.batch});store.set('userID', {userID:this.state.loginStatus.user})});this.toggleModal();this.setState({errors:""})})
+            .then(data=>{this.setState({user: data});store.set('userDetails', data);store.set('userName',{userName:this.state.user.name});store.set('userID', {userID:this.state.loginStatus.user})});this.toggleModal();this.setState({errors:""})})
             .catch(err =>{
                 err.text().then(errMsg=>
                     {

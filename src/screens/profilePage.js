@@ -11,6 +11,7 @@ var store = require('store');
 
 const Undo = ({text, data, onDelete}) => {
 	const dismiss = () =>  toast.dismiss("Undo");
+	let userDetails=store.get('userDetails')
 	const handleUndo = () => {
 		const requestOptions = {
 			method: 'POST',
@@ -19,7 +20,11 @@ const Undo = ({text, data, onDelete}) => {
 			body: JSON.stringify({
 				to: data.to,
 				senderName: data.senderName,
-				comment: data.comment
+				comment: data.comment, 
+				senderBranch: userDetails.branch,
+				senderBatch: userDetails.batch,
+				senderCollege: userDetails.college
+
 			})
 		};
 		fetch('http://localhost:4000/api/add_comment', requestOptions)
@@ -67,57 +72,57 @@ function AddComment({show}){
 }
 
 
-function RenderComment({ userB, userB1, comment, onDelete}) {
-	const handleDelete = () => {
-		fetch(`http://localhost:4000/api/delete_comment/${comment._id}`, {method:"DELETE", credentials:'include', headers: { "Content-Type": "application/json", "Accept":"application/json"}})
-		.then((response)=>{if(!response.ok){throw response} return response.json()})
-		.then((data)=> {toast.dark(({})=><Undo text="Comment deleted" data={data} onDelete={onDelete}/>, {toastId:"Undo"});onDelete()})
-		.catch(err =>{
-			err.text().then(errMsg=>
-				{
-					var error=JSON.parse(errMsg);
-					toast.error(error.error, {toastId:"error"})
-				})
-		})
-	  }
+// function RenderComment({ userB, userB1, comment, onDelete}) {
+// 	const handleDelete = () => {
+// 		fetch(`http://localhost:4000/api/delete_comment/${comment._id}`, {method:"DELETE", credentials:'include', headers: { "Content-Type": "application/json", "Accept":"application/json"}})
+// 		.then((response)=>{if(!response.ok){throw response} return response.json()})
+// 		.then((data)=> {toast.dark(({})=><Undo text="Comment deleted" data={data} onDelete={onDelete}/>, {toastId:"Undo"});onDelete()})
+// 		.catch(err =>{
+// 			err.text().then(errMsg=>
+// 				{
+// 					var error=JSON.parse(errMsg);
+// 					toast.error(error.error, {toastId:"error"})
+// 				})
+// 		})
+// 	  }
 	  
-	return (
-		<Card
-			key={comment._id}
-			body
-			inverse
-			className="p-3"
-			style={{
-				backgroundColor: "#fff",
-				borderBottomColor: '#000',
-				borderBottomWidth: "4px",
-				borderRightColor: '#000',
-				borderRightWidth: "2px",
-				borderTopColor: '#000',
-				borderTopWidth: "1px",
-				borderLeftColor: '#000',
-				borderLeftWidth: "1px",
-				padding: '10px',
-				margin: 10
-			}}
-		>
-			<CardTitle md={10} style={{fontFamily: 'Varela Round',color: "#000", fontSize: "16px", textAlign:'left'}} tag="h5"><Link className="text-secondary" to={`/${comment.from}`}>{comment.senderName}</Link> <Button  style={{position:"absolute", top:"10px", right:"5px"}} color="link" className="text-danger" size="sm" onClick={()=>handleDelete(comment._id)}><DeleteOutlinedIcon fontSize="small" /> </Button></CardTitle>
+// 	return (
+// 		<Card
+// 			key={comment._id}
+// 			body
+// 			inverse
+// 			className="p-3"
+// 			style={{
+// 				backgroundColor: "#fff",
+// 				borderBottomColor: '#000',
+// 				borderBottomWidth: "4px",
+// 				borderRightColor: '#000',
+// 				borderRightWidth: "2px",
+// 				borderTopColor: '#000',
+// 				borderTopWidth: "1px",
+// 				borderLeftColor: '#000',
+// 				borderLeftWidth: "1px",
+// 				padding: '10px',
+// 				margin: 10
+// 			}}
+// 		>
+// 			<CardTitle md={10} style={{fontFamily: 'Varela Round',color: "#000", fontSize: "16px", textAlign:'left'}} tag="h5"><Link className="text-secondary" to={`/${comment.from}`}>{comment.senderName}</Link> <Button  style={{position:"absolute", top:"10px", right:"5px"}} color="link" className="text-danger" size="sm" onClick={()=>handleDelete(comment._id)}><DeleteOutlinedIcon fontSize="small" /> </Button></CardTitle>
 			
-			<CardSubtitle style={{color: "#000",fontSize: "12px", textAlign:'left'}} tag="h5">{userB1}{','}{userB}</CardSubtitle>
-			<CardBody>
-				<CardText style={{fontFamily: 'Architects Daughter' , color: "#000"}}>{comment.comment}</CardText>
-				<CardText style={{color: "#000" , fontSize:"12px", position: 'absolute', bottom:'0', right:'0', margin: '8px'}} className="ml-auto mr-3">
-					--{' '}
-					{new Intl.DateTimeFormat('en-US', {
-						day: '2-digit',
-						month: 'short',
-						year: 'numeric'
-					}).format(new Date(comment.time))}
-				</CardText>
-			</CardBody>
-		</Card>
-	);
-}
+// 			<CardSubtitle style={{color: "#000",fontSize: "12px", textAlign:'left'}} tag="h5">{userB1}{','}{userB}</CardSubtitle>
+// 			<CardBody>
+// 				<CardText style={{fontFamily: 'Architects Daughter' , color: "#000"}}>{comment.comment}</CardText>
+// 				<CardText style={{color: "#000" , fontSize:"12px", position: 'absolute', bottom:'0', right:'0', margin: '8px'}} className="ml-auto mr-3">
+// 					--{' '}
+// 					{new Intl.DateTimeFormat('en-US', {
+// 						day: '2-digit',
+// 						month: 'short',
+// 						year: 'numeric'
+// 					}).format(new Date(comment.time))}
+// 				</CardText>
+// 			</CardBody>
+// 		</Card>
+// 	);
+// }
 
 
 
@@ -136,7 +141,7 @@ function RenderComment2({ userB, userB1, comment, onDelete, id, show}) {
 				})
 		})
 	  }
-	if(show=="2"){
+	if(show==="2"){
 		setTimeout(function(){
 			Flip(id!=comment.from)
 		}, 250);
@@ -171,7 +176,7 @@ function RenderComment2({ userB, userB1, comment, onDelete, id, show}) {
 				>
 					<CardTitle md={10} style={{fontFamily: 'Varela Round',color: "#000", fontSize: "16px", textAlign:'left'}} tag="h5"><Link className="text-secondary" to={`/${comment.from}`}>{comment.senderName}</Link> <Button  style={{position:"absolute", top:"10px", right:"5px"}} color="link" className="text-danger" size="sm" onClick={()=>handleDelete(comment._id)}><DeleteOutlinedIcon fontSize="small" /> </Button></CardTitle>
 					
-					<CardSubtitle style={{color: "#000",fontSize: "12px", textAlign:'left'}} tag="h5">{userB1}{','}{userB}</CardSubtitle>
+					<CardSubtitle style={{color: "#000",fontSize: "12px", textAlign:'left'}} tag="h5">{comment.senderBranch}{','}{comment.senderBatch}</CardSubtitle>
 					<CardBody>
 						<CardText style={{fontFamily: 'Architects Daughter' , color: "#000"}}>{comment.comment}</CardText>
 						<CardText style={{color: "#000" , fontSize:"12px", position: 'absolute', bottom:'0', right:'0', margin: '8px'}} className="ml-auto mr-3">
@@ -227,17 +232,22 @@ class ProfilePage extends Component {
 			isOpen:false, 
 			showComment:userID?userID.userID!==this.props.id:true, 
 			text:"",
-			commentsType:"1"
+			commentsType:"1",
+			myComments:[]
 		};
 		this.handleDelete = this.handleDelete.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.toggleAlert = this.toggleAlert.bind(this);
 		this.handleChange = this.handleChange.bind(this);
+		this.handleMyComments = this.handleMyComments.bind(this);
 	}
 	handleDelete(){
 		fetch(`http://localhost:4000/get_comments?to=${this.props.id}`)
 			.then((response) => response.json())
 			.then((data) => this.setState({ comments: data.comments }));
+		fetch('http://localhost:4000/api/my_comments', {credentials:'include'})
+			.then((response) => response.json())
+			.then((data) => {this.setState({ myComments: data.comments }); console.log(data)});		
 	}
 	componentDidMount() {
 		fetch(`http://localhost:4000/users/${this.props.id}`)
@@ -247,16 +257,22 @@ class ProfilePage extends Component {
 		fetch(`http://localhost:4000/get_comments?to=${this.props.id}`)
 			.then((response) => response.json())
 			.then((data) => this.setState({ comments: data.comments }));
-	}
 
+		fetch('http://localhost:4000/api/my_comments', {credentials:'include'})
+			.then((response) => response.json())
+			.then((data) => {this.setState({ myComments: data.comments }); });	
+	}
+	handleMyComments(){
+		this.setState({commentsType:"3"})
+	}
 	handleChange(){
 		this.setState({isOpen:false})
 	}
 	handleSubmit(values, event) {
 		event.preventDefault();
 		this.setState({text:""})
-		var senderName = store.get('userName');
-		if(senderName != null){
+		let userDetails=store.get('userDetails')
+		if(userDetails != null){
 			if (values.comment) {
 				const requestOptions = {
 					method: 'POST',
@@ -264,8 +280,11 @@ class ProfilePage extends Component {
 					credentials: 'include',
 					body: JSON.stringify({
 						to: this.state.user._id,
-						senderName: senderName.userName,
-						comment: values.comment
+						senderName: userDetails.name,
+						comment: values.comment, 
+						senderBranch: userDetails.branch,
+						senderBatch: userDetails.batch,
+						senderCollege: userDetails.college,
 					})
 				};
 				fetch('http://localhost:4000/api/add_comment', requestOptions)
@@ -277,7 +296,7 @@ class ProfilePage extends Component {
 			}
 		}
 		else{
-			toast.dark("Please Login")
+			toast.error("Please Login")
 		}
 		
 	}
@@ -288,14 +307,53 @@ class ProfilePage extends Component {
 
 
 	render() {
+		console.log(this.state.myComments[0], this.state.comments[0])
 		var userID=store.get('userID')
-		const DispComment = ({id}) => this.state.comments.map((comment) => {
+		const dispComment  = this.state.comments.map((comment) => {
 			return (
 				<Col md={6}>
-					<RenderComment2 userB={this.state.user.batch} userB1={this.state.user.branch} comment={comment} onDelete={this.handleDelete} id={userID?userID.userID:""}  show={id} />
+					<RenderComment2 userB={this.state.user.batch} userB1={this.state.user.branch} comment={comment} onDelete={this.handleDelete} id={userID?userID.userID:""}  show={this.state.commentsType} />
 				</Col>
 			);
 		});
+		const dispComment2 = this.state.myComments.map((comment) => {
+			return (
+				<Col md={6}>
+					<RenderComment2 userB={this.state.user.batch} userB1={this.state.user.branch} comment={comment} onDelete={this.handleDelete} id={userID?userID.userID:""}  show={this.state.commentsType} />
+				</Col>
+			);
+		});
+		const DispComment = ({id}) =>{
+			if(id==="3"){
+				return(
+					<Row>{dispComment2}</Row>
+				)
+			}
+			else{
+				return(
+					<Row>{dispComment}</Row>
+				)
+			}
+		}
+		const CommentNav = ({handleMyComments}) =>{
+			if(store.get('userDetails')&&store.get('userDetails')._id===this.props.id){
+				return(
+					<Button onClick={handleMyComments}>
+						My Comments
+					</Button>
+				)
+			}
+			else{
+				return(
+					<Button onClick={()=>{
+						if(store.get('userID')){this.setState({commentsType:"2"});}
+						else{toast.error("Please Login", {toastId:"pl"})}
+						}}>
+						My Comments
+					</Button>
+				)
+			}
+		}
 		return (
 			<div className="lcontainer">
 				<div className="container-banner">
@@ -308,16 +366,12 @@ class ProfilePage extends Component {
 					<h2 className="Tname"> {this.state.user.name} </h2>
 					<h5 className="Tname1"> {this.state.user.branch}{', '}{this.state.user.batch} </h5>
 					<ButtonGroup>
-						<Button onClick={()=>{this.setState({commentsType:"1"});}}>
-							All Comments
-						</Button>
-						<Button onClick={()=>{this.setState({commentsType:"2"});}}>
-							My Comments
-						</Button>
+							<Button onClick={()=>{this.setState({commentsType:"1"});}}>
+								All Comments
+							</Button>
+							<CommentNav handleMyComments={this.handleMyComments}/>
 					</ButtonGroup>
-					<Row>
-						<DispComment id={this.state.commentsType}/>					
-					</Row>
+					<DispComment id={this.state.commentsType} />					
 				</div>
 				<div className="container-banner">
 					<LocalForm onSubmit={this.handleSubmit} >	
