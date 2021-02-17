@@ -8,12 +8,66 @@ import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 
 var store = require('store');
 
+const Undo = ({text, data, onDelete}) => {
+	const dismiss = () =>  toast.dismiss("Undo");
+	const handleUndo = () => {
+		const requestOptions = {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			credentials: 'include',
+			body: JSON.stringify({
+				to: data.to,
+				senderName: data.senderName,
+				comment: data.comment
+			})
+		};
+		fetch('http://localhost:4000/api/add_comment', requestOptions)
+			.then((response) => response.json())
+			.then(() => {onDelete(); dismiss()});
+
+	}
+	return(
+		<div>
+			{text} 
+			<Button color ="link" className="text-success" onClick={handleUndo} size="sm">Undo</Button>
+		</div>
+	)
+}
+
+function AddComment({show}){
+	if(show===true){
+		return(
+			<Row className="form-group">
+				<Col md={12}>
+					<Control.textarea
+						model=".comment"
+						id="comment"
+						name="comment"
+						rows={3}
+						className="form-control"
+					/>
+				</Col>
+				<Col>
+				
+				<Button outline type="submit">
+					<span className="fa fa-pencil"/> Submit Comment
+				</Button>	
+				
+				
+				</Col>
+			</Row>
+		)
+	}
+	else{
+		return(<div/>)
+	}
+}
 function RenderComment({ userB, userB1, comment, onDelete}) {
 
 	const handleDelete = () => {
 		fetch(`http://localhost:4000/api/delete_comment/${comment._id}`, {method:"DELETE", credentials:'include', headers: { "Content-Type": "application/json", "Accept":"application/json"}})
 		.then((response)=>{if(!response.ok){throw response} return response.json()})
-		.then((data)=> {console.log(data);onDelete()})
+		.then((data)=> {toast.dark(({})=><Undo text="Comment deleted" data={data} onDelete={onDelete}/>, {toastId:"Undo"});onDelete()})
 		.catch(err =>{
 			err.text().then(errMsg=>
 				{
@@ -38,7 +92,9 @@ function RenderComment({ userB, userB1, comment, onDelete}) {
 				margin: 10
 			}}
 		>
-			<CardTitle md={10} style={{fontFamily: 'Varela Round',color: "#000", fontSize: "16px", textAlign:'left'}} tag="h5"><Link className="text-secondary" to={`/${comment.from}`}>{comment.senderName}</Link> <Button color="link" className="text-danger" size="sm" onClick={()=>handleDelete(comment._id)}><DeleteOutlinedIcon fontSize="small" /> </Button></CardTitle>
+			<CardTitle md={10} style={{fontFamily: 'Varela Round',color: "#000", fontSize: "16px", textAlign:'left'}} tag="h5"><Link className="text-secondary" to={`/${comment.from}`}>{comment.senderName}</Link> <Button  style={{position:"absolute", top:"10px", right:"5px"}} color="link" className="text-danger" size="sm" onClick={()=>handleDelete(comment._id)}><DeleteOutlinedIcon fontSize="small" /> </Button></CardTitle>
+			
+			<CardSubtitle style={{color: "#000"}} tag="h5">{userB1}{','}{userB}</CardSubtitle>
 			<CardBody>
 				<CardText style={{fontFamily: 'Architects Daughter' , color: "#000"}}>{comment.comment}</CardText>
 				<CardText style={{color: "#000" , fontSize:"12px", position: 'absolute', bottom:'0', right:'0', margin: '8px'}} className="ml-auto mr-3">
@@ -125,34 +181,6 @@ class ProfilePage extends Component {
 
 
 	render() {
-		function AddComment({show}){
-			if(show===true){
-				return(
-					<Row className="form-group">
-						<Col md={12}>
-							<Control.textarea
-								model=".comment"
-								id="comment"
-								name="comment"
-								rows={3}
-								className="form-control"
-							/>
-						</Col>
-						<Col>
-						
-						<Button outline type="submit">
-							<span className="fa fa-pencil"/> Submit Comment
-						</Button>	
-						
-						
-						</Col>
-					</Row>
-				)
-			}
-			else{
-				return(<div/>)
-			}
-		}
 		const dispComment = this.state.comments.map((comment) => {
 			return (
 				<Col md={6}>

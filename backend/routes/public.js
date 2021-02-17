@@ -37,7 +37,7 @@ const handleErrors = (err) => {
 
   // duplicate email error
   if (err.code === 11000) {
-    errors.email = 'Already registered';
+    errors.email = 'Email is already registered';
     return errors;
   }
 
