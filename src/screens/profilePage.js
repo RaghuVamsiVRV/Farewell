@@ -358,6 +358,19 @@ class ProfilePage extends Component {
 				)
 			}
 		}
+		const DispEdit = ({show}) =>{
+			if(show){
+				return(
+					<Link to="/editUser" style={{position:"relative", left:"-2em", top:"3em", textDecoration:"none"}}> 
+						<Fab color="secondary" size="small" aria-label="edit"><EditIcon /></Fab>
+					</Link>	
+				)
+			}
+			else{
+				return <div/>
+			}
+			
+		}
 		return (
 			<div className="lcontainer">
 				<div className="container-banner">
@@ -367,7 +380,7 @@ class ProfilePage extends Component {
 						height="170"
 						width="170"
 					/>
-					<Link to="/editUser" style={{position:"relative", left:"-2em", top:"3em", textDecoration:"none"}}> <Fab color="secondary" size="small" aria-label="edit"><EditIcon /></Fab></Link>	
+					<DispEdit show={store.get('userDetails')?this.state.user._id===store.get('userDetails')._id:true}/>
 					<h2 className="Tname"> {this.state.user.name} </h2>
 					<h5 className="Tname1"> {this.state.user.branch}{', '}{this.state.user.batch}</h5>
 					
