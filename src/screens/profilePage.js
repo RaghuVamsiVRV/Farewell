@@ -6,7 +6,8 @@ import { Link } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import ReactCardFlip from 'react-card-flip';
-
+import Fab from '@material-ui/core/Fab';
+import EditIcon from '@material-ui/icons/Edit';
 var store = require('store');
 
 const Undo = ({text, data, onDelete}) => {
@@ -363,8 +364,10 @@ class ProfilePage extends Component {
 						height="170"
 						width="170"
 					/>
+					<Link to="/editUser" style={{position:"relative", left:"-2em", top:"3em", textDecoration:"none"}}> <Fab color="secondary" size="small" aria-label="edit"><EditIcon /></Fab></Link>	
 					<h2 className="Tname"> {this.state.user.name} </h2>
-					<h5 className="Tname1"> {this.state.user.branch}{', '}{this.state.user.batch} </h5>
+					<h5 className="Tname1"> {this.state.user.branch}{', '}{this.state.user.batch}</h5>
+					
 					<ButtonGroup>
 							<Button onClick={()=>{this.setState({commentsType:"1"});}}>
 								All Comments

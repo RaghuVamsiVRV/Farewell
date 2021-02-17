@@ -25,11 +25,11 @@ export const AlertCustom = (props) => {
   }
 
 
-const required = (val) => val && val.length;
+// const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length<=len);
-const minLength = (len) => (val) => (val) && (val?val.length>=len:false);
-const validEmail = (val) => /^[A-Z0-9._%+-]+@iitp\.ac\.in$/i.test(val);
-const passMatch = (Val) => (val) => (val) && (Val) && (val===Val);
+const minLength = (len) => (val) => !(val) || (val?val.length>=len:false);
+// const validEmail = (val) => /^[A-Z0-9._%+-]+@iitp\.ac\.in$/i.test(val);
+const passMatch = (Val) => (val) => (Val)?((val) && (Val) && (val===Val)):true;
 
 class Signup extends Component{
     constructor(props) {
@@ -62,15 +62,15 @@ class Signup extends Component{
         }
         if(this.state.pictures!=null) data.append('file', this.state.pictures[0])
         else data.append('file', null)
-        // data.append('college', "IIT PATNA")
-        // data.append('size',Math.floor(Math.random() * (50 - 30 + 1) + 30))
          
         const requestOptions = {
             method: 'POST',
+            credentials:'include',
             body: data 
         };
         fetch('http://localhost:4000/api/edit', requestOptions)
             .then(response => {if(!response.ok){throw response} response.json()})
+            .then((data)=>{console.log(data);toast.success("Profile Updated")})
             .catch(err =>{
                 err.text().then(errMsg=>
                     {
@@ -136,11 +136,11 @@ class Signup extends Component{
                                      />
                                 </Col>
                             </Row> */}
-                            <Row>
+                            {/* <Row>
                                 <Col className="ml-auto" md={9}>
                                     <AlertCustom text={this.state.errors}/>
                                 </Col>
-                            </Row>
+                            </Row> */}
                             <Row className="form-group">
                                 <Label htmlFor="password" md={3}>New-Password</Label>
                                 <Col md={9}>
