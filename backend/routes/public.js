@@ -144,7 +144,7 @@ router.post('/login', async (req, res) => {
     try {
       const user = await User.login(email, password);
       console.log(user)
-      if(user.verified == 0) res.status(200).json({"error":"Verify your email"})
+      if(user.verified === 0) res.status(200).json({"error":"Verify your email"})
       const token = createToken(user._id);
       res.cookie('jwt', token, { httpOnly: false, maxAge: maxAge * 1000 });
       res.status(200).json({ user: user._id, 'message': 'logged in' });
