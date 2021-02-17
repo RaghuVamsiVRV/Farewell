@@ -3,7 +3,7 @@ import {Button, Label, Col, Row} from "reactstrap";
 import { Control, LocalForm, Errors } from "react-redux-form";
 import ImageUploader from 'react-images-upload';
 import { Alert } from "reactstrap";
-
+import { toast } from "react-toastify";
 export const AlertCustom = (props) => {    
     if(props.text!==""){
         return (
@@ -68,7 +68,7 @@ class Signup extends Component{
         };
         fetch('http://localhost:4000/signup', requestOptions)
             .then(response => {if(!response.ok){throw response} response.json()})
-            .then(data => {this.setState({user: data});alert("Verify your account via registered email")})
+            .then(data => {this.setState({user: data});toast.info("Verify your account via registered email")})
             .catch(err =>{
                 err.text().then(errMsg=>
                     {

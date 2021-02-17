@@ -13,9 +13,10 @@ import {
 	Label,
 	Input,
 	Button,
-	NavbarBrand
+	NavbarBrand,
+	ButtonGroup
 } from 'reactstrap';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { Alert } from 'reactstrap';
 import { ToastContainer, toast } from 'react-toastify';
@@ -97,7 +98,7 @@ class Header extends Component {
             .then(data => {this.setState({loginStatus: data});store.set('loginStatus', {loginStatus:data});toast.dark(({}) => <Msg text={this.state.loginStatus.message}/>);
             fetch(`http://localhost:4000/users/${this.state.loginStatus.user}`)
             .then(response => response.json())
-            .then(data=>{this.setState({user: data});store.set('userName',{userName:this.state.user.name});store.set('userID', {userID:this.state.loginStatus.user})});this.toggleModal();this.setState({errors:""})})
+            .then(data=>{this.setState({user: data});store.set('userName',{userName:this.state.user.name});store.set('branch',{userName:this.state.user.branch});store.set('batch',{userName:this.state.user.batch});store.set('userID', {userID:this.state.loginStatus.user})});this.toggleModal();this.setState({errors:""})})
             .catch(err =>{
                 err.text().then(errMsg=>
                     {
@@ -117,17 +118,17 @@ class Header extends Component {
 
 	
 	render() {
-		function Signup({ loginStatus }) {
-			if (loginStatus.message === 'logged in') {
-				return <div />;
-			} else {
-				return (
-					<NavLink className="nav-link" to="/signup">
-						<span className="fa fa-sign-in fa-lg"> Signup</span>
-					</NavLink>
-				);
-			}
-		}
+		// function Signup({ loginStatus }) {
+		// 	if (loginStatus.message === 'logged in') {
+		// 		return <div />;
+		// 	} else {
+		// 		return (
+		// 			<NavLink className="nav-link" to="/signup">
+		// 				<span className="fa fa-sign-in fa-lg"> Signup</span>
+		// 			</NavLink>
+		// 		);
+		// 	}
+		// }
 		function Profile({ loginStatus }) {
 			var userID = store.get('userID');
 			if (loginStatus.message === 'logged in') {
@@ -170,9 +171,6 @@ class Header extends Component {
 								<NavItem>
 									<Profile loginStatus={this.state.loginStatus} />
 								</NavItem>
-								<NavItem>
-									<Signup loginStatus={this.state.loginStatus} />
-								</NavItem>
 							</Nav>
 						</Collapse>
 						<Nav className="ml-auto" navbar>
@@ -205,7 +203,12 @@ class Header extends Component {
 								<FormGroup>
 									<AlertCustom text={this.state.passErr}/>
 								</FormGroup>
-							<Button type="submit" value="submit" color="primary">Login</Button>
+								<ButtonGroup>
+							<Button type="submit" value="submit" color="dark" outline>Login</Button>
+							<Button color="link"  onClick={this.toggleModal}>
+								 <Link className="text-secondary" to="/signup">Signup</Link>
+							</Button>
+							</ButtonGroup>
 						</Form>
 					</ModalBody>
 				</Modal>            

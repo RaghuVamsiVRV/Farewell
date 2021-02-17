@@ -76,7 +76,10 @@ function RenderComment({ userB, userB1, comment, onDelete}) {
 				})
 		})
 	  }
+	  var batch=store.get('branch');
+	  var batch=store.get('batch');
 	return (
+		
 		<Card
 			key={comment._id}
 			body
