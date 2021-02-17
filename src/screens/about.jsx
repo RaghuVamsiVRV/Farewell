@@ -12,28 +12,33 @@ class About extends Component {
 					chance to  host a real farewell for y'all this year!
 				</h3>
 
-				<ul className="list">
-					<li>
-						<a className="creator" href={'https://www.naths.in'}>
-							Naren
-						</a>
-					</li>
-					<li>
-						<a className="creator" href={'https://github.com/vsaisujeeth'}>
-							Vinnakota Sai Sujeeth
-						</a>
-					</li>
-					<li>
-						<a className="creator" href={'https://github.com/ryaswant5'}>
-							Yashwanth Rachamallu
-						</a>
-					</li>
-					<li>
-						<a className="creator" href={'https://github.com/RaghuVamsiVRV'}>
-							Raghu Vamsi
-						</a>
-					</li>
-				</ul>
+				<div>
+					
+					<div>
+					<a className="creator" href={'https://www.naths.in'}>
+						Naren {' '}
+					</a>
+					</div>
+				
+					<div>
+					<a className="creator" href={'https://github.com/vsaisujeeth'}>
+						Vinnakota Sai Sujeeth {' '}
+					</a>
+					</div>
+				
+					<div>
+					<a className="creator" href={'https://github.com/ryaswant5'}>
+						Yashwanth Rachamallu {' '}
+					</a>
+					</div>
+				
+					<div>
+					<a className="creator" href={'https://github.com/RaghuVamsiVRV'}>
+						Raghu Vamsi
+					</a>
+					</div>
+					
+				</div>
 			</div>
 		);
 	}
