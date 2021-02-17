@@ -8,7 +8,29 @@ import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 
 var store = require('store');
 
-
+const Undo = ({text, data, onDelete}) => {
+	const handleUndo = () => {
+		const requestOptions = {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			credentials: 'include',
+			body: JSON.stringify({
+				to: data.to,
+				senderName: data.senderName,
+				comment: data.comment
+			})
+		};
+		fetch('http://localhost:4000/api/add_comment', requestOptions)
+			.then((response) => response.json())
+			.then((data) => onDelete());
+	}
+	return(
+		<div>
+			{text} 
+			<Button color ="link" className="text-success" onClick={handleUndo} size="sm">Undo</Button>
+		</div>
+	)
+}
 
 function AddComment({show}){
 	if(show===true){
@@ -43,7 +65,7 @@ function RenderComment({ userB, userB1, comment, onDelete}) {
 	const handleDelete = () => {
 		fetch(`http://localhost:4000/api/delete_comment/${comment._id}`, {method:"DELETE", credentials:'include', headers: { "Content-Type": "application/json", "Accept":"application/json"}})
 		.then((response)=>{if(!response.ok){throw response} return response.json()})
-		.then((data)=> {toast.dark("Comment Deleted");onDelete()})
+		.then((data)=> {toast.dark(({})=><Undo text="Comment deleted" data={data} onDelete={onDelete}/>);onDelete()})
 		.catch(err =>{
 			err.text().then(errMsg=>
 				{
