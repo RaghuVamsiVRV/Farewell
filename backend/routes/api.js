@@ -152,7 +152,7 @@ router.delete('/delete_comment/:id', function(req, res){
                 }).catch(err=>res.status(400).json({'error': err.message}))
             }
             else{
-                res.status(400).json({'error':'You do not have access to delete document created by other users'})
+                res.status(400).json({'error':'You do not have access to delete comments created by other users'})
             }
 
         } 
