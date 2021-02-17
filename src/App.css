@@ -8,16 +8,23 @@
   color: rgb(61, 21, 21);
 }
 
-.container {
-  justify-content: center;
-  align-items: left;
+.lcontainer {
+  background-image: url("https://media.cntraveler.com/photos/5de82878d606100008e7414f/master/pass/The-Milky-Way_GettyImages-147851475.jpg");
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  overflow: hidden;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .container-banner {
-  background-color: #ffffff;
+  background-image: url("https://www.wallpapertip.com/wmimgs/5-53828_thumb-image-simple-top-background-design.png");
   text-align: center;
+  background-repeat: repeat-x;
+  background-size: cover;
   border-style: hidden;
-  border-radius: 15px;
   font-family: "Ruda", sans-serif;
   padding: 1em;
 }
@@ -69,19 +76,18 @@ img {
 }
 
 .creator {
-  color: pink;
+  color: bisque;
   text-decoration: none;
   font-family: Rubik;
 }
 
 .creator:hover {
-  color: rebeccapurple;
+  color: rgb(255, 187, 0);
   text-decoration: none;
 }
 
 .title {
   font-size: 25px;
-  font-weight: bold;
   font-family: "Kaushan Script", cursive;
   color: bisque;
   font-weight: 600;
@@ -90,4 +96,27 @@ img {
 }
 .title:hover {
   text-decoration: none;
+}
+
+.Tname {
+  font-family: "Kaushan Script", cursive;
+  color: "#000";
+  font-size: 40px;
+  margin: 12px;
+}
+
+.Tname1 {
+  margin-bottom: 42px;
+}
+
+.fill-window {
+  background-image: url("https://media.cntraveler.com/photos/5de82878d606100008e7414f/master/pass/The-Milky-Way_GettyImages-147851475.jpg");
+  height: 100%;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }

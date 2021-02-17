@@ -21,10 +21,10 @@ function RenderComment({ userB, userB1, comment }) {
 			}}
 		>
 			<CardTitle style={{fontFamily: 'Biryani',color: "#000"}} tag="h5">{comment.senderName}</CardTitle>
-			<CardSubtitle style={{color: "#000"}} tag="h5">{userB}{','}{userB1}</CardSubtitle>
+			<CardSubtitle style={{color: "#000", fontSize: '12px'}} tag="h5">{userB1}{', '}{userB}</CardSubtitle>
 			<CardBody>
 				<CardText style={{fontFamily: 'Coming Soon' , color: "#000", fontWeight:'bold'}}>{comment.comment}</CardText>
-				<CardText style={{color: "#000" , fontSize:"12px", position: ''}} className="ml-auto mr-3">
+				<CardText style={{color: "#000" , fontSize:"12px", position: 'absolute', bottom:'0', right:'0', margin: '8px'}} className="ml-auto mr-3">
 					--{' '}
 					{new Intl.DateTimeFormat('en-US', {
 						day: '2-digit',
@@ -80,13 +80,13 @@ class ProfilePage extends Component {
 	render() {
 		const dispComment = this.state.comments.map((comment) => {
 			return (
-				<Col md={4}>
+				<Col md={6}>
 					<RenderComment userB={this.state.user.batch} userB1={this.state.user.branch} comment={comment} />
 				</Col>
 			);
 		});
 		return (
-			<div className="container">
+			<div>
 				<div className="container-banner">
 					<img
 						src={'/photos/' + this.state.user.imageURL || '/photos/anushree.jpg'}
@@ -94,10 +94,11 @@ class ProfilePage extends Component {
 						height="170"
 						width="170"
 					/>
-					<h2> {this.state.user.name} </h2>
+					<h2 className="Tname"> {this.state.user.name} </h2>
+					<h5 className="Tname1"> {this.state.user.branch}{', '}{this.state.user.batch} </h5>
 					<Row>{dispComment}</Row>
-				</div>
-				<div className="container-banner">
+				{/* </div>
+				<div className="container-banner"> */}
 					<LocalForm onSubmit={this.handleSubmit}>
 						<Row className="form-group">
 							<Col md={12}>
