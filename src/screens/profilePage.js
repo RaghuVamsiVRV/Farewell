@@ -16,7 +16,7 @@ function RenderComment({ userB, userB1, comment, onDelete}) {
 	const handleDelete = () => {
 		fetch(`http://localhost:4000/api/delete_comment/${comment._id}`, {method:"DELETE", credentials:'include', headers: { "Content-Type": "application/json", "Accept":"application/json"}})
 		.then((response)=>{if(!response.ok){throw response} return response.json()})
-		.then((data)=> {console.log(data);onDelete()})
+		.then((data)=> {toast.dark("Comment Deleted");onDelete()})
 		.catch(err =>{
 			err.text().then(errMsg=>
 				{

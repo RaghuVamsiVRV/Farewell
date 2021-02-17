@@ -4,7 +4,11 @@ import { Control, LocalForm, Errors } from "react-redux-form";
 import ImageUploader from 'react-images-upload';
 import { Alert } from "reactstrap";
 
-export const AlertCustom = (props) => {    
+export const AlertCustom = (props) => {  
+    
+    var 
+
+
     if(props.text!==""){
         return (
         <div>
@@ -73,7 +77,7 @@ class Signup extends Component{
                 err.text().then(errMsg=>
                     {
                         var error=JSON.parse(errMsg);
-                        this.setState({errors: error.error})
+                        this.setState({errors: error.errors.email})
                     })
             })
 
