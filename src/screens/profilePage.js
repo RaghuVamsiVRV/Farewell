@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { Control, LocalForm } from 'react-redux-form';
-import { Button, Row, Col, Card, CardTitle, CardSubtitle, CardText, CardBody } from 'reactstrap';
+import { Button, Row, Col, Card, CardTitle, CardSubtitle, CardText, CardBody, ButtonGroup } from 'reactstrap';
 import { toast } from 'react-toastify';
 import { Link } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
+import ReactCardFlip from 'react-card-flip';
 
 var store = require('store');
 
@@ -64,8 +65,9 @@ function AddComment({show}){
 		return(<div/>)
 	}
 }
-function RenderComment({ userB, userB1, comment, onDelete}) {
 
+
+function RenderComment({ userB, userB1, comment, onDelete}) {
 	const handleDelete = () => {
 		fetch(`http://localhost:4000/api/delete_comment/${comment._id}`, {method:"DELETE", credentials:'include', headers: { "Content-Type": "application/json", "Accept":"application/json"}})
 		.then((response)=>{if(!response.ok){throw response} return response.json()})
@@ -78,10 +80,8 @@ function RenderComment({ userB, userB1, comment, onDelete}) {
 				})
 		})
 	  }
-	  var batch=store.get('branch');
-	  var batch=store.get('batch');
+	  
 	return (
-		
 		<Card
 			key={comment._id}
 			body
@@ -119,6 +119,103 @@ function RenderComment({ userB, userB1, comment, onDelete}) {
 	);
 }
 
+
+
+
+function RenderComment2({ userB, userB1, comment, onDelete, id, show}) {
+	var [isFlipped, Flip] = useState(true);
+	const handleDelete = () => {
+		fetch(`http://localhost:4000/api/delete_comment/${comment._id}`, {method:"DELETE", credentials:'include', headers: { "Content-Type": "application/json", "Accept":"application/json"}})
+		.then((response)=>{if(!response.ok){throw response} return response.json()})
+		.then((data)=> {toast.dark(({})=><Undo text="Comment deleted" data={data} onDelete={onDelete}/>, {toastId:"Undo"});onDelete()})
+		.catch(err =>{
+			err.text().then(errMsg=>
+				{
+					var error=JSON.parse(errMsg);
+					toast.error(error.error, {toastId:"error"})
+				})
+		})
+	  }
+	if(show=="2"){
+		setTimeout(function(){
+			Flip(id!=comment.from)
+		}, 250);
+	}
+	else{
+		setTimeout(function(){
+			Flip(false)
+		}, 250);
+	}
+
+	return (
+		<ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
+			<div key="front">
+				<Card
+					key={comment._id}
+					body
+					inverse
+					className="p-3"
+					style={{
+						backgroundColor: "#fff",
+						borderBottomColor: '#000',
+						borderBottomWidth: "4px",
+						borderRightColor: '#000',
+						borderRightWidth: "2px",
+						borderTopColor: '#000',
+						borderTopWidth: "1px",
+						borderLeftColor: '#000',
+						borderLeftWidth: "1px",
+						padding: '10px',
+						margin: 10
+					}}
+				>
+					<CardTitle md={10} style={{fontFamily: 'Varela Round',color: "#000", fontSize: "16px", textAlign:'left'}} tag="h5"><Link className="text-secondary" to={`/${comment.from}`}>{comment.senderName}</Link> <Button  style={{position:"absolute", top:"10px", right:"5px"}} color="link" className="text-danger" size="sm" onClick={()=>handleDelete(comment._id)}><DeleteOutlinedIcon fontSize="small" /> </Button></CardTitle>
+					
+					<CardSubtitle style={{color: "#000",fontSize: "12px", textAlign:'left'}} tag="h5">{userB1}{','}{userB}</CardSubtitle>
+					<CardBody>
+						<CardText style={{fontFamily: 'Architects Daughter' , color: "#000"}}>{comment.comment}</CardText>
+						<CardText style={{color: "#000" , fontSize:"12px", position: 'absolute', bottom:'0', right:'0', margin: '8px'}} className="ml-auto mr-3">
+							--{' '}
+							{new Intl.DateTimeFormat('en-US', {
+								day: '2-digit',
+								month: 'short',
+								year: 'numeric'
+							}).format(new Date(comment.time))}
+						</CardText>
+					</CardBody>
+				</Card>
+				</div>
+
+				<div key="back">
+					<Card
+						key={comment._id}
+						body
+						inverse
+						className="p-3"
+						style={{
+							backgroundColor: "#fff",
+							borderBottomColor: '#000',
+							borderBottomWidth: "4px",
+							borderRightColor: '#000',
+							borderRightWidth: "2px",
+							borderTopColor: '#000',
+							borderTopWidth: "1px",
+							borderLeftColor: '#000',
+							borderLeftWidth: "1px",
+							padding: '10px',
+							margin: 10
+						}}
+					>
+						<CardTitle><br/></CardTitle>
+						
+						<CardBody><br/></CardBody>
+					</Card>
+				</div>
+		</ReactCardFlip>
+		
+	);
+}
+
 class ProfilePage extends Component {
 	constructor(props) {
 		let userID=store.get('userID');
@@ -129,7 +226,8 @@ class ProfilePage extends Component {
 			url: {}, 
 			isOpen:false, 
 			showComment:userID?userID.userID!==this.props.id:true, 
-			text:""
+			text:"",
+			commentsType:"1"
 		};
 		this.handleDelete = this.handleDelete.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
@@ -190,10 +288,11 @@ class ProfilePage extends Component {
 
 
 	render() {
-		const dispComment = this.state.comments.map((comment) => {
+		var userID=store.get('userID')
+		const DispComment = ({id}) => this.state.comments.map((comment) => {
 			return (
 				<Col md={6}>
-					<RenderComment userB={this.state.user.batch} userB1={this.state.user.branch} comment={comment} onDelete={this.handleDelete}/>
+					<RenderComment2 userB={this.state.user.batch} userB1={this.state.user.branch} comment={comment} onDelete={this.handleDelete} id={userID?userID.userID:""}  show={id} />
 				</Col>
 			);
 		});
@@ -208,9 +307,19 @@ class ProfilePage extends Component {
 					/>
 					<h2 className="Tname"> {this.state.user.name} </h2>
 					<h5 className="Tname1"> {this.state.user.branch}{', '}{this.state.user.batch} </h5>
-					<Row>{dispComment}</Row>
-				{/* </div>
-				<div className="container-banner"> */}
+					<ButtonGroup>
+						<Button onClick={()=>{this.setState({commentsType:"1"});}}>
+							All Comments
+						</Button>
+						<Button onClick={()=>{this.setState({commentsType:"2"});}}>
+							My Comments
+						</Button>
+					</ButtonGroup>
+					<Row>
+						<DispComment id={this.state.commentsType}/>					
+					</Row>
+				</div>
+				<div className="container-banner">
 					<LocalForm onSubmit={this.handleSubmit} >	
 						<AddComment show={this.state.showComment}/>			
 					</LocalForm>

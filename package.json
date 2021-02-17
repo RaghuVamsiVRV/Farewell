@@ -26,6 +26,7 @@
 		"react-alert": "^7.0.2",
 		"react-alert-template-basic": "^1.0.0",
 		"react-audio-player": "^0.14.0",
+		"react-card-flip": "^1.0.11",
 		"react-cookie": "^4.0.3",
 		"react-dom": "^17.0.1",
 		"react-ga": "^3.3.0",

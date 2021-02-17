@@ -92,13 +92,13 @@ class Signup extends Component{
                     <div className="col-12 col-md-9">
                         <LocalForm onSubmit={(values)=>this.handleSubmit(values)}>
                             <Row className="form-group">
-                            <Label htmlFor="name" md={3}>Name</Label>
+                            <Label htmlFor="name" md={3}>Name <span className="text-danger">*</span></Label>
                                 <Col md={9}>
                                     <Control.text model=".name" id="name" name="name"
                                         placeholder="Name"
                                         className="form-control"
                                         validators={{
-                                            required, minLength: minLength(3), maxLength: maxLength(30)
+                                            required, minLength: minLength(3), maxLength: maxLength(15)
                                         }}
                                          />
                                     <Errors
@@ -108,13 +108,13 @@ class Signup extends Component{
                                         messages={{
                                             required: 'This is a required field, ',
                                             minLength: 'Must be greater than 2 characters, ',
-                                            maxLength: 'Must be 30 characters or less'
+                                            maxLength: 'Must be 15 characters or less'
                                         }}
                                      />
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Label htmlFor="email" md={3}>Webmail</Label>
+                                <Label htmlFor="email" md={3}>Webmail <span className="text-danger">*</span></Label>
                                 <Col md={9}>
                                     <Control.text model=".email" id="email" name="email"
                                         placeholder="Webmail"
@@ -141,7 +141,7 @@ class Signup extends Component{
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Label htmlFor="password" md={3}>Password</Label>
+                                <Label htmlFor="password" md={3}>Password <span className="text-danger">*</span></Label>
                                 <Col md={9}>
                                     <Control.text type="password" model=".password" id="password" name="password"
                                     className="form-control"
@@ -162,7 +162,7 @@ class Signup extends Component{
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Label htmlFor="re_password" md={3}>Re-enter password</Label>
+                                <Label htmlFor="re_password" md={3}>Re-enter password <span className="text-danger">*</span></Label>
                                 <Col md={9}>
                                     <Control.text type="password" model=".re_password" id="re_password" name="re_password"
                                     className="form-control"
@@ -182,7 +182,7 @@ class Signup extends Component{
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Label htmlFor="branch" md={3}>Branch</Label>
+                                <Label htmlFor="branch" md={3}>Branch <span className="text-danger">*</span></Label>
                                 <Col md={9}>
                                     <Control.select model=".branch" name ="branch" id="branch" className="form-control"
                                     validators={{
@@ -206,7 +206,7 @@ class Signup extends Component{
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Label htmlFor="batch" md={3}>Batch</Label>
+                                <Label htmlFor="batch" md={3}>Batch <span className="text-danger">*</span></Label>
                                 <Col md={9}>
                                 <Control.select model=".batch" name ="batch" id="batch" className="form-control"
                                 validators={{required}}>
@@ -226,7 +226,7 @@ class Signup extends Component{
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Label htmlFor="image" md={3}>Profile Photo</Label>
+                                <Label htmlFor="image" md={3}>Profile Photo <span className="text-danger">*</span></Label>
                                 <Col md={9}>
                                     <ImageUploader
                                         withIcon={false}

@@ -3,6 +3,8 @@ import {Button, Label, Col, Row} from "reactstrap";
 import { Control, LocalForm, Errors } from "react-redux-form";
 import ImageUploader from 'react-images-upload';
 import { Alert } from "reactstrap";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export const AlertCustom = (props) => {  
 
@@ -25,7 +27,7 @@ export const AlertCustom = (props) => {
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length<=len);
-const minLength = (len) => (val) => (val) && (val.length>=len);
+const minLength = (len) => (val) => (val) && (val?val.length>=len:false);
 const validEmail = (val) => /^[A-Z0-9._%+-]+@iitp\.ac\.in$/i.test(val);
 const passMatch = (Val) => (val) => (val) && (Val) && (val===Val);
 
@@ -36,7 +38,7 @@ class Signup extends Component{
             input:"",
             user:{},
             errors:"",
-            pictures:null
+            pictures:null, 
         };
         this.onDrop = this.onDrop.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);  
@@ -60,21 +62,20 @@ class Signup extends Component{
         }
         if(this.state.pictures!=null) data.append('file', this.state.pictures[0])
         else data.append('file', null)
-        data.append('college', "IIT PATNA")
-        data.append('size',Math.floor(Math.random() * (50 - 30 + 1) + 30))
+        // data.append('college', "IIT PATNA")
+        // data.append('size',Math.floor(Math.random() * (50 - 30 + 1) + 30))
          
         const requestOptions = {
             method: 'POST',
             body: data 
         };
-        fetch('http://localhost:4000/signup', requestOptions)
+        fetch('http://localhost:4000/api/edit', requestOptions)
             .then(response => {if(!response.ok){throw response} response.json()})
-            .then(data => {this.setState({user: data});alert("Verify your account via registered email")})
             .catch(err =>{
                 err.text().then(errMsg=>
                     {
                         var error=JSON.parse(errMsg);
-                        this.setState({errors: error.errors.email})
+                        toast.warn(error.error)
                     })
             })
 
@@ -99,7 +100,7 @@ class Signup extends Component{
                                         placeholder="Name"
                                         className="form-control"
                                         validators={{
-                                            required, minLength: minLength(3), maxLength: maxLength(30)
+                                            minLength: minLength(3), maxLength: maxLength(15)
                                         }}
                                          />
                                     <Errors
@@ -107,15 +108,14 @@ class Signup extends Component{
                                         model=".name"
                                         show="touched"
                                         messages={{
-                                            required: 'This is a required field, ',
                                             minLength: 'Must be greater than 2 characters, ',
-                                            maxLength: 'Must be 30 characters or less'
+                                            maxLength: 'Must be 15 characters or less'
                                         }}
                                      />
                                 </Col>
                             </Row>
-                            <Row className="form-group">
-                                <Label htmlFor="email" md={3}>Webmail</Label>
+                            {/* <Row className="form-group">
+                                <Label htmlFor="email" md={3}>Webmail <span className="text-danger">*</span></Label>
                                 <Col md={9}>
                                     <Control.text model=".email" id="email" name="email"
                                         placeholder="Webmail"
@@ -135,28 +135,27 @@ class Signup extends Component{
                                         }}
                                      />
                                 </Col>
-                            </Row>
+                            </Row> */}
                             <Row>
                                 <Col className="ml-auto" md={9}>
                                     <AlertCustom text={this.state.errors}/>
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Label htmlFor="password" md={3}>Password</Label>
+                                <Label htmlFor="password" md={3}>New-Password</Label>
                                 <Col md={9}>
                                     <Control.text type="password" model=".password" id="password" name="password"
                                     className="form-control"
                                     placeholder="Password"
                                     onChange={this.handleChange}
                                     validators={{
-                                        required, minLength: minLength(8)
+                                         minLength: minLength(8)
                                     }}/>
                                     <Errors 
                                     className="text-danger"
                                     model=".password"
                                     show="touched"
                                     messages={{
-                                        required: 'This is a required field, ',
                                         minLength: 'Enter min 8 characters'
                                     }}
                                     />
@@ -169,14 +168,13 @@ class Signup extends Component{
                                     className="form-control"
                                     placeholder="Password"
                                     validators={{
-                                        required, passMatch: passMatch(this.state.input)
+                                        passMatch: passMatch(this.state.input)
                                     }}/>
                                     <Errors 
                                     className="text-danger"
                                     model=".re_password"
                                     show="touched"
                                     messages={{
-                                        required: 'This is a required field, ',
                                         passMatch: 'Passwords should match'
                                     }}
                                     />
@@ -186,9 +184,7 @@ class Signup extends Component{
                                 <Label htmlFor="branch" md={3}>Branch</Label>
                                 <Col md={9}>
                                     <Control.select model=".branch" name ="branch" id="branch" className="form-control"
-                                    validators={{
-                                        required
-                                    }}>
+                                    >
                                         <option/>
                                         <option value="CS">CS</option>
                                         <option value="EE">EE</option>
@@ -196,34 +192,32 @@ class Signup extends Component{
                                         <option value="CE">CE</option>
                                         <option value="CB">CB</option>
                                     </Control.select>
-                                    <Errors
+                                    {/* <Errors
                                         className="text-danger"
                                         model=".branch"
                                         show="touched"
                                         messages={{
-                                            required: 'This is a required field'
                                         }}
-                                    />
+                                    /> */}
                                 </Col>
                             </Row>
                             <Row className="form-group">
                                 <Label htmlFor="batch" md={3}>Batch</Label>
                                 <Col md={9}>
-                                <Control.select model=".batch" name ="batch" id="batch" className="form-control"
-                                validators={{required}}>
+                                <Control.select model=".batch" name ="batch" id="batch" className="form-control">
                                     <option/>
                                     <option value='2016'>2016</option>
                                     <option value='2017'>2017</option>
                                     <option value="2018">2018</option>
                                 </Control.select> 
-                                <Errors
+                                {/* <Errors
                                     className="text-danger"
                                     model=".batch"
                                     show="touched"
                                     messages={{
                                         required: 'This is a required field'
                                     }}
-                                />      
+                                />       */}
                                 </Col>
                             </Row>
                             <Row className="form-group">
