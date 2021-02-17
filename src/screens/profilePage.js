@@ -129,6 +129,10 @@ function AddComment({show}){
 
 function RenderComment2({ userB, userB1, comment, onDelete, id, show}) {
 	var [isFlipped, Flip] = useState(true);
+	if(show==="1")
+	{
+		isFlipped=false
+	}
 	const handleDelete = () => {
 		fetch(`http://localhost:4000/api/delete_comment/${comment._id}`, {method:"DELETE", credentials:'include', headers: { "Content-Type": "application/json", "Accept":"application/json"}})
 		.then((response)=>{if(!response.ok){throw response} return response.json()})
@@ -146,11 +150,12 @@ function RenderComment2({ userB, userB1, comment, onDelete, id, show}) {
 			Flip(id!=comment.from)
 		}, 250);
 	}
-	else if(show==="0"){ 
+	else if(show===	"0"){ 
 		setTimeout(function(){
 			Flip(false)
 		}, 250);
 	}
+	
 
 	return (
 		<ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
