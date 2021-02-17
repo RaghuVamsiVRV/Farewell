@@ -10,7 +10,34 @@ var store = require('store');
 
 
 
-
+function AddComment({show}){
+	if(show===true){
+		return(
+			<Row className="form-group">
+				<Col md={12}>
+					<Control.textarea
+						model=".comment"
+						id="comment"
+						name="comment"
+						rows={3}
+						className="form-control"
+					/>
+				</Col>
+				<Col>
+				
+				<Button outline type="submit">
+					<span className="fa fa-pencil"/> Submit Comment
+				</Button>	
+				
+				
+				</Col>
+			</Row>
+		)
+	}
+	else{
+		return(<div/>)
+	}
+}
 function RenderComment({ userB, userB1, comment, onDelete}) {
 
 	const handleDelete = () => {
@@ -41,7 +68,7 @@ function RenderComment({ userB, userB1, comment, onDelete}) {
 				margin: 10
 			}}
 		>
-			<CardTitle md={10} style={{fontFamily: 'Biryani',color: "#000"}} tag="h5"><Link className="text-secondary" to={`/${comment.from}`}>{comment.senderName}</Link> <Button color="link" className="text-danger" size="sm" onClick={()=>handleDelete(comment._id)}><DeleteOutlinedIcon fontSize="small" /> </Button></CardTitle>
+			<CardTitle md={10} style={{fontFamily: 'Biryani',color: "#000"}} tag="h5"><Link className="text-secondary" to={`/${comment.from}`}>{comment.senderName}</Link> <Button  style={{position:"absolute", top:"10px", right:"5px"}} color="link" className="text-danger" size="sm" onClick={()=>handleDelete(comment._id)}><DeleteOutlinedIcon fontSize="small" /> </Button></CardTitle>
 			
 			<CardSubtitle style={{color: "#000"}} tag="h5">{userB1}{','}{userB}</CardSubtitle>
 			<CardBody>
@@ -130,34 +157,6 @@ class ProfilePage extends Component {
 
 
 	render() {
-		function AddComment({show}){
-			if(show===true){
-				return(
-					<Row className="form-group">
-						<Col md={12}>
-							<Control.textarea
-								model=".comment"
-								id="comment"
-								name="comment"
-								rows={3}
-								className="form-control"
-							/>
-						</Col>
-						<Col>
-						
-						<Button outline type="submit">
-							<span className="fa fa-pencil"/> Submit Comment
-						</Button>	
-						
-						
-						</Col>
-					</Row>
-				)
-			}
-			else{
-				return(<div/>)
-			}
-		}
 		const dispComment = this.state.comments.map((comment) => {
 			return (
 				<Col md={4}>

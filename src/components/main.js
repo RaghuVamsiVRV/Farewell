@@ -6,7 +6,7 @@ import Bubbles from './bubbles';
 import Header from './Header';
 import Signup from './signup';
 import { packSiblings } from 'd3';
-// import  editUser from "./editUser";
+import  editUser from "./editUser";
 import Footer from './Footer';
 
 class Main extends Component {
@@ -25,7 +25,7 @@ class Main extends Component {
 					<Route path="/bubbles" component={Bubbles} />
 					<Route path="/signup" component={Signup} />
 					<Route path="/about" component={About} />
-					{/* <Route path="/editUser" component={editUser}/> */}
+					<Route path="/editUser" component={editUser}/>
 					<Route path="/:Id" component={Profile} />
 					<Redirect to="/bubbles" />
 				</Switch>

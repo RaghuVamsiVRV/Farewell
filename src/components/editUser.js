@@ -5,9 +5,6 @@ import ImageUploader from 'react-images-upload';
 import { Alert } from "reactstrap";
 
 export const AlertCustom = (props) => {  
-    
-    var 
-
 
     if(props.text!==""){
         return (
