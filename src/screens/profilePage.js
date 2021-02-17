@@ -38,7 +38,9 @@ function AddComment({show}){
 	if(show===true){
 		return(
 			<Row className="form-group">
-				<Col md={12}>
+				<Col md={12} style={{
+				margin: 10,
+			}}>
 					<Control.textarea
 						model=".comment"
 						id="comment"
@@ -84,10 +86,14 @@ function RenderComment({ userB, userB1, comment, onDelete}) {
 			className="p-3"
 			style={{
 				backgroundColor: "#fff",
-				borderBottomColor: '#fff',
+				borderBottomColor: '#000',
 				borderBottomWidth: "4px",
-				borderRightColor: '#fff',
+				borderRightColor: '#000',
 				borderRightWidth: "2px",
+				borderTopColor: '#000',
+				borderTopWidth: "1px",
+				borderLeftColor: '#000',
+				borderLeftWidth: "1px",
 				padding: '10px',
 				margin: 10
 			}}
@@ -202,7 +208,7 @@ class ProfilePage extends Component {
 					<Row>{dispComment}</Row>
 				{/* </div>
 				<div className="container-banner"> */}
-					<LocalForm onSubmit={this.handleSubmit}>	
+					<LocalForm onSubmit={this.handleSubmit} >	
 						<AddComment show={this.state.showComment}/>			
 					</LocalForm>
 				</div>

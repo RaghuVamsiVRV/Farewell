@@ -9,7 +9,7 @@
 }
 
 .lcontainer {
-  background-image: url("./media/photos/back.jpg");
+  background-image: url("./media/3.jpg");
   background-size: contain;
   min-height: 720px;
   overflow: hidden;
@@ -95,13 +95,13 @@ img {
   font-family: "Kaushan Script", cursive;
   /* text-shadow: -2px -2px 0 bisque, 1px -1px 0 bisque, -2px 2px 0 bisque,
     1px 1px 0 bisque; */
-  color: bisque;
+  color: #000;
   font-size: 40px;
   margin: 12px;
 }
 
 .Tname1 {
-  color: bisque;
+  color: #000;
   margin-bottom: 42px;
 }
 
