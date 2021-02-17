@@ -25,7 +25,6 @@ const Undo = ({text, data, onDelete}) => {
 				senderBranch: userDetails.branch,
 				senderBatch: userDetails.batch,
 				senderCollege: userDetails.college
-
 			})
 		};
 		fetch('http://localhost:4000/api/add_comment', requestOptions)
@@ -308,7 +307,6 @@ class ProfilePage extends Component {
 
 
 	render() {
-		console.log(this.state.myComments[0], this.state.comments[0])
 		var userID=store.get('userID')
 		const dispComment  = this.state.comments.map((comment) => {
 			return (
