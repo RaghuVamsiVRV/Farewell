@@ -18,6 +18,15 @@ const comSchema = new Schema({
     senderName:{
         type: String,
     },
+    senderBatch:{
+        type: String
+    },
+    senderBranch:{
+        type: String
+    },
+    senderCollege:{
+        type: String
+    },
     time:{
         type: Date
     }
