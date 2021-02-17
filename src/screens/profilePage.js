@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Control, LocalForm } from 'react-redux-form';
-import { Button, Row, Col, Card, CardTitle, CardSubtitle, CardText, CardBody,Alert } from 'reactstrap';
+import { Button, Row, Col, Card, CardTitle, CardSubtitle, CardText, CardBody } from 'reactstrap';
 import { toast } from 'react-toastify';
 import { Link } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
@@ -38,7 +38,9 @@ function AddComment({show}){
 	if(show===true){
 		return(
 			<Row className="form-group">
-				<Col md={12}>
+				<Col md={12} style={{
+				margin: 10,
+			}}>
 					<Control.textarea
 						model=".comment"
 						id="comment"
@@ -86,20 +88,24 @@ function RenderComment({ userB, userB1, comment, onDelete}) {
 			inverse
 			className="p-3"
 			style={{
-				backgroundColor: "white",
+				backgroundColor: "#fff",
 				borderBottomColor: '#000',
 				borderBottomWidth: "4px",
 				borderRightColor: '#000',
 				borderRightWidth: "2px",
+				borderTopColor: '#000',
+				borderTopWidth: "1px",
+				borderLeftColor: '#000',
+				borderLeftWidth: "1px",
 				padding: '10px',
 				margin: 10
 			}}
 		>
-			<CardTitle md={10} style={{fontFamily: 'Biryani',color: "#000"}} tag="h5"><Link className="text-secondary" to={`/${comment.from}`}>{comment.senderName}</Link> <Button  style={{position:"absolute", top:"10px", right:"5px"}} color="link" className="text-danger" size="sm" onClick={()=>handleDelete(comment._id)}><DeleteOutlinedIcon fontSize="small" /> </Button></CardTitle>
+			<CardTitle md={10} style={{fontFamily: 'Varela Round',color: "#000", fontSize: "16px", textAlign:'left'}} tag="h5"><Link className="text-secondary" to={`/${comment.from}`}>{comment.senderName}</Link> <Button  style={{position:"absolute", top:"10px", right:"5px"}} color="link" className="text-danger" size="sm" onClick={()=>handleDelete(comment._id)}><DeleteOutlinedIcon fontSize="small" /> </Button></CardTitle>
 			
-			<CardSubtitle style={{color: "#000"}} tag="h5">{userB1}{','}{userB}</CardSubtitle>
+			<CardSubtitle style={{color: "#000",fontSize: "12px", textAlign:'left'}} tag="h5">{userB1}{','}{userB}</CardSubtitle>
 			<CardBody>
-				<CardText style={{fontFamily: 'Coming Soon' , color: "#000", fontWeight:'bold'}}>{comment.comment}</CardText>
+				<CardText style={{fontFamily: 'Architects Daughter' , color: "#000"}}>{comment.comment}</CardText>
 				<CardText style={{color: "#000" , fontSize:"12px", position: 'absolute', bottom:'0', right:'0', margin: '8px'}} className="ml-auto mr-3">
 					--{' '}
 					{new Intl.DateTimeFormat('en-US', {
@@ -186,13 +192,13 @@ class ProfilePage extends Component {
 	render() {
 		const dispComment = this.state.comments.map((comment) => {
 			return (
-				<Col md={4}>
+				<Col md={6}>
 					<RenderComment userB={this.state.user.batch} userB1={this.state.user.branch} comment={comment} onDelete={this.handleDelete}/>
 				</Col>
 			);
 		});
 		return (
-			<div>
+			<div className="lcontainer">
 				<div className="container-banner">
 					<img
 						src={'/photos/' + this.state.user.imageURL || '/photos/anushree.jpg'}
@@ -203,9 +209,9 @@ class ProfilePage extends Component {
 					<h2 className="Tname"> {this.state.user.name} </h2>
 					<h5 className="Tname1"> {this.state.user.branch}{', '}{this.state.user.batch} </h5>
 					<Row>{dispComment}</Row>
-				</div>
-				<div className="container-banner">
-					<LocalForm onSubmit={this.handleSubmit}>	
+				{/* </div>
+				<div className="container-banner"> */}
+					<LocalForm onSubmit={this.handleSubmit} >	
 						<AddComment show={this.state.showComment}/>			
 					</LocalForm>
 				</div>
