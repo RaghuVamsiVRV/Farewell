@@ -380,7 +380,7 @@ class ProfilePage extends Component {
 						height="170"
 						width="170"
 					/>
-					<DispEdit show={store.get('userDetails')?this.state.user._id===store.get('userDetails')._id:true}/>
+					<DispEdit show={store.get('userDetails')?this.state.user._id===store.get('userDetails')._id:false}/>
 					<h2 className="Tname"> {this.state.user.name} </h2>
 					<h5 className="Tname1"> {this.state.user.branch}{', '}{this.state.user.batch}</h5>
 					
