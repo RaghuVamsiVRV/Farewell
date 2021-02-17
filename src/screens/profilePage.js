@@ -150,7 +150,7 @@ function RenderComment2({ userB, userB1, comment, onDelete, id, show}) {
 			Flip(id!=comment.from)
 		}, 250);
 	}
-	else if(show===	"0"){ 
+	else { 
 		setTimeout(function(){
 			Flip(false)
 		}, 250);
@@ -249,10 +249,10 @@ class ProfilePage extends Component {
 	handleDelete(){
 		fetch(`http://localhost:4000/get_comments?to=${this.props.id}`)
 			.then((response) => response.json())
-			.then((data) => this.setState({ comments: data.comments }));
+			.then((data) => this.setState({ comments: data.comments , commentsType:"1"}));
 		fetch('http://localhost:4000/api/my_comments', {credentials:'include'})
 			.then((response) => response.json())
-			.then((data) => {this.setState({ myComments: data.comments }); console.log(data)});		
+			.then((data) => {this.setState({ myComments: data.comments, commentsType:"1" }); console.log(data)});		
 	}
 	componentDidMount() {
 		fetch(`http://localhost:4000/users/${this.props.id}`)
@@ -385,7 +385,7 @@ class ProfilePage extends Component {
 					<h5 className="Tname1"> {this.state.user.branch}{', '}{this.state.user.batch}</h5>
 					
 					<ButtonGroup>
-							<Button onClick={()=>{this.setState({commentsType:"1"});}}>
+							<Button onClick={()=>{this.setState({commentsType:"0"});}}>
 								All Comments
 							</Button>
 							<CommentNav handleMyComments={this.handleMyComments}/>
