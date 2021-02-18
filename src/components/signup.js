@@ -235,6 +235,8 @@ class Signup extends Component{
                                         label="Max file size: 0.5mb, accepted: jpg"
                                         imgExtension={['.jpg']}
                                         maxFileSize={524280}
+                                        singleImage={true}
+                                        withPreview={true}
                                     />               
                                 </Col>
                             </Row>                    

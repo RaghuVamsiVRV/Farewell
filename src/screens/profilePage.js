@@ -384,7 +384,7 @@ class ProfilePage extends Component {
 			<div className="lcontainer">
 				<div className="container-banner">
 					<img
-						src={'/photos/' + this.state.user.imageURL || '/photos/anushree.jpg'}
+						src={'/photos/' + this.state.user.imageURL}
 						alt="Avatar"
 						height="170"
 						width="170"
