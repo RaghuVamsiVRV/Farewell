@@ -362,7 +362,7 @@ class ProfilePage extends Component {
 			if(show){
 				return(
 					<Link to="/editUser" style={{position:"relative", left:"-2em", top:"3em", textDecoration:"none"}}> 
-						<Fab color="secondary" size="small" aria-label="edit"><EditIcon /></Fab>
+						<Fab color="default" size="small" aria-label="edit"><EditIcon /></Fab>
 					</Link>	
 				)
 			}

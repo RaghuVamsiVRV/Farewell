@@ -90,6 +90,16 @@ img {
 .title:hover {
   text-decoration: none;
 }
+.MuiSvgIcon-root{
+  color: rgb(255, 0, 0);
+}
+
+.MuiTouchRipple-root{
+  background-color:rgba(253, 184, 99, 0.486);
+}
+/* .MuiFab-label{
+  background-color: blueviolet;
+} */
 
 .Tname {
   font-family: "Kaushan Script", cursive;
