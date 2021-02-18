@@ -44,6 +44,7 @@ router.post('/edit',function(req,res){
       })
       var upload = multer({ storage: storage }).single('file')
       upload(req, res, async (err)=>{
+        console.log(req.body)
             if (err instanceof multer.MulterError) {
                 return res.status(500).json(err)
             } else if (err) {

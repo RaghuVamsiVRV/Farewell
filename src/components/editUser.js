@@ -25,10 +25,9 @@ export const AlertCustom = (props) => {
   }
 
 
-// const required = (val) => val && val.length;
+
 const maxLength = (len) => (val) => !(val) || (val.length<=len);
 const minLength = (len) => (val) => !(val) || (val?val.length>=len:false);
-// const validEmail = (val) => /^[A-Z0-9._%+-]+@iitp\.ac\.in$/i.test(val);
 const passMatch = (Val) => (val) => (Val)?((val) && (Val) && (val===Val)):true;
 
 class Signup extends Component{
@@ -114,33 +113,7 @@ class Signup extends Component{
                                      />
                                 </Col>
                             </Row>
-                            {/* <Row className="form-group">
-                                <Label htmlFor="email" md={3}>Webmail <span className="text-danger">*</span></Label>
-                                <Col md={9}>
-                                    <Control.text model=".email" id="email" name="email"
-                                        placeholder="Webmail"
-                                        className="form-control"
-                                        onChange={this.handleChange}
-                                        validators={{
-                                            required, validEmail
-                                        }}
-                                         />
-                                    <Errors
-                                        className="text-danger"
-                                        model=".email"
-                                        show="touched"
-                                        messages={{
-                                            required: 'This is a required field, ',
-                                            validEmail: 'Enter college webmail',
-                                        }}
-                                     />
-                                </Col>
-                            </Row> */}
-                            {/* <Row>
-                                <Col className="ml-auto" md={9}>
-                                    <AlertCustom text={this.state.errors}/>
-                                </Col>
-                            </Row> */}
+                           
                             <Row className="form-group">
                                 <Label htmlFor="password" md={3}>New-Password</Label>
                                 <Col md={9}>
@@ -192,13 +165,7 @@ class Signup extends Component{
                                         <option value="CE">CE</option>
                                         <option value="CB">CB</option>
                                     </Control.select>
-                                    {/* <Errors
-                                        className="text-danger"
-                                        model=".branch"
-                                        show="touched"
-                                        messages={{
-                                        }}
-                                    /> */}
+                                   
                                 </Col>
                             </Row>
                             <Row className="form-group">
@@ -210,18 +177,11 @@ class Signup extends Component{
                                     <option value='2017'>2017</option>
                                     <option value="2018">2018</option>
                                 </Control.select> 
-                                {/* <Errors
-                                    className="text-danger"
-                                    model=".batch"
-                                    show="touched"
-                                    messages={{
-                                        required: 'This is a required field'
-                                    }}
-                                />       */}
+                                
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Label htmlFor="image" md={3}>Profile Photo</Label>
+                                <Label htmlFor="image" md={3}>Profile Photo <span className="text-danger">*</span></Label>
                                 <Col md={9}>
                                     <ImageUploader
                                         withIcon={false}
@@ -230,9 +190,11 @@ class Signup extends Component{
                                         label="Max file size: 0.5mb, accepted: jpg"
                                         imgExtension={['.jpg']}
                                         maxFileSize={524280}
+                                        singleImage={true}
+                                        withPreview={true}
                                     />               
                                 </Col>
-                            </Row>                    
+                            </Row>                       
                             <Row className="form-group">
                                 <Button className="ml-2" type="submit" value="submit" color="primary">
                                     Submit

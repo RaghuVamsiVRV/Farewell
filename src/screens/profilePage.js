@@ -72,59 +72,6 @@ function AddComment({show}){
 }
 
 
-// function RenderComment({ userB, userB1, comment, onDelete}) {
-// 	const handleDelete = () => {
-// 		fetch(`http://localhost:4000/api/delete_comment/${comment._id}`, {method:"DELETE", credentials:'include', headers: { "Content-Type": "application/json", "Accept":"application/json"}})
-// 		.then((response)=>{if(!response.ok){throw response} return response.json()})
-// 		.then((data)=> {toast.dark(({})=><Undo text="Comment deleted" data={data} onDelete={onDelete}/>, {toastId:"Undo"});onDelete()})
-// 		.catch(err =>{
-// 			err.text().then(errMsg=>
-// 				{
-// 					var error=JSON.parse(errMsg);
-// 					toast.error(error.error, {toastId:"error"})
-// 				})
-// 		})
-// 	  }
-	  
-// 	return (
-// 		<Card
-// 			key={comment._id}
-// 			body
-// 			inverse
-// 			className="p-3"
-// 			style={{
-// 				backgroundColor: "#fff",
-// 				borderBottomColor: '#000',
-// 				borderBottomWidth: "4px",
-// 				borderRightColor: '#000',
-// 				borderRightWidth: "2px",
-// 				borderTopColor: '#000',
-// 				borderTopWidth: "1px",
-// 				borderLeftColor: '#000',
-// 				borderLeftWidth: "1px",
-// 				padding: '10px',
-// 				margin: 10
-// 			}}
-// 		>
-// 			<CardTitle md={10} style={{fontFamily: 'Varela Round',color: "#000", fontSize: "16px", textAlign:'left'}} tag="h5"><Link className="text-secondary" to={`/${comment.from}`}>{comment.senderName}</Link> <Button  style={{position:"absolute", top:"10px", right:"5px"}} color="link" className="text-danger" size="sm" onClick={()=>handleDelete(comment._id)}><DeleteOutlinedIcon fontSize="small" /> </Button></CardTitle>
-			
-// 			<CardSubtitle style={{color: "#000",fontSize: "12px", textAlign:'left'}} tag="h5">{userB1}{','}{userB}</CardSubtitle>
-// 			<CardBody>
-// 				<CardText style={{fontFamily: 'Architects Daughter' , color: "#000"}}>{comment.comment}</CardText>
-// 				<CardText style={{color: "#000" , fontSize:"12px", position: 'absolute', bottom:'0', right:'0', margin: '8px'}} className="ml-auto mr-3">
-// 					--{' '}
-// 					{new Intl.DateTimeFormat('en-US', {
-// 						day: '2-digit',
-// 						month: 'short',
-// 						year: 'numeric'
-// 					}).format(new Date(comment.time))}
-// 				</CardText>
-// 			</CardBody>
-// 		</Card>
-// 	);
-// }
-
-
 
 
 function RenderComment2({ userB, userB1, comment, onDelete, id, show}) {
@@ -133,15 +80,6 @@ function RenderComment2({ userB, userB1, comment, onDelete, id, show}) {
 	{
 		isFlipped=false
 	}
-	// useEffect (()=>{
-	// 	return function Abc(){
-	// 		if(show==="2")
-	// 		{
-	// 			Flip(false);
-	// 		}
-	// 	}
-		
-	// })
 	const handleDelete = () => {
 		fetch(`http://localhost:4000/api/delete_comment/${comment._id}`, {method:"DELETE", credentials:'include', headers: { "Content-Type": "application/json", "Accept":"application/json"}})
 		.then((response)=>{if(!response.ok){throw response} return response.json()})
@@ -175,7 +113,7 @@ function RenderComment2({ userB, userB1, comment, onDelete, id, show}) {
 					inverse
 					className="p-3"
 					style={{
-						backgroundColor: "#fff",
+						backgroundColor: "#a5d6a7",
 						borderBottomColor: '#000',
 						borderBottomWidth: "4px",
 						borderRightColor: '#000',
@@ -212,7 +150,7 @@ function RenderComment2({ userB, userB1, comment, onDelete, id, show}) {
 						inverse
 						className="p-3"
 						style={{
-							backgroundColor:" rgb(185, 253, 255)",
+							backgroundColor:" #a5d6a7",
 							borderBottomColor: '#000',
 							borderBottomWidth: "4px",
 							borderRightColor: '#000',
@@ -351,20 +289,20 @@ class ProfilePage extends Component {
 		const CommentNav = ({handleMyComments}) =>{
 			if(store.get('userDetails')&&store.get('userDetails')._id===this.props.id){
 				return(
-					<Button onClick={handleMyComments}>
-						My Comments
-					</Button>
+					<ButtonGroup>
+						<Button onClick={()=>{this.setState({commentsType:"0"});}}>
+							All Comments
+						</Button>
+						<Button onClick={handleMyComments}>
+							My Comments
+						</Button>
+					</ButtonGroup>
 				)
 			}
 			else{
 				return(
-					<Button onClick={()=>{
-						if(store.get('userID')){this.setState({commentsType:"2"});}
-						else{toast.error("Please Login", {toastId:"pl"})}
-						}}>
-						My Comments
-					</Button>
-				)
+					<div/>
+					)
 			}
 		}
 		const DispEdit = ({show}) =>{
@@ -391,14 +329,8 @@ class ProfilePage extends Component {
 					/>
 					<DispEdit show={store.get('userDetails')?this.state.user._id===store.get('userDetails')._id:false}/>
 					<h2 className="Tname"> {this.state.user.name} </h2>
-					<h5 className="Tname1"> {this.state.user.branch}{', '}{this.state.user.batch}</h5>
-					
-					<ButtonGroup>
-							<Button onClick={()=>{this.setState({commentsType:"0"});}}>
-								All Comments
-							</Button>
-							<CommentNav handleMyComments={this.handleMyComments}/>
-					</ButtonGroup>
+					<h5 className="Tname1"> {this.state.user.branch}{', '}{this.state.user.batch}</h5>		
+					<CommentNav handleMyComments={this.handleMyComments}/>
 					<DispComment id={this.state.commentsType} />					
 				</div>
 				<div className="container-banner">

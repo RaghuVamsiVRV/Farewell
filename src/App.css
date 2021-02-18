@@ -9,7 +9,8 @@
 }
 
 .lcontainer {
-  background-image: url("./media/3.jpg");
+  /* background-image: url("./media/3.jpg"); */
+  background-color: bisque;
   background-size: contain;
   min-height: 720px;
   overflow: hidden;
