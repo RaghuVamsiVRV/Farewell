@@ -9,7 +9,8 @@
 }
 
 .lcontainer {
-  background-image: url("./media/3.jpg");
+  /* background-image: url("./media/3.jpg"); */
+  background-color: bisque;
   background-size: contain;
   min-height: 720px;
   overflow: hidden;
@@ -69,7 +70,8 @@ img {
 }
 
 .creator {
-  color: bisque;
+  color:bisque;
+  /* color: rgb(185, 253, 255); */
   text-decoration: none;
   font-family: Rubik;
 }
@@ -90,6 +92,16 @@ img {
 .title:hover {
   text-decoration: none;
 }
+.MuiSvgIcon-root{
+  color: rgb(255, 0, 0);
+}
+
+.MuiTouchRipple-root{
+  background-color:rgba(253, 184, 99, 0.486);
+}
+/* .MuiFab-label{
+  background-color: blueviolet;
+} */
 
 .Tname {
   font-family: "Kaushan Script", cursive;
