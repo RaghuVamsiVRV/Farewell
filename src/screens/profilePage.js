@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useEffect, useState } from 'react';
 import { Control, LocalForm } from 'react-redux-form';
 import { Button, Row, Col, Card, CardTitle, CardSubtitle, CardText, CardBody, ButtonGroup } from 'reactstrap';
 import { toast } from 'react-toastify';
@@ -133,6 +133,15 @@ function RenderComment2({ userB, userB1, comment, onDelete, id, show}) {
 	{
 		isFlipped=false
 	}
+	// useEffect (()=>{
+	// 	return function Abc(){
+	// 		if(show==="2")
+	// 		{
+	// 			Flip(false);
+	// 		}
+	// 	}
+		
+	// })
 	const handleDelete = () => {
 		fetch(`http://localhost:4000/api/delete_comment/${comment._id}`, {method:"DELETE", credentials:'include', headers: { "Content-Type": "application/json", "Accept":"application/json"}})
 		.then((response)=>{if(!response.ok){throw response} return response.json()})
@@ -147,13 +156,13 @@ function RenderComment2({ userB, userB1, comment, onDelete, id, show}) {
 	  }
 	if(show==="2"){
 		setTimeout(function(){
-			Flip(id!=comment.from)
-		}, 250);
+			Flip(id!==comment.from)
+		}, 200);
 	}
 	else { 
 		setTimeout(function(){
 			Flip(false)
-		}, 250);
+		}, 200);
 	}
 	
 
@@ -203,7 +212,7 @@ function RenderComment2({ userB, userB1, comment, onDelete, id, show}) {
 						inverse
 						className="p-3"
 						style={{
-							backgroundColor: "#fff",
+							backgroundColor:" rgb(185, 253, 255)",
 							borderBottomColor: '#000',
 							borderBottomWidth: "4px",
 							borderRightColor: '#000',

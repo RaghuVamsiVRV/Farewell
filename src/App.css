@@ -69,7 +69,8 @@ img {
 }
 
 .creator {
-  color: bisque;
+  color:bisque;
+  /* color: rgb(185, 253, 255); */
   text-decoration: none;
   font-family: Rubik;
 }
