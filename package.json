@@ -44,29 +44,18 @@
 	},
 	"scripts": {
 		"start": "react-scripts start",
-		"build": "(cd backend && node index.js) & react-scripts build",
+		"build": "(cd backend && npm run dev) & react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
-		"develop": "nodemon index.js",
+		"develop": "node index.js",
 		"dev": "lite-server"
 	},
 	"eslintConfig": {
-		"extends": [
-			"react-app",
-			"react-app/jest"
-		]
+		"extends": [ "react-app", "react-app/jest" ]
 	},
 	"browserslist": {
-		"production": [
-			">0.2%",
-			"not dead",
-			"not op_mini all"
-		],
-		"development": [
-			"last 1 firefox version",
-			"last 1 chrome version",
-			"last 1 safari version"
-		]
+		"production": [ ">0.2%", "not dead", "not op_mini all" ],
+		"development": [ "last 1 firefox version", "last 1 chrome version", "last 1 safari version" ]
 	},
 	"devDependencies": {
 		"file-loader": "^6.2.0",
