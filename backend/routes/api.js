@@ -51,10 +51,21 @@ router.post('/edit',function(req,res){
                 return res.status(500).json(err)
             }
             var {email} = req.body; 
-            const user1 = await Users.find({email});
-            console.log(user1);
-            if(user1.length!==0 && user1[0]._id!=userID){
-              res.status(400).json({"error": "Email already exists in other profile"})
+            for(let key in req.body)
+            {
+                if(!req.body[key] || req.body[key]==''|| req.body[key]==' ')
+                {
+                    delete req.body[key]
+                }
+            }
+
+            if(email)
+            {
+                const user1 = await Users.find({email});
+                console.log(user1);
+                if(user1.length!==0 && user1[0]._id!=userID){
+                  res.status(400).json({"error": "Email already exists in other profile"})
+                }
             }
             try{
                 if(req.file) {
