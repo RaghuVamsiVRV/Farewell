@@ -1,9 +1,9 @@
-import React, {Component, useState} from "react";
+import React, {Component} from "react";
 import {Button, Label, Col, Row} from "reactstrap";
 import { Control, LocalForm, Errors } from "react-redux-form";
 import ImageUploader from 'react-images-upload';
 import { Alert } from "reactstrap";
-
+import { toast } from "react-toastify";
 export const AlertCustom = (props) => {    
     if(props.text!==""){
         return (
@@ -57,7 +57,8 @@ class Signup extends Component{
         for(var value of Object.entries(values)){
             data.append(value[0], value[1])
         }
-        data.append('file', this.state.pictures[0])
+        if(this.state.pictures!=null) data.append('file', this.state.pictures[0])
+        else data.append('file', null)
         data.append('college', "IIT PATNA")
         data.append('size',Math.floor(Math.random() * (50 - 30 + 1) + 30))
          
@@ -67,12 +68,12 @@ class Signup extends Component{
         };
         fetch('http://localhost:4000/signup', requestOptions)
             .then(response => {if(!response.ok){throw response} response.json()})
-            .then(data => {this.setState({user: data});alert("Verify your account via registered email")})
+            .then(data => {this.setState({user: data});toast.info("Verify your account via registered email")})
             .catch(err =>{
                 err.text().then(errMsg=>
                     {
                         var error=JSON.parse(errMsg);
-                        this.setState({errors: error.errors.email})
+                        this.setState({errors: error.error})
                     })
             })
 
@@ -91,13 +92,13 @@ class Signup extends Component{
                     <div className="col-12 col-md-9">
                         <LocalForm onSubmit={(values)=>this.handleSubmit(values)}>
                             <Row className="form-group">
-                            <Label htmlFor="name" md={3}>Name</Label>
+                            <Label htmlFor="name" md={3}>Name <span className="text-danger">*</span></Label>
                                 <Col md={9}>
                                     <Control.text model=".name" id="name" name="name"
                                         placeholder="Name"
                                         className="form-control"
                                         validators={{
-                                            required, minLength: minLength(3), maxLength: maxLength(30)
+                                            required, minLength: minLength(3), maxLength: maxLength(15)
                                         }}
                                          />
                                     <Errors
@@ -107,13 +108,13 @@ class Signup extends Component{
                                         messages={{
                                             required: 'This is a required field, ',
                                             minLength: 'Must be greater than 2 characters, ',
-                                            maxLength: 'Must be 30 characters or less'
+                                            maxLength: 'Must be 15 characters or less'
                                         }}
                                      />
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Label htmlFor="email" md={3}>Webmail</Label>
+                                <Label htmlFor="email" md={3}>Webmail <span className="text-danger">*</span></Label>
                                 <Col md={9}>
                                     <Control.text model=".email" id="email" name="email"
                                         placeholder="Webmail"
@@ -140,7 +141,7 @@ class Signup extends Component{
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Label htmlFor="password" md={3}>Password</Label>
+                                <Label htmlFor="password" md={3}>Password <span className="text-danger">*</span></Label>
                                 <Col md={9}>
                                     <Control.text type="password" model=".password" id="password" name="password"
                                     className="form-control"
@@ -161,7 +162,7 @@ class Signup extends Component{
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Label htmlFor="re_password" md={3}>Re-enter password</Label>
+                                <Label htmlFor="re_password" md={3}>Re-enter password <span className="text-danger">*</span></Label>
                                 <Col md={9}>
                                     <Control.text type="password" model=".re_password" id="re_password" name="re_password"
                                     className="form-control"
@@ -181,7 +182,7 @@ class Signup extends Component{
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Label htmlFor="branch" md={3}>Branch</Label>
+                                <Label htmlFor="branch" md={3}>Branch <span className="text-danger">*</span></Label>
                                 <Col md={9}>
                                     <Control.select model=".branch" name ="branch" id="branch" className="form-control"
                                     validators={{
@@ -205,7 +206,7 @@ class Signup extends Component{
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Label htmlFor="batch" md={3}>Batch</Label>
+                                <Label htmlFor="batch" md={3}>Batch <span className="text-danger">*</span></Label>
                                 <Col md={9}>
                                 <Control.select model=".batch" name ="batch" id="batch" className="form-control"
                                 validators={{required}}>
@@ -225,7 +226,7 @@ class Signup extends Component{
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Label htmlFor="image" md={3}>Profile Photo</Label>
+                                <Label htmlFor="image" md={3}>Profile Photo <span className="text-danger">*</span></Label>
                                 <Col md={9}>
                                     <ImageUploader
                                         withIcon={false}
@@ -234,6 +235,8 @@ class Signup extends Component{
                                         label="Max file size: 0.5mb, accepted: jpg"
                                         imgExtension={['.jpg']}
                                         maxFileSize={524280}
+                                        singleImage={true}
+                                        withPreview={true}
                                     />               
                                 </Col>
                             </Row>                    
@@ -249,24 +252,5 @@ class Signup extends Component{
         );
     }
 }
-{/* <Row className="form-group">
-    <Label htmlFor="college" md={3}>College</Label>
-    <Col md={9}>
-        <Control.text model=".college" id="college" name="college"
-        className="form-control"
-        placeholder="College name"
-        validators={{
-            required
-        }}
-        />
-        <Errors
-        className="text-danger"
-        model=".college"
-        show="touched"
-        messages={{
-            required: 'This is a required field'    
-        }}
-        />
-    </Col>
-</Row> */}
+
 export default Signup;

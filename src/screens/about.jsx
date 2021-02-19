@@ -1,40 +1,44 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import generalStyles from '../App.css';
 
 class About extends Component {
 	render() {
 		return (
-			<div align="center">
-				<h3 class={generalStyles.generic}>
-					We <br /> would have made <br /> this site <br /> prettier, but <br /> none of us have any <br />{' '}
-					asthetic sense <br /> but <br /> all we really wanted <br /> to say is <br /> goodbye!!! <br /> and
-					also that <br /> we love you!! <br /> and <br /> we most certainly hope <br /> that we'll get the
-					chance to <br /> host a real farewell for y'all<br /> this year!
+			<div className="fill-window" align="center">
+				<h3 style={{margin: "15%" ,marginBottom: "0px" , color: 'white'}} class={generalStyles.generic}>
+					We would have made this site  prettier, but  none of us have any
+					asthetic sense  but  all we really wanted  to say is  goodbye!!!  and
+					also that  we love you!!  and  we most certainly hope  that we'll get the
+					chance to  host a real farewell for y'all this year!
 				</h3>
 
-				<ul className="list">
-					<li>
-						<a className="creator" href={'https://www.naths.in'}>
-							naren
-						</a>
-					</li>
-					<li>
-						<a className="creator" href={'https://github.com/vsaisujeeth'}>
-							Vinnakota Sai Sujeeth
-						</a>
-					</li>
-					<li>
-						<a className="creator" href={'https://github.com/ryaswant5'}>
-							Yashwanth Rachamallu
-						</a>
-					</li>
-					<li>
-						<a className="creator" href={'https://github.com/RaghuVamsiVRV'}>
-							Raghu Vamsi
-						</a>
-					</li>
-				</ul>
+				<div>
+					
+					<div>
+					<a className="creator" href={'https://www.naths.in'}>
+						Naren {' '}
+					</a>
+					</div>
+				
+					<div>
+					<a className="creator" href={'https://github.com/vsaisujeeth'}>
+						Vinnakota Sai Sujeeth {' '}
+					</a>
+					</div>
+				
+					<div>
+					<a className="creator" href={'https://github.com/ryaswant5'}>
+						Yashwanth Rachamallu {' '}
+					</a>
+					</div>
+				
+					<div>
+					<a className="creator" href={'https://github.com/RaghuVamsiVRV'}>
+						Raghu Vamsi
+					</a>
+					</div>
+					
+				</div>
 			</div>
 		);
 	}

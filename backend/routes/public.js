@@ -27,17 +27,17 @@ const handleErrors = (err) => {
 
   // incorrect email
   if (err.message === 'incorrect email') {
-    errors.email = 'That email is not registered';
+    errors.email = 'Email is not registered';
   }
 
   // incorrect password
   if (err.message === 'incorrect password') {
-    errors.password = 'That password is incorrect';
+    errors.password = 'Password is incorrect';
   }
 
   // duplicate email error
   if (err.code === 11000) {
-    errors.email = 'that email is already registered';
+    errors.email = 'Email is already registered';
     return errors;
   }
 
@@ -144,7 +144,7 @@ router.post('/login', async (req, res) => {
     try {
       const user = await User.login(email, password);
       console.log(user)
-      if(user.verified == 0) res.status(200).json({"error":"Verify your email"})
+      if(user.verified === 0) res.status(200).json({"error":"Verify your email"})
       const token = createToken(user._id);
       res.cookie('jwt', token, { httpOnly: false, maxAge: maxAge * 1000 });
       res.status(200).json({ user: user._id, 'message': 'logged in' });

@@ -6,16 +6,8 @@ const Comments = require('../models/comments.js');
 const Users = require('../models/users.js');
 
 var multer = require('multer')
-var nodemailer = require('nodemailer');
+const bcrypt = require('bcrypt');
 
-
-var transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: 'iitpfarewell@gmail.com',
-      pass: 'farewell2021'
-    }
-  });
 
   
 // get the user id from JWT token
@@ -52,6 +44,7 @@ router.post('/edit',function(req,res){
       })
       var upload = multer({ storage: storage }).single('file')
       upload(req, res, async (err)=>{
+        console.log(req.body)
             if (err instanceof multer.MulterError) {
                 return res.status(500).json(err)
             } else if (err) {
@@ -66,6 +59,12 @@ router.post('/edit',function(req,res){
             try{
                 if(req.file) {
                     req.body.imageURL = req.file.filename;
+                }
+                if(req.body.password && req.body.password!='')
+                {
+                    const salt = await bcrypt.genSalt();
+                    req.body.password= await bcrypt.hash(req.body.password, salt);
+                    
                 }
                 Users.findByIdAndUpdate(userID, req.body, function (err, docs) { 
                         if (err){ 
@@ -154,7 +153,7 @@ router.delete('/delete_comment/:id', function(req, res){
                 }).catch(err=>res.status(400).json({'error': err.message}))
             }
             else{
-                res.status(400).json({'error':'You do not have access to delete document created by other users'})
+                res.status(400).json({'error':'You do not have access to delete comments created by other users'})
             }
 
         } 

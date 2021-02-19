@@ -1,10 +1,9 @@
-import song from './media/bgm.mp3';
 import React, { Component } from 'react';
 import './App.css';
 import { BrowserRouter } from 'react-router-dom';
 import Main from './components/main';
-import { Provider } from 'react-redux';
 import REACTGA from 'react-ga';
+
 
 REACTGA.initialize(process.env.REACT_APP_GA);
 REACTGA.pageview(window.location.pathname + window.location.search);

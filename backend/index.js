@@ -14,6 +14,7 @@ const requireAuth = (req, res, next) => {
 		console.log("hello",JSON.stringify(req.cookies));
 		const token = req.cookies.jwt;
 		// check json web token exists & is verified
+		console.log(token);
 		if (token) {
 			jwt.verify(token, 'secret code', (err, decodedToken) => {
 				if (err) {
