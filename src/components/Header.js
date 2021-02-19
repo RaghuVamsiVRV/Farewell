@@ -16,7 +16,7 @@ import {
 	NavbarBrand,
 	ButtonGroup
 } from 'reactstrap';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, withRouter, useHistory } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { Alert } from 'reactstrap';
 import { ToastContainer, toast } from 'react-toastify';
@@ -95,7 +95,10 @@ class Header extends Component {
         };
         fetch('http://localhost:4000/login', requestOptions)
             .then(response =>{ if(!response.ok){throw response} return response.json()})
-            .then(data => {this.setState({loginStatus: data});store.set('loginStatus', {loginStatus:data});toast.dark(({}) => <Msg text={this.state.loginStatus.message}/>);
+            .then(data => {this.setState({loginStatus: data});store.set('loginStatus', {loginStatus:data});toast.dark(({}) => <Msg text={this.state.loginStatus.message}/>);	
+			setTimeout(() => {
+				this.props.history.go(0)
+			}, 500);
             fetch(`http://localhost:4000/users/${this.state.loginStatus.user}`)
             .then(response => response.json())
             .then(data=>{this.setState({user: data});store.set('userDetails', data);store.set('userName',{userName:this.state.user.name});store.set('userID', {userID:this.state.loginStatus.user})});this.toggleModal();this.setState({errors:""})})
@@ -110,25 +113,18 @@ class Header extends Component {
         
     }
     handleLogout(){
+
         fetch('http://localhost:4000/logout')
             .then(response => response.json())
-            .then(data => {toast.dark(({}) => <Msg text={data.message}/>);Cookies.remove('jwt'); this.setState({loginStatus:{}}); store.clearAll();})
+            .then(data => {toast.dark(({}) => <Msg text={data.message}/>);Cookies.remove('jwt'); this.setState({loginStatus:{}}); store.clearAll();
+			setTimeout(() => {
+			this.props.history.go(0)
+		}, 100);})
             
     }
 
 	
 	render() {
-		// function Signup({ loginStatus }) {
-		// 	if (loginStatus.message === 'logged in') {
-		// 		return <div />;
-		// 	} else {
-		// 		return (
-		// 			<NavLink className="nav-link" to="/signup">
-		// 				<span className="fa fa-sign-in fa-lg"> Signup</span>
-		// 			</NavLink>
-		// 		);
-		// 	}
-		// }
 		function Profile({ loginStatus }) {
 			var userID = store.get('userID');
 			if (loginStatus.message === 'logged in') {
@@ -217,4 +213,4 @@ class Header extends Component {
         );
     }
 }
-export default Header;
+export default withRouter(Header);

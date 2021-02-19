@@ -1,8 +1,8 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { Component, useState } from 'react';
 import { Control, LocalForm } from 'react-redux-form';
 import { Button, Row, Col, Card, CardTitle, CardSubtitle, CardText, CardBody, ButtonGroup } from 'reactstrap';
 import { toast } from 'react-toastify';
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import ReactCardFlip from 'react-card-flip';
@@ -241,7 +241,7 @@ class ProfilePage extends Component {
 				};
 				fetch('http://localhost:4000/api/add_comment', requestOptions)
 					.then((response) => response.json())
-					.then((data) => this.setState({ comments: [ ...this.state.comments, data ] }));
+					.then((data) => {this.setState({ comments: [ ...this.state.comments, data ], commentsType:"1",}); document.getElementById('comment').value='';});
 			}
 			else {
 				toast.dark("Enter Comment")
@@ -342,4 +342,4 @@ class ProfilePage extends Component {
 		);
 	}
 }
-export default ProfilePage;
+export default withRouter(ProfilePage);

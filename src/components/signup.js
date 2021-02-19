@@ -68,7 +68,11 @@ class Signup extends Component{
         };
         fetch('http://localhost:4000/signup', requestOptions)
             .then(response => {if(!response.ok){throw response} response.json()})
-            .then(data => {this.setState({user: data});toast.info("Verify your account via registered email")})
+            .then(data => {this.setState({user: data});toast.info("Verify your account via registered email");
+            // setTimeout(() => {
+            //     this.props.history.push('/bubbles')
+            // }, 500);    
+        })
             .catch(err =>{
                 err.text().then(errMsg=>
                     {
