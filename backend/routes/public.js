@@ -106,7 +106,7 @@ router.post('/signup', async (req, res) => {
               const user = await User.create({name, email, password,branch,batch,college,size,imageURL,verified}); 
 
               var tok =   encrypt(email)
-              var link = "http://localhost:4000/verify?tok="+tok
+              var link = "https://farewell-iitp.herokuapp.com/verify?tok="+tok
               console.log(link)
               
               var mailOptions = {
@@ -166,8 +166,7 @@ router.get('/logout', (req, res) => {
 router.get('/users', function(req, res){
   let batch =req.query.batch;
   let college =req.query.college;
-
-  User.find({batch, college}).then(function(users){
+  User.find({batch, college,'verified':{$ne:'0'}}).then(function(users){
      res.send({users});
   }).catch(err=>res.status(400).json({'error': err.message}));
 });
