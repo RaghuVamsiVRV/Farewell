@@ -8,6 +8,8 @@ const jwt = require('jsonwebtoken');
 const app = express();
 const dotenv = require('dotenv')
 var cors = require('cors');
+const path = require('path')
+
 
 dotenv.config();
 const requireAuth = (req, res, next) => {
@@ -53,7 +55,7 @@ app.use(express.urlencoded({
 app.use(cookieParser());
 
 app.use(cors({
-	origin : ['http://farewell-iitp.herokuapp.com/','http://localhost:3000','https://www.alvida.xyz/'] ,
+	origin : ['http://farewell-iitp.herokuapp.com/','http://localhost:3000','http://localhost:4000','https://www.alvida.xyz/'] ,
 	credentials: true,
   })
 );  
