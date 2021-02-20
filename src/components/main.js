@@ -19,12 +19,12 @@ class Main extends Component {
 			<div>
 				<Header />
 				<Switch>
-					<Route path="/home" component={Bubbles} />
+					<Route path="/" component={Bubbles} />
 					<Route path="/signup" component={Signup} />
 					<Route path="/about" component={About} />
 					<Route path="/editUser" component={editUser}/>
 					<Route path="/:Id" component={Profile} />
-					<Redirect to="/home" />
+					<Redirect to="/" />
 				</Switch>
 				<Footer />
 			</div>

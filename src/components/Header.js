@@ -16,7 +16,7 @@ import {
 	NavbarBrand,
 	ButtonGroup
 } from 'reactstrap';
-import { NavLink, Link, withRouter, useHistory } from 'react-router-dom';
+import { NavLink, Link, withRouter} from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { Alert } from 'reactstrap';
 import { ToastContainer, toast } from 'react-toastify';
