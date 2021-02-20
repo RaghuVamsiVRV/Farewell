@@ -5,14 +5,11 @@ import { Switch, Route, Redirect, withRouter } from 'react-router-dom';
 import Bubbles from './bubbles';
 import Header from './Header';
 import Signup from './signup';
-import { packSiblings } from 'd3';
+
 import  editUser from "./editUser";
 import Footer from './Footer';
 
 class Main extends Component {
-	constructor(props) {
-		super(props);
-	}
 
 	render() {
 		const Profile = ({ match }) => {
@@ -22,12 +19,12 @@ class Main extends Component {
 			<div>
 				<Header />
 				<Switch>
-					<Route path="/bubbles" component={Bubbles} />
+					<Route path="/home" component={Bubbles} />
 					<Route path="/signup" component={Signup} />
 					<Route path="/about" component={About} />
 					<Route path="/editUser" component={editUser}/>
 					<Route path="/:Id" component={Profile} />
-					<Redirect to="/bubbles" />
+					<Redirect to="/home" />
 				</Switch>
 				<Footer />
 			</div>
