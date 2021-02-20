@@ -1,10 +1,9 @@
 import isMobile from 'ismobilejs';
-import { Button, ButtonGroup } from 'reactstrap';
-import React, { Component, useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Button} from 'reactstrap';
+import React, { Component } from 'react';
 import * as d3 from 'd3';
-import axios from 'axios';
-import photo from '../media/photos/teja.jpg';
+
+const uri = process.env.URL;
 
 class BarChart extends Component {
 	constructor(props) {
@@ -182,7 +181,7 @@ class BarChart extends Component {
 	componentDidMount() {
 		// this.definer();
 
-		fetch('http://localhost:4000/users?batch=2017&college=IIT PATNA')
+		fetch(uri,'/users?batch=2017&college=IIT PATNA')
 			.then((response) => response.json())
 			.then((seniors) => this.drawChart(seniors.users));
 
