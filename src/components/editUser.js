@@ -8,6 +8,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 var store = require('store');
 
+const uri = process.env.URL;
+
 export const AlertCustom = (props) => {  
 
     if(props.text!==""){
@@ -79,13 +81,13 @@ class Signup extends Component{
             credentials:'include',
             body: data 
         };
-        fetch('http://localhost:4000/api/edit', requestOptions)
+        fetch(uri,'/api/edit', requestOptions)
             .then(response => {if(!response.ok){throw response} response.json()})
             .then((data)=>{console.log(data);toast.success("Profile Updated");
             setTimeout(() => {
                 this.props.history.goBack();
             }, 500);
-            fetch(`http://localhost:4000/users/${store.get('userDetails')._id}`)
+            fetch(uri,`/users/${store.get('userDetails')._id}`)
 			.then((response) => response.json())
 			.then((data) => store.set('userDetails', data));
         }

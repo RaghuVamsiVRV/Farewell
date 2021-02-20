@@ -185,9 +185,6 @@ class BarChart extends Component {
 			.then((response) => response.json())
 			.then((seniors) => this.drawChart(seniors.users));
 
-		// const data = axios.get('http://localhost:4000/users?batch=2017&college=IIT PATNA');
-		// console.log(data);
-		// this.drawChart();
 	}
 	svgHeight = window.innerHeight - 100;
 	render() {

@@ -22,6 +22,8 @@ import { Alert } from 'reactstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+const uri = process.env.URL;
+
 var store = require('store');
 
 const Msg = ({ text }) => (
@@ -93,13 +95,13 @@ class Header extends Component {
             credentials:'include',
             body: JSON.stringify({email:this.username.value, password:this.password.value})
         };
-        fetch('http://localhost:4000/login', requestOptions)
+        fetch(uri,'/login', requestOptions)
             .then(response =>{ if(!response.ok){throw response} return response.json()})
             .then(data => {this.setState({loginStatus: data});store.set('loginStatus', {loginStatus:data});toast.dark(({}) => <Msg text={this.state.loginStatus.message}/>);	
 			setTimeout(() => {
 				this.props.history.go(0)
 			}, 500);
-            fetch(`http://localhost:4000/users/${this.state.loginStatus.user}`)
+            fetch(uri,`/users/${this.state.loginStatus.user}`)
             .then(response => response.json())
             .then(data=>{this.setState({user: data});store.set('userDetails', data);store.set('userName',{userName:this.state.user.name});store.set('userID', {userID:this.state.loginStatus.user})});this.toggleModal();this.setState({errors:""})})
             .catch(err =>{
@@ -114,7 +116,7 @@ class Header extends Component {
     }
     handleLogout(){
 
-        fetch('http://localhost:4000/logout')
+        fetch(uri,'/logout')
             .then(response => response.json())
             .then(data => {toast.dark(({}) => <Msg text={data.message}/>);Cookies.remove('jwt'); this.setState({loginStatus:{}}); store.clearAll();
 			setTimeout(() => {

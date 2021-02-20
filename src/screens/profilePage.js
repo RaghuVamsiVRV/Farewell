@@ -8,6 +8,8 @@ import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import ReactCardFlip from 'react-card-flip';
 import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit';
+
+const uri = process.env.URL;
 var store = require('store');
 
 const Undo = ({text, data, onDelete, receiverName}) => {
@@ -28,7 +30,7 @@ const Undo = ({text, data, onDelete, receiverName}) => {
 				receiverName : receiverName
 			})
 		};
-		fetch('http://localhost:4000/api/add_comment', requestOptions)
+		fetch(uri,'/api/add_comment', requestOptions)
 			.then((response) => response.json())
 			.then(() => {onDelete(); dismiss()});
 
@@ -82,7 +84,7 @@ function RenderComment2({ type, comment, onDelete, id, show}) {
 		isFlipped=false
 	}
 	const handleDelete = () => {
-		fetch(`http://localhost:4000/api/delete_comment/${comment._id}`, {method:"DELETE", credentials:'include', headers: { "Content-Type": "application/json", "Accept":"application/json"}})
+		fetch(uri,`/api/delete_comment/${comment._id}`, {method:"DELETE", credentials:'include', headers: { "Content-Type": "application/json", "Accept":"application/json"}})
 		.then((response)=>{if(!response.ok){throw response} return response.json()})
 		.then((data)=> {toast.dark(({})=><Undo text="Comment deleted" data={data} onDelete={onDelete} receiverName={comment.receiverName}/>, {toastId:"Undo"});onDelete()})
 		.catch(err =>{
@@ -212,24 +214,24 @@ class ProfilePage extends Component {
 		this.handleMyComments = this.handleMyComments.bind(this);
 	}
 	handleDelete(){
-		fetch(`http://localhost:4000/get_comments?to=${this.props.id}`)
+		fetch(uri,`/get_comments?to=${this.props.id}`)
 			.then((response) => response.json())
 			.then((data) => this.setState({ comments: data.comments , commentsType:"1"}));
-		fetch('http://localhost:4000/api/my_comments', {credentials:'include'})
+		fetch(uri,'/api/my_comments', {credentials:'include'})
 			.then((response) => response.json())
 			.then((data) => {this.setState({ myComments: data.comments, commentsType:"1" }); console.log(data)});		
 	}
 	componentDidMount() {
-		fetch(`http://localhost:4000/users/${this.props.id}`)
+		fetch(uri,`/users/${this.props.id}`)
 			.then((response) => response.json())
 			.then((data) => {this.setState({ user: data }); console.log(this.state.user)});
 			
 
-		fetch(`http://localhost:4000/get_comments?to=${this.props.id}`)
+		fetch(uri,`/get_comments?to=${this.props.id}`)
 			.then((response) => response.json())
 			.then((data) => this.setState({ comments: data.comments }));
 
-		fetch('http://localhost:4000/api/my_comments', {credentials:'include'})
+		fetch(uri,'/api/my_comments', {credentials:'include'})
 			.then((response) => response.json())
 			.then((data) => {this.setState({ myComments: data.comments }); });	
 	}
@@ -259,7 +261,7 @@ class ProfilePage extends Component {
 						receiverName: this.state.user.name
 					})
 				};
-				fetch('http://localhost:4000/api/add_comment', requestOptions)
+				fetch(uri,'/api/add_comment', requestOptions)
 					.then((response) => response.json())
 					.then((data) => {this.setState({ comments: [ ...this.state.comments, data ], commentsType:"1",}); document.getElementById('comment').value='';});
 			}

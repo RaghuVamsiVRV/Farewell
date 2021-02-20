@@ -4,6 +4,9 @@ import { Control, LocalForm, Errors } from "react-redux-form";
 import ImageUploader from 'react-images-upload';
 import { Alert } from "reactstrap";
 import { toast } from "react-toastify";
+
+const uri = process.env.URL;
+
 export const AlertCustom = (props) => {    
     if(props.text!==""){
         return (
@@ -66,7 +69,7 @@ class Signup extends Component{
             method: 'POST',
             body: data 
         };
-        fetch('http://localhost:4000/signup', requestOptions)
+        fetch(uri,'/signup', requestOptions)
             .then(response => {if(!response.ok){throw response} response.json()})
             .then(data => {this.setState({user: data});toast.info("Verify your account via registered email");
             // setTimeout(() => {
