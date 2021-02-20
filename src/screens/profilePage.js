@@ -113,7 +113,7 @@ function RenderComment2({ userB, userB1, comment, onDelete, id, show}) {
 					inverse
 					className="p-3"
 					style={{
-						backgroundColor: "#a5d6a7",
+						backgroundColor: "#fff",
 						borderBottomColor: '#000',
 						borderBottomWidth: "4px",
 						borderRightColor: '#000',
@@ -150,7 +150,7 @@ function RenderComment2({ userB, userB1, comment, onDelete, id, show}) {
 						inverse
 						className="p-3"
 						style={{
-							backgroundColor:" #a5d6a7",
+							backgroundColor:" #fff",
 							borderBottomColor: '#000',
 							borderBottomWidth: "4px",
 							borderRightColor: '#000',

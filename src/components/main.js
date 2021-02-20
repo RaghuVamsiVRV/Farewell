@@ -24,7 +24,7 @@ class Main extends Component {
 					<Route path="/about" component={About} />
 					<Route path="/editUser" component={editUser}/>
 					<Route exact path="/:Id" component={Profile} />
-					<Redirect to="/" />
+					<Redirect to="/home" />
 				</Switch>
 				<Footer />
 			</div>
