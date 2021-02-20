@@ -65,11 +65,12 @@ app.use(cors({
 // 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 // 	next();
 // });  
-
+app.use('/pics',express.static('./public/photos'));
 app.use(express.static('../build'));
 
 app.use('/api', requireAuth, apiRoutes);
 app.use(publicRoutes);
+
 
 app.use('/', (req, res) => {
 	res.sendFile(path.resolve(__dirname, '../build/index.html'));
