@@ -66,6 +66,8 @@ app.use(cors({
 // 	next();
 // });  
 
+app.use(express.static('../build'));
+
 app.use('/api', requireAuth, apiRoutes);
 app.use(publicRoutes);
 
