@@ -55,7 +55,7 @@ app.use(express.urlencoded({
 app.use(cookieParser());
 
 app.use(cors({
-	origin : ['http://farewell-iitp.herokuapp.com/','http://localhost:3000','http://localhost:4000','https://www.alvida.xyz/'] ,
+	origin : ['https://farewell-iitp.herokuapp.com/','http://localhost:3000','http://localhost:4000','https://www.alvida.xyz/'] ,
 	credentials: true,
   })
 );  
