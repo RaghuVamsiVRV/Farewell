@@ -3,7 +3,7 @@ import { Button} from 'reactstrap';
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 
-const uri = process.env.URL;
+const uri = process.env.REACT_APP_URL;
 
 class BarChart extends Component {
 	constructor(props) {
@@ -181,7 +181,7 @@ class BarChart extends Component {
 	componentDidMount() {
 		// this.definer();
 
-		fetch(uri,'/users?batch=2017&college=IIT PATNA')
+		fetch(uri+'/users?batch=2017&college=IIT PATNA')
 			.then((response) => response.json())
 			.then((seniors) => this.drawChart(seniors.users));
 

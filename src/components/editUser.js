@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 var store = require('store');
 
-const uri = process.env.URL;
+const uri = process.env.REACT_APP_URL;
 
 export const AlertCustom = (props) => {  
 
@@ -81,13 +81,13 @@ class Signup extends Component{
             credentials:'include',
             body: data 
         };
-        fetch(uri,'/api/edit', requestOptions)
+        fetch(uri+'/api/edit', requestOptions)
             .then(response => {if(!response.ok){throw response} response.json()})
             .then((data)=>{console.log(data);toast.success("Profile Updated");
             setTimeout(() => {
                 this.props.history.goBack();
             }, 500);
-            fetch(uri,`/users/${store.get('userDetails')._id}`)
+            fetch(uri+`/users/${store.get('userDetails')._id}`)
 			.then((response) => response.json())
 			.then((data) => store.set('userDetails', data));
         }

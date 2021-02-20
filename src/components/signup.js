@@ -5,7 +5,7 @@ import ImageUploader from 'react-images-upload';
 import { Alert } from "reactstrap";
 import { toast } from "react-toastify";
 
-const uri = process.env.URL;
+const uri = process.env.REACT_APP_URL;
 
 export const AlertCustom = (props) => {    
     if(props.text!==""){
@@ -69,7 +69,7 @@ class Signup extends Component{
             method: 'POST',
             body: data 
         };
-        fetch(uri,'/signup', requestOptions)
+        fetch(uri+'/signup', requestOptions)
             .then(response => {if(!response.ok){throw response} response.json()})
             .then(data => {this.setState({user: data});toast.info("Verify your account via registered email");
             // setTimeout(() => {

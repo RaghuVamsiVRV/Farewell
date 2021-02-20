@@ -9,7 +9,7 @@ import ReactCardFlip from 'react-card-flip';
 import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit';
 
-const uri = process.env.URL;
+const uri = process.env.REACT_APP_URL;
 var store = require('store');
 
 const Undo = ({text, data, onDelete, receiverName}) => {
@@ -30,7 +30,7 @@ const Undo = ({text, data, onDelete, receiverName}) => {
 				receiverName : receiverName
 			})
 		};
-		fetch(uri,'/api/add_comment', requestOptions)
+		fetch(uri+'/api/add_comment', requestOptions)
 			.then((response) => response.json())
 			.then(() => {onDelete(); dismiss()});
 
@@ -84,7 +84,7 @@ function RenderComment2({ type, comment, onDelete, id, show}) {
 		isFlipped=false
 	}
 	const handleDelete = () => {
-		fetch(uri,`/api/delete_comment/${comment._id}`, {method:"DELETE", credentials:'include', headers: { "Content-Type": "application/json", "Accept":"application/json"}})
+		fetch(uri+`/api/delete_comment/${comment._id}`, {method:"DELETE", credentials:'include', headers: { "Content-Type": "application/json", "Accept":"application/json"}})
 		.then((response)=>{if(!response.ok){throw response} return response.json()})
 		.then((data)=> {toast.dark(({})=><Undo text="Comment deleted" data={data} onDelete={onDelete} receiverName={comment.receiverName}/>, {toastId:"Undo"});onDelete()})
 		.catch(err =>{
@@ -214,24 +214,24 @@ class ProfilePage extends Component {
 		this.handleMyComments = this.handleMyComments.bind(this);
 	}
 	handleDelete(){
-		fetch(uri,`/get_comments?to=${this.props.id}`)
+		fetch(uri+`/get_comments?to=${this.props.id}`)
 			.then((response) => response.json())
 			.then((data) => this.setState({ comments: data.comments , commentsType:"1"}));
-		fetch(uri,'/api/my_comments', {credentials:'include'})
+		fetch(uri+'/api/my_comments', {credentials:'include'})
 			.then((response) => response.json())
 			.then((data) => {this.setState({ myComments: data.comments, commentsType:"1" }); console.log(data)});		
 	}
 	componentDidMount() {
-		fetch(uri,`/users/${this.props.id}`)
+		fetch(uri+`/users/${this.props.id}`)
 			.then((response) => response.json())
 			.then((data) => {this.setState({ user: data }); console.log(this.state.user)});
 			
 
-		fetch(uri,`/get_comments?to=${this.props.id}`)
+		fetch(uri+`/get_comments?to=${this.props.id}`)
 			.then((response) => response.json())
 			.then((data) => this.setState({ comments: data.comments }));
 
-		fetch(uri,'/api/my_comments', {credentials:'include'})
+		fetch(uri+'/api/my_comments', {credentials:'include'})
 			.then((response) => response.json())
 			.then((data) => {this.setState({ myComments: data.comments }); });	
 	}
@@ -261,7 +261,7 @@ class ProfilePage extends Component {
 						receiverName: this.state.user.name
 					})
 				};
-				fetch(uri,'/api/add_comment', requestOptions)
+				fetch(uri+'/api/add_comment', requestOptions)
 					.then((response) => response.json())
 					.then((data) => {this.setState({ comments: [ ...this.state.comments, data ], commentsType:"1",}); document.getElementById('comment').value='';});
 			}

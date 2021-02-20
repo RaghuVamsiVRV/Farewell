@@ -53,7 +53,7 @@ app.use(express.urlencoded({
 app.use(cookieParser());
 
 app.use(cors({
-	origin : ['http://farewell-iitp.herokuapp.com/'] ,
+	origin : ['http://farewell-iitp.herokuapp.com/','http://localhost:3000','https://www.alvida.xyz/'] ,
 	credentials: true,
   })
 );  
@@ -67,6 +67,11 @@ app.use(cors({
 app.use('/api', requireAuth, apiRoutes);
 app.use(publicRoutes);
 
-app.listen(process.env.port || 4000, function() {
-	console.log('now listening for requests, port:', process.env.port || 4000);
+app.use('/', (req, res) => {
+	res.sendFile(path.resolve(__dirname, '../build/index.html'));
+});	
+
+
+app.listen(process.env.PORT || 4000, function() {
+	console.log('now listening for requests, port:', process.env.PORT || 4000);
 });
