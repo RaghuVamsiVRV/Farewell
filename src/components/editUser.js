@@ -84,7 +84,13 @@ class Signup extends Component{
             .then((data)=>{console.log(data);toast.success("Profile Updated");
             setTimeout(() => {
                 this.props.history.goBack();
-            }, 500);})
+            }, 500);
+            fetch(`http://localhost:4000/users/${store.get('userDetails')._id}`)
+			.then((response) => response.json())
+			.then((data) => store.set('userDetails', data));
+        }
+                
+            )
             .catch(err =>{
                 err.text().then(errMsg=>
                     {

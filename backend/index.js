@@ -6,9 +6,10 @@ const publicRoutes = require('./routes/public');
 const cookieParser = require('cookie-parser');
 const jwt = require('jsonwebtoken');
 const app = express();
-
+const dotenv = require('dotenv')
 var cors = require('cors');
 
+dotenv.config();
 const requireAuth = (req, res, next) => {
 	try {
 		console.log("hello",JSON.stringify(req.cookies));
@@ -35,9 +36,9 @@ const requireAuth = (req, res, next) => {
 };
 
 
+var url = process.env.DB_URL
 
-
-mongoose.connect('mongodb+srv://sujeeth:vsaisujeeth@cluster0.84bzl.mongodb.net/mydb', {
+mongoose.connect(url, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 	useCreateIndex: true
@@ -52,7 +53,7 @@ app.use(express.urlencoded({
 app.use(cookieParser());
 
 app.use(cors({
-	origin : ['http://localhost:3000' ,'https://www.alvida.xyz/'] ,
+	origin : ['http://localhost:3000','https://www.alvida.xyz/'] ,
 	credentials: true,
   })
 );  

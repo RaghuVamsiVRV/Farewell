@@ -118,7 +118,7 @@ class Header extends Component {
             .then(response => response.json())
             .then(data => {toast.dark(({}) => <Msg text={data.message}/>);Cookies.remove('jwt'); this.setState({loginStatus:{}}); store.clearAll();
 			setTimeout(() => {
-			this.props.history.go(0)
+			this.props.history.push('/home')
 		}, 100);})
             
     }
