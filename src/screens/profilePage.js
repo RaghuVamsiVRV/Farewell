@@ -1,8 +1,8 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { Component, useState } from 'react';
 import { Control, LocalForm } from 'react-redux-form';
 import { Button, Row, Col, Card, CardTitle, CardSubtitle, CardText, CardBody, ButtonGroup } from 'reactstrap';
 import { toast } from 'react-toastify';
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import 'react-toastify/dist/ReactToastify.css';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import ReactCardFlip from 'react-card-flip';
@@ -10,7 +10,7 @@ import Fab from '@material-ui/core/Fab';
 import EditIcon from '@material-ui/icons/Edit';
 var store = require('store');
 
-const Undo = ({text, data, onDelete}) => {
+const Undo = ({text, data, onDelete, receiverName}) => {
 	const dismiss = () =>  toast.dismiss("Undo");
 	let userDetails=store.get('userDetails')
 	const handleUndo = () => {
@@ -24,7 +24,8 @@ const Undo = ({text, data, onDelete}) => {
 				comment: data.comment, 
 				senderBranch: userDetails.branch,
 				senderBatch: userDetails.batch,
-				senderCollege: userDetails.college
+				senderCollege: userDetails.college, 
+				receiverName : receiverName
 			})
 		};
 		fetch('http://localhost:4000/api/add_comment', requestOptions)
@@ -74,7 +75,7 @@ function AddComment({show}){
 
 
 
-function RenderComment2({ userB, userB1, comment, onDelete, id, show}) {
+function RenderComment2({ type, comment, onDelete, id, show}) {
 	var [isFlipped, Flip] = useState(true);
 	if(show==="1")
 	{
@@ -83,7 +84,7 @@ function RenderComment2({ userB, userB1, comment, onDelete, id, show}) {
 	const handleDelete = () => {
 		fetch(`http://localhost:4000/api/delete_comment/${comment._id}`, {method:"DELETE", credentials:'include', headers: { "Content-Type": "application/json", "Accept":"application/json"}})
 		.then((response)=>{if(!response.ok){throw response} return response.json()})
-		.then((data)=> {toast.dark(({})=><Undo text="Comment deleted" data={data} onDelete={onDelete}/>, {toastId:"Undo"});onDelete()})
+		.then((data)=> {toast.dark(({})=><Undo text="Comment deleted" data={data} onDelete={onDelete} receiverName={comment.receiverName}/>, {toastId:"Undo"});onDelete()})
 		.catch(err =>{
 			err.text().then(errMsg=>
 				{
@@ -103,7 +104,24 @@ function RenderComment2({ userB, userB1, comment, onDelete, id, show}) {
 		}, 200);
 	}
 	
-
+	const Receiver = () =>{
+		if(type==="x"){
+			return(
+			<div>
+				to: <Link className="text-secondary">{comment.receiverName}</Link>
+				
+			</div>
+			)
+			
+		}
+		else{
+			return (
+			<div>
+				{comment.senderBranch}{','}{comment.senderBatch}
+			</div>
+			)
+		}
+	}
 	return (
 		<ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
 			<div key="front">
@@ -113,7 +131,7 @@ function RenderComment2({ userB, userB1, comment, onDelete, id, show}) {
 					inverse
 					className="p-3"
 					style={{
-						backgroundColor: "#a5d6a7",
+						backgroundColor: "#fff",
 						borderBottomColor: '#000',
 						borderBottomWidth: "4px",
 						borderRightColor: '#000',
@@ -128,7 +146,7 @@ function RenderComment2({ userB, userB1, comment, onDelete, id, show}) {
 				>
 					<CardTitle md={10} style={{fontFamily: 'Varela Round',color: "#000", fontSize: "16px", textAlign:'left'}} tag="h5"><Link className="text-secondary" to={`/${comment.from}`}>{comment.senderName}</Link> <Button  style={{position:"absolute", top:"10px", right:"5px"}} color="link" className="text-danger" size="sm" onClick={()=>handleDelete(comment._id)}><DeleteOutlinedIcon fontSize="small" /> </Button></CardTitle>
 					
-					<CardSubtitle style={{color: "#000",fontSize: "12px", textAlign:'left'}} tag="h5">{comment.senderBranch}{','}{comment.senderBatch}</CardSubtitle>
+					<CardSubtitle style={{color: "#000",fontSize: "12px", textAlign:'left'}} tag="h5"><Receiver/></CardSubtitle>
 					<CardBody>
 						<CardText style={{fontFamily: 'Architects Daughter' , color: "#000"}}>{comment.comment}</CardText>
 						<CardText style={{color: "#000" , fontSize:"12px", position: 'absolute', bottom:'0', right:'0', margin: '8px'}} className="ml-auto mr-3">
@@ -150,7 +168,7 @@ function RenderComment2({ userB, userB1, comment, onDelete, id, show}) {
 						inverse
 						className="p-3"
 						style={{
-							backgroundColor:" #a5d6a7",
+							backgroundColor:" #fff",
 							borderBottomColor: '#000',
 							borderBottomWidth: "4px",
 							borderRightColor: '#000',
@@ -204,7 +222,8 @@ class ProfilePage extends Component {
 	componentDidMount() {
 		fetch(`http://localhost:4000/users/${this.props.id}`)
 			.then((response) => response.json())
-			.then((data) => this.setState({ user: data }));
+			.then((data) => {this.setState({ user: data }); console.log(this.state.user)});
+			
 
 		fetch(`http://localhost:4000/get_comments?to=${this.props.id}`)
 			.then((response) => response.json())
@@ -222,7 +241,7 @@ class ProfilePage extends Component {
 	}
 	handleSubmit(values, event) {
 		event.preventDefault();
-		this.setState({text:""})
+		this.setState({text:"", commentsType:"1"})
 		let userDetails=store.get('userDetails')
 		if(userDetails != null){
 			if (values.comment) {
@@ -237,11 +256,12 @@ class ProfilePage extends Component {
 						senderBranch: userDetails.branch,
 						senderBatch: userDetails.batch,
 						senderCollege: userDetails.college,
+						receiverName: this.state.user.name
 					})
 				};
 				fetch('http://localhost:4000/api/add_comment', requestOptions)
 					.then((response) => response.json())
-					.then((data) => this.setState({ comments: [ ...this.state.comments, data ] }));
+					.then((data) => {this.setState({ comments: [ ...this.state.comments, data ], commentsType:"1",}); document.getElementById('comment').value='';});
 			}
 			else {
 				toast.dark("Enter Comment")
@@ -263,14 +283,14 @@ class ProfilePage extends Component {
 		const dispComment  = this.state.comments.map((comment) => {
 			return (
 				<Col md={6}>
-					<RenderComment2 userB={this.state.user.batch} userB1={this.state.user.branch} comment={comment} onDelete={this.handleDelete} id={userID?userID.userID:""}  show={this.state.commentsType} />
+					<RenderComment2 type="y" comment={comment} onDelete={this.handleDelete} id={userID?userID.userID:""}  show={this.state.commentsType} />
 				</Col>
 			);
 		});
 		const dispComment2 = this.state.myComments?this.state.myComments.map((comment) => {
 			return (
 				<Col md={6}>
-					<RenderComment2 userB={this.state.user.batch} userB1={this.state.user.branch} comment={comment} onDelete={this.handleDelete} id={userID?userID.userID:""}  show={this.state.commentsType} />
+					<RenderComment2 type="x"  comment={comment} onDelete={this.handleDelete} id={userID?userID.userID:""}  show={this.state.commentsType} />
 				</Col>
 			);
 		}): ()=>{return(<div/>)}
@@ -342,4 +362,4 @@ class ProfilePage extends Component {
 		);
 	}
 }
-export default ProfilePage;
+export default withRouter(ProfilePage);

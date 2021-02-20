@@ -6,6 +6,8 @@ import { Alert } from "reactstrap";
 import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
+var store = require('store');
+
 export const AlertCustom = (props) => {  
 
     if(props.text!==""){
@@ -44,6 +46,16 @@ class Signup extends Component{
         this.handleChange = this.handleChange.bind(this);      
     }
 
+
+    componentDidMount(){
+        let userDetails=store.get('userDetails');
+        console.log(typeof userDetails.name)
+        setTimeout(()=>{
+            document.getElementById('name').value=userDetails.name;
+            document.getElementById('branch').value=userDetails.branch;
+            document.getElementById('batch').value=userDetails.batch;
+        })
+    }
     handleChange(event){
         let input=this.state.input;
         input=event.target.value;
@@ -69,7 +81,16 @@ class Signup extends Component{
         };
         fetch('http://localhost:4000/api/edit', requestOptions)
             .then(response => {if(!response.ok){throw response} response.json()})
-            .then((data)=>{console.log(data);toast.success("Profile Updated")})
+            .then((data)=>{console.log(data);toast.success("Profile Updated");
+            setTimeout(() => {
+                this.props.history.goBack();
+            }, 500);
+            fetch(`http://localhost:4000/users/${store.get('userDetails')._id}`)
+			.then((response) => response.json())
+			.then((data) => store.set('userDetails', data));
+        }
+                
+            )
             .catch(err =>{
                 err.text().then(errMsg=>
                     {
