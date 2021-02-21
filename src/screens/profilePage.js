@@ -110,7 +110,7 @@ function RenderComment2({ type, comment, onDelete, id, show}) {
 		if(type==="x"){
 			return(
 			<div>
-				to: <Link className="text-secondary">{comment.receiverName}</Link>
+				to: <Link className="text-secondary" to={`/${comment.to}`}>{comment.receiverName}</Link>
 				
 			</div>
 			)
@@ -205,7 +205,8 @@ class ProfilePage extends Component {
 			showComment:userID?userID.userID!==this.props.id:true, 
 			text:"",
 			commentsType:"0",
-			myComments:[]
+			myComments:[], 
+			commentVis:"2"
 		};
 		this.handleDelete = this.handleDelete.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
@@ -236,7 +237,7 @@ class ProfilePage extends Component {
 			.then((data) => {this.setState({ myComments: data.comments }); });	
 	}
 	handleMyComments(){
-		this.setState({commentsType:"3"})
+		this.setState({commentsType:"3", commentVis:"3"})
 	}
 	handleChange(){
 		this.setState({isOpen:false})
@@ -312,7 +313,7 @@ class ProfilePage extends Component {
 			if(store.get('userDetails')&&store.get('userDetails')._id===this.props.id){
 				return(
 					<ButtonGroup>
-						<Button onClick={()=>{this.setState({commentsType:"0"});}}>
+						<Button onClick={()=>{this.setState({commentsType:"0", commentVis:"2"});}}>
 							All Comments
 						</Button>
 						<Button onClick={handleMyComments}>
@@ -353,7 +354,7 @@ class ProfilePage extends Component {
 					<h2 className="Tname"> {this.state.user.name} </h2>
 					<h5 className="Tname1"> {this.state.user.branch}{', '}{this.state.user.batch}</h5>		
 					<CommentNav handleMyComments={this.handleMyComments}/>
-					<DispComment id={this.state.commentsType} />					
+					<DispComment id={this.state.commentVis} />					
 				</div>
 				<div className="container-banner">
 					<LocalForm onSubmit={this.handleSubmit} >	
