@@ -184,7 +184,7 @@ class Header extends Component {
 				</Navbar>
 				
 				<Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
-					<ModalHeader className="bg-primary text-white"  toggle={this.toggleModal}>Login</ModalHeader>
+					<ModalHeader  className="title" style={{backgroundColor:"#282828"}}  toggle={this.toggleModal}>Login</ModalHeader>
 					<ModalBody>
 						<Form onSubmit={this.handleLogin}>
 								<FormGroup>
