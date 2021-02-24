@@ -7,6 +7,20 @@ const Users = require('../models/users.js');
 
 var multer = require('multer')
 const bcrypt = require('bcrypt');
+const fs = require('fs');
+
+const resizer = require('node-image-resizer');
+const setup = { 
+  all: {
+    path: './public/photos/',
+    quality: 60
+  },
+  versions: [{
+      width: 1024,
+      height: 768
+    }]
+};
+
 
 
   
@@ -31,8 +45,9 @@ router.get('/my_comments', function(req, res){
     }).catch(err=>res.status(400).json({'error': err.message}));
 });
 
-router.post('/edit',function(req,res){
+router.post('/edit',async function(req,res){
     let userID = getUserFromToken(req);
+    
     
     var storage = multer.diskStorage({
         destination: function (req, file, cb) {
@@ -69,7 +84,16 @@ router.post('/edit',function(req,res){
             }
             try{
                 if(req.file) {
+                    // console.log(req.file)
+                    const user = await Users.findById(userID);
+                    fs.unlink("./public/photos/" + user.imageURL,function(err) {
+                        if(err) {
+                            console.info("Error removing file");
+                        }
+                    });
                     req.body.imageURL = req.file.filename;
+                    imageURL = req.file.filename;
+                    resizer("./public/photos/"+imageURL, setup);
                 }
                 if(req.body.password && req.body.password!='')
                 {

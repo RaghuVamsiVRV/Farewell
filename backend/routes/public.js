@@ -8,6 +8,18 @@ const Comments = require('../models/comments.js');
 var multer = require('multer')
 var nodemailer = require('nodemailer');
 
+const resizer = require('node-image-resizer');
+const setup = { 
+  all: {
+    path: './public/photos/',
+    quality: 60
+  },
+  versions: [{
+      width: 1024,
+      height: 768
+    }]
+};
+
 
 var ncrypt = require('ncrypt-js');
 var { encrypt, decrypt } = new ncrypt('farewell');
@@ -100,6 +112,7 @@ router.post('/signup', async (req, res) => {
               var imageURL = 'default.jpg'
               if(req.file) {
                 imageURL = req.file.filename;
+                await resizer("./public/photos/"+imageURL, setup);
               }
               var verified =  0;
               console.log(imageURL)
